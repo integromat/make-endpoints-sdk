@@ -115,7 +115,13 @@ There's no SDK-specific error type. A failing call rejects with whatever the tra
 
 ## Generated code
 
-`src/lib/generated/**` is generated from Make's app manifests and synced into this repository automatically. Don't edit it by hand: the next sync overwrites it. Each sync lands on `main` together with a version bump, minor for new or changed endpoints and major when endpoints are removed.
+`src/lib/generated/**` is generated from Make's app manifests and synced into this repository automatically. Don't edit it by hand: the next sync overwrites it.
+
+## Releases
+
+Releases are cut automatically with [Release Please](https://github.com/googleapis/release-please).
+- **What a release does:** it bumps the version based on the conventional commits since the last release, updates [`CHANGELOG.md`](CHANGELOG.md), creates a GitHub release, and publishes to npm.
+- **Versioning while on `0.x`:** breaking changes, such as removed endpoints, bump the minor version.
 
 ## Development
 

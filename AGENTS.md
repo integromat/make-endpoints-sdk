@@ -22,7 +22,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
   - `src/lib/transport/`: the `Transport` contract and `SdkTransport`.
 - **Generated code, not owned here:** `src/lib/generated/**`, marked `linguist-generated` in `.gitattributes`.
   - It is produced by Make's code generator, which lives outside this repository, and synced here by automation as commits on `main`.
-  - Each sync replaces the whole directory and bumps `package.json` `version`: major when generated files are deleted, otherwise minor. The sync edits `package.json` programmatically, so keep `version` a plain `X.Y.Z` and keep 2-space indentation.
+  - Each sync replaces the whole directory and commits it as `feat:`, or `feat!:` when generated files were deleted (removed endpoints break consumers). A sync doesn't touch `package.json`.
   - Never edit generated files here: hand edits are lost on the next sync. Changes to generated output belong in the generator.
 
 ## Contract between generated code and runtime
@@ -47,7 +47,24 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 ## Tests
 
 - `src/test/transport/sdk-transport.spec.ts` covers the runtime through `execute()` and doesn't depend on generated content.
-- Specs that call real generated endpoints are coupled to the generated tree. They can break when the generator output changes; the generator runs equivalent checks before each sync.
+- `src/test/generated-endpoints.spec.ts` drives every generated endpoint through this repository's runtime without naming specific ones, so catalog changes from syncs can't break it.
+  - It fails on an empty catalog, so a sync that removed every endpoint can't be published. It also fails on the placeholder catalog that existed before the first sync.
+  - Don't add specs that name specific generated endpoints. Syncs land on `main` without review, and `publish.yml` runs the tests, so such a spec could block every release.
+
+## Release
+
+- **Release Please, without a release PR:**
+  - Automation outside this repository runs [Release Please](https://github.com/googleapis/release-please) against `main` every night.
+  - When there are releasable conventional commits (`feat`, `fix`, ...), it pushes a `chore: release X.Y.Z` commit that updates `package.json`, `package-lock.json`, `.release-please-manifest.json` and `CHANGELOG.md`. It then creates the `vX.Y.Z` tag and GitHub release.
+  - Config is in `release-please-config.json`. With `bump-minor-pre-major`, breaking changes bump the minor version while on `0.x`.
+- **Don't edit release files by hand:** not `version`, `CHANGELOG.md` or the manifest. Use conventional commit messages (PR titles, when squash-merging) so Release Please classifies changes correctly.
+- **Publishing:** `.github/workflows/publish.yml` runs on every push to `main`. It publishes only when the `package.json` `version` isn't on npm yet, so only release commits publish.
+- Authentication uses npm trusted publishing (OIDC), and this repo holds no npm token. The trusted publisher on npmjs.com is bound to this repository, to the filename `publish.yml` and to the `npm` environment, so don't rename either without updating npm. Trusted publishing also requires GitHub-hosted runners.
+- Keep the security model described at the top of `publish.yml`:
+  - The `npm` environment accepts deployments only from `main`.
+  - Only the `publish` job may request `id-token: write`. That job must not check out code or install dependencies; it publishes the tarball that `build` packed.
+  - Dependencies install with `--ignore-scripts`, and release builds use no dependency cache.
+- `.github/workflows/test.yml` runs type-check, tests and build on pull requests (Node.js 24 and 26). It uses `pull_request`, never `pull_request_target`, so pull request code runs with a read-only token and no secrets. Synced and release commits don't go through pull requests, so `publish.yml` repeats test and build before publishing.
 
 ## When in Plan Mode
 

@@ -1,6 +1,6 @@
 {
   "name": "@makehq/endpoints-sdk",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Typed SDK for calling Make app endpoints",
   "license": "MIT",
   "homepage": "https://github.com/integromat/make-endpoints-sdk#readme",
