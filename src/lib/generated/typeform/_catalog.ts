@@ -1,0 +1,20 @@
+// Generated file. Do not edit by hand.
+import type { EndpointsSdkOptions } from '../../base-endpoints-sdk.ts';
+import { BaseEndpointsSdk } from '../../base-endpoints-sdk.ts';
+import type { EndpointCaller } from '../../shared.ts';
+
+import { endpoints as v2Endpoints } from './v2/_catalog.ts';
+
+export type { EndpointsSdkOptions } from '../../base-endpoints-sdk.ts';
+
+export const endpoints = (endpointCaller: EndpointCaller) => {
+	return {
+		v2: v2Endpoints(endpointCaller),
+	};
+};
+
+export class TypeformSdk extends BaseEndpointsSdk<ReturnType<typeof endpoints>> {
+	constructor(options: EndpointsSdkOptions) {
+		super(options, endpoints);
+	}
+}
