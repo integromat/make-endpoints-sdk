@@ -1,0 +1,113 @@
+# The npm trusted publisher for @makehq/endpoints-sdk is bound to this exact filename and to the `npm`
+# environment. Renaming either breaks publishing until the trusted publisher on npmjs.com is updated.
+#
+# Security model:
+# - The `npm` environment only accepts deployments from `main`, so a workflow edited on another branch
+#   cannot publish, even though npm itself does not check the branch.
+# - Dependencies and repository code only run in `build`, which cannot mint an OIDC token. `publish`
+#   can, but it runs no repository code and installs nothing: it publishes the tarball `build` packed.
+name: Publish to npm
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+concurrency:
+    group: publish
+    cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+    build:
+        name: Build and test
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        permissions:
+            contents: read # check out the repository
+        outputs:
+            publish: ${{ steps.version.outputs.publish }}
+            tarball: ${{ steps.pack.outputs.tarball }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+
+            # No dependency cache: a release build always installs from the lockfile.
+            - name: Setup Node
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version: 24
+
+            - name: Install dependencies
+              run: npm ci --ignore-scripts
+
+            - name: Run unit tests
+              run: npm test
+
+            - name: Build
+              run: npm run build
+
+            # Pushes that don't bump package.json (README, CI, ...) build and test but publish nothing.
+            - name: Check whether this version is already published
+              id: version
+              run: |
+                  set -euo pipefail
+                  name=$(node -p "require('./package.json').name")
+                  version=$(node -p "require('./package.json').version")
+                  if [[ -n "$(npm view "$name@$version" version 2>/dev/null)" ]]; then
+                      echo "publish=false" >> "$GITHUB_OUTPUT"
+                      echo "$name@$version is already on npm; nothing to publish." >> "$GITHUB_STEP_SUMMARY"
+                  else
+                      echo "publish=true" >> "$GITHUB_OUTPUT"
+                      echo "Publishing $name@$version." >> "$GITHUB_STEP_SUMMARY"
+                  fi
+
+            - name: Pack
+              id: pack
+              if: steps.version.outputs.publish == 'true'
+              run: |
+                  set -euo pipefail
+                  tarball=$(npm pack --ignore-scripts --silent | tail -n 1)
+                  echo "tarball=$tarball" >> "$GITHUB_OUTPUT"
+
+            - name: Upload package
+              if: steps.version.outputs.publish == 'true'
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+              with:
+                  name: package
+                  path: ${{ steps.pack.outputs.tarball }}
+                  if-no-files-found: error
+                  retention-days: 1
+
+    publish:
+        name: Publish
+        needs: build
+        if: needs.build.outputs.publish == 'true'
+        # npm trusted publishing does not support self-hosted runners.
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        environment: npm
+        permissions:
+            id-token: write # npm trusted publishing (OIDC)
+        steps:
+            - name: Setup Node
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  # Trusted publishing needs npm >= 11.5.1, which Node 24 ships.
+                  node-version: 24
+                  registry-url: 'https://registry.npmjs.org'
+
+            - name: Download package
+              uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+              with:
+                  name: package
+
+            # Authenticates via OIDC (trusted publishing), so no NPM_TOKEN secret is needed.
+            - name: Publish to npm
+              env:
+                  TARBALL: ${{ needs.build.outputs.tarball }}
+              run: npm publish "./$TARBALL" --provenance --access public --ignore-scripts
