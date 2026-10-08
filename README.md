@@ -113,6 +113,72 @@ const { output } = await sdk.execute<GetDocumentOutput>(
 
 There's no SDK-specific error type. A failing call rejects with whatever the transport throws; for `SdkTransport`, that's the `Make.fetch` rejection.
 
+## CLI
+
+The package includes `make-endpoints-cli`, which follows the conventions of [Make CLI](https://www.npmjs.com/package/@makehq/cli) (`make-cli`). Every endpoint is a command, which makes it easy to use from scripts and AI agents.
+
+```sh
+npx -p @makehq/endpoints-sdk make-endpoints-cli --help
+```
+
+### Authentication
+
+Credentials are resolved like in `make-cli`:
+
+1. `--api-key` and `--zone` flags,
+2. `MAKE_API_KEY` and `MAKE_ZONE` environment variables,
+3. the config file saved by `make-cli login`, used only when neither of the above is set.
+
+`make-endpoints-cli` has no login command of its own. Run `make-cli login` once and both CLIs share the saved credentials.
+
+### Discovering endpoints
+
+```sh
+make-endpoints-cli list                       # apps and their versions
+make-endpoints-cli list google-docs           # endpoints of every version of an app
+make-endpoints-cli list google-docs v1        # endpoints of one version
+make-endpoints-cli describe google-docs get-document     # definition with input JSON Schema
+make-endpoints-cli describe google-docs v1 getDocument   # explicit version, wire name
+```
+
+`describe` prints the endpoint as a tool definition (see [Tool definitions](#tool-definitions)), including `inputSchema`. The schema of the `input` property lists the fields the endpoint requires.
+
+### Calling an endpoint
+
+Commands are `<app> <endpoint>` for the app's latest version and `<app> v<N> <endpoint>` for any version. Each input field is a flag, and `--input` takes the whole input as JSON. Separate flags override keys of `--input`, and fields without a flag of their own (for example, a field named `output`, which would clash with the global flag) can only be passed through `--input`.
+
+```sh
+make-endpoints-cli google-docs get-document --document-id doc-1 --connection-id 42 --team-id 77
+make-endpoints-cli google-docs v1 get-document --input '{"documentId":"doc-1"}' --connection-id 42 --team-id 77
+```
+
+`endpoints execute` calls any endpoint by name, including ones this package doesn't include, such as other versions or your custom apps:
+
+```sh
+make-endpoints-cli endpoints execute --app-name app#my-app --app-version 1 --endpoint-name doThing \
+	--team-id 77 --connection-id 42 --input '{"key":"value"}'
+```
+
+`--output json|compact|table` sets the output format (default `json`). Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
+
+## Tool definitions
+
+`@makehq/endpoints-sdk/tools` exports every endpoint as a harness-agnostic tool definition, in the same shape as `MakeTools` from `@makehq/sdk/tools`. Use it to expose endpoints to LLM function calling, an MCP server or your own CLI.
+
+```ts
+import { Make } from '@makehq/sdk';
+import { EndpointTools } from '@makehq/endpoints-sdk/tools';
+
+const make = new Make('<api-key>', 'eu1.make.com');
+const tool = EndpointTools.find((candidate) => candidate.name === 'google-docs_get-document');
+
+const doc = await tool?.execute(make, { teamId: 77, connectionId: 42, documentId: 'doc-1' });
+```
+
+- Tools of an app's latest version are named `<app>_<endpoint>`, and tools of every older version `<app>-v<N>_<endpoint>`. Each tool keeps its endpoint's `definition`.
+- `inputSchema` has `teamId`, `connectionId` (only when the endpoint takes a connection), every input field, and `input`, the whole input as an object. `execute` merges separate fields over `input` and rejects when a required field is missing.
+- `EndpointTools` always ends with the generic `endpoints_execute` tool, which calls any endpoint by `appName`, `appVersion` and `endpointName`.
+
 ## Generated code
 
 `src/lib/generated/**` is generated from Make's app manifests and synced into this repository automatically. Don't edit it by hand: the next sync overwrites it.
