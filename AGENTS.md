@@ -29,7 +29,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 
 - Generated files import the runtime by relative path with `.ts` extensions: `src/lib/shared.ts` and `src/lib/base-endpoints-sdk.ts`. Keep both files in `src/lib/`, next to `generated/`.
 - These names are imported by generated code. Renaming or reshaping them breaks the next sync, so change them only together with the generator:
-  - from `shared.ts`: `EndpointCaller`, `EndpointFunctionThis`, `JSONValue`
+  - from `shared.ts`: `EndpointCaller`, `EndpointDefinition`, `EndpointFunctionThis`, `JSONValue`
   - from `base-endpoints-sdk.ts`: `BaseEndpointsSdk`, `EndpointsSdkOptions`
 - The generated layout:
   - `generated/catalog.ts` is the root catalog, `endpoints(endpointCaller)`.
