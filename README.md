@@ -1,14 +1,16 @@
 # @makehq/endpoints-sdk
 
 <p>
-	<img alt="Status: public beta" src="https://img.shields.io/badge/status-public%20beta-ff6b00?style=for-the-badge">
+	<img alt="Status: closed beta" src="https://img.shields.io/badge/status-closed%20beta-ff6b00?style=for-the-badge">
 	<a href="https://www.npmjs.com/package/@makehq/endpoints-sdk"><img alt="npm version" src="https://img.shields.io/npm/v/%40makehq%2Fendpoints-sdk?style=for-the-badge&logo=npm&color=6d00cc"></a>
 	<a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2ea44f?style=for-the-badge"></a>
 </p>
 
 TypeScript SDK for calling Make **Endpoints**, the single-call wrapper around native app actions. Every app, version and endpoint is generated into a typed method. A call sends a normalized request and resolves directly to the endpoint's output, so you don't build the request envelope or unwrap the response yourself.
 
-> ### 🧪 Public beta: fresh out of the lab
+> ### 🧪 Closed beta: fresh out of the lab
+>
+> 🔒 **Access is limited.** Anyone can install the package, but API calls fail until Make enables Endpoints for your organization.
 >
 > This SDK is new and still settling. While it's on `0.x`:
 >
