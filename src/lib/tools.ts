@@ -34,9 +34,8 @@ export type JSONSchema = {
 };
 
 /**
- * A Make Endpoint as a harness-agnostic tool definition, assignable to `MakeTool` from
- * `@makehq/sdk/tools`. It is declared here rather than imported because `@makehq/sdk/tools` doesn't
- * resolve under `moduleResolution: node10`, which this package's CommonJS types support.
+ * A Make Endpoint as a tool, assignable to `MakeTool` from `@makehq/sdk/tools`. Declared here
+ * because that subpath doesn't resolve under `node10`, which our CommonJS types support.
  */
 export type EndpointTool = {
 	name: string;

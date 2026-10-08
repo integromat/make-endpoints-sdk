@@ -11,8 +11,8 @@ export type Auth = {
 };
 
 /**
- * Resolves credentials like `make-cli` does: flags, then `MAKE_API_KEY` / `MAKE_ZONE`, then the
- * config file saved by `make-cli login` (only when neither of the first two gave anything).
+ * Resolves credentials like `make-cli`: flags, then `MAKE_API_KEY`/`MAKE_ZONE`, then the
+ * `make-cli login` config file when neither is set.
  */
 export const resolveAuth = async (options: AuthOptions): Promise<Auth> => {
 	let token = options.apiKey ?? process.env.MAKE_API_KEY;

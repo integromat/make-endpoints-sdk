@@ -5,7 +5,7 @@ import { EndpointTools } from '../lib/tools.ts';
 
 import { createProgram } from './program.ts';
 
-// Resolved from dist/esm/cli/index.js. The CLI is ESM-only, so there's no dist/cjs copy to account for.
+// Relative to dist/esm/cli/index.js; the CLI is ESM-only.
 const { version } = createRequire(import.meta.url)('../../../package.json') as { version: string };
 
 createProgram({ version, tools: EndpointTools })

@@ -2,7 +2,7 @@
 
 ## What
 
-`@makehq/endpoints-sdk` is a public npm package (MIT, beta) for calling Make **Endpoints**: one typed method per app, app version and endpoint. Each call is sent as `POST /endpoints/execute` through a `Make` client from `@makehq/sdk` (a peer dependency, used for auth) wrapped in `SdkTransport`.
+`@makehq/endpoints-sdk` is a public npm package (MIT, closed beta: API calls only work for organizations Make has enabled) for calling Make **Endpoints**: one typed method per app, app version and endpoint. Each call is sent as `POST /endpoints/execute` through a `Make` client from `@makehq/sdk` (a peer dependency, used for auth) wrapped in `SdkTransport`.
 
 Stack: TypeScript, Node.js 24/26 (`engines`), npm. Tests use **Vitest**, not Jest. `npm run type-check` covers specs as well, while `build` only covers `src` without tests.
 
@@ -11,16 +11,18 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 - `tsconfig.build.cjs.json` emits CommonJS to `dist/cjs`.
 - Both builds use `.js` files, so the script writes `dist/cjs/package.json` with `"type": "commonjs"`.
 - `npm run check:package` runs arethetypeswrong (`attw`) to check that types resolve for every resolution mode. PR CI runs it too.
-- The package is declared `"sideEffects": false` (root `package.json`, repeated in the generated `dist/cjs/package.json`), so bundlers can drop unused app catalogs. Keep module top levels free of side effects: only declarations and pure computations.
+- The `make-endpoints-cli` bin (`src/cli/**`) is **ESM-only**: `tsconfig.build.cjs.json` excludes `src/cli`, and `bin` points at `dist/esm/cli/index.js`.
 
 ## Two kinds of code
 
 - **Hand-written runtime, owned here:**
-  - `src/index.ts`: the root entry. It exports `EndpointsSdk`, `SdkTransport` and the transport types.
+  - `src/index.ts`: the root entry. It exports `EndpointsSdk`, `SdkTransport`, the transport types and the endpoint definition types.
   - `src/lib/base-endpoints-sdk.ts` (`BaseEndpointsSdk`): the runtime shared by the full client and every scoped client. Only the injected catalog differs.
   - `src/lib/endpoints-sdk.ts`: `EndpointsSdk` with the root catalog.
   - `src/lib/shared.ts`: types the generated code builds on.
   - `src/lib/transport/`: the `Transport` contract and `SdkTransport`.
+  - `src/lib/tools.ts`: the `./tools` entry. Definitions become `MakeTool`-shaped `EndpointTool`s, plus the generic `endpoints_execute`.
+  - `src/cli/`: the `make-endpoints-cli` bin, a port of `@makehq/cli` (`make-cli`) over `EndpointTools`. Files mirror make-cli's; `catalog-commands.ts` adds `list` and `describe`.
 - **Generated code, not owned here:** `src/lib/generated/**`, marked `linguist-generated` in `.gitattributes`.
   - It is produced by Make's code generator, which lives outside this repository, and synced here by automation as commits on `main`.
   - Each sync replaces the whole directory and commits it as `feat:`, or `feat!:` when generated files were deleted (removed endpoints break consumers). A sync doesn't touch `package.json`.
@@ -35,14 +37,19 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 - The generated layout:
   - `generated/catalog.ts` is the root catalog, `endpoints(endpointCaller)`.
   - `generated/<app>/_catalog.ts` and `generated/<app>/v<N>/_catalog.ts` each export `endpoints` and a client class (`<App>Sdk`, `<App>V<N>Sdk`). Version catalogs also re-export the `<Endpoint>Input`/`<Endpoint>Output` types.
+  - `generated/definitions.ts` exports `definitions: EndpointDefinition[]`, concatenating `generated/<app>/v<N>/_definitions.ts`. These modules carry the manifest metadata and the input and output JSON Schemas and are off the SDK's import graph: no endpoint module or `_catalog.ts` imports them, so only `./tools` and the CLI load them.
+- `src/lib/tools.ts` imports `generated/definitions.ts` statically, so this repository only builds against a generated tree that carries definitions. Order of changes: the contract type lands here first (so the generator's output type-checks against this runtime), then the generator, then the sync, then anything that imports the definitions.
 - `.ts` import specifiers compile because of `rewriteRelativeImportExtensions` in `tsconfig.json`. Emitted JS uses `.js`; declarations keep `.ts`, which TypeScript resolves to the emitted `.d.ts`.
 
 ## Public API surface (`package.json` `exports`)
 
 - `.` is the root entry.
+- `./tools` maps to `dist/{esm,cjs}/lib/tools.js` and mirrors `@makehq/sdk/tools`: `EndpointTools`, `buildEndpointTools`, `EndpointTool` and `JSONSchema`.
+  - `EndpointTool` and `JSONSchema` are declared locally: `@makehq/sdk/tools` doesn't resolve under `node10` (no `typesVersions`). `src/test/tools.spec.ts` assigns `EndpointTool[]` to `MakeTool[]`, so type-check catches drift.
 - `./apps/*` maps to `dist/{esm,cjs}/lib/generated/*/_catalog.js`, which gives `@makehq/endpoints-sdk/apps/<app>` and `/apps/<app>/v<N>`. App clients live under `apps/` so app names can never collide with other subpaths. Add new non-app entry points as top-level subpaths outside `apps/`.
-- Every entry point has an `import` and a `require` condition, each with its own `types`. TypeScript's `node10` resolution ignores `exports`, so `main`/`types` (root) and `typesVersions` (`apps/*`) mirror the CommonJS entries. Keep all three in sync when adding entry points.
-- `@makehq/sdk` is only imported with `import type`, so the emitted JS has no runtime import of it. Keep it type-only.
+- Every entry point has an `import` and a `require` condition, each with its own `types`. TypeScript's `node10` resolution ignores `exports`, so `main`/`types` (root) and `typesVersions` (`apps/*`, `tools`) mirror the CommonJS entries. Keep all three in sync when adding entry points.
+- In `src/lib/**`, `@makehq/sdk` is only imported with `import type`, so the library's JS has no runtime import of it. Keep it that way. Only the CLI imports it at runtime.
+- `commander` is the only runtime dependency, used only by the CLI.
 - Calls always run under the authenticated user of the `Make` client, so the transport context carries only `teamId`.
 
 ## Tests
@@ -51,6 +58,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 - `src/test/generated-endpoints.spec.ts` drives every generated endpoint through this repository's runtime without naming specific ones, so catalog changes from syncs can't break it.
   - It fails on an empty catalog, so a sync that removed every endpoint can't be published. It also fails on the placeholder catalog that existed before the first sync.
   - Don't add specs that name specific generated endpoints. Syncs land on `main` without review, and `publish.yml` runs the tests, so such a spec could block every release.
+- `src/test/tools.spec.ts` and `src/test/cli/*.spec.ts` use hand-written definitions from `src/test/fixtures/`, never the generated catalog, for the same reason. CLI specs run a fresh `createProgram()` with `Make` mocked and `process.exit`/stdout/stderr stubbed.
 
 ## Release
 
