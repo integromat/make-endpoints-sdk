@@ -20,6 +20,7 @@ import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts'
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
+import { endpoints as linearEndpoints } from './linear/_catalog.ts';
 import { endpoints as linkedinEndpoints } from './linkedin/_catalog.ts';
 import { endpoints as mailchimpEndpoints } from './mailchimp/_catalog.ts';
 import { endpoints as mcpClientEndpoints } from './mcp-client/_catalog.ts';
@@ -58,6 +59,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
+		linear: linearEndpoints(endpointCaller),
 		linkedin: linkedinEndpoints(endpointCaller),
 		mailchimp: mailchimpEndpoints(endpointCaller),
 		mcpClient: mcpClientEndpoints(endpointCaller),
