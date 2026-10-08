@@ -11,6 +11,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 - `tsconfig.build.cjs.json` emits CommonJS to `dist/cjs`.
 - Both builds use `.js` files, so the script writes `dist/cjs/package.json` with `"type": "commonjs"`.
 - `npm run check:package` runs arethetypeswrong (`attw`) to check that types resolve for every resolution mode. PR CI runs it too.
+- The package is declared `"sideEffects": false` (root `package.json`, repeated in the generated `dist/cjs/package.json`), so bundlers can drop unused app catalogs. Keep module top levels free of side effects: only declarations and pure computations.
 
 ## Two kinds of code
 

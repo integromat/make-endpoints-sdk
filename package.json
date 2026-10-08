@@ -44,6 +44,7 @@
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "node scripts/build.mjs",
     "type-check": "tsc",
