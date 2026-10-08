@@ -1,6 +1,6 @@
 import type { Make } from '@makehq/sdk';
 
-import { definitions } from './definitions.ts';
+import { definitions } from './generated/definitions.ts';
 import type {
 	EndpointAnnotations,
 	EndpointDefinition,
