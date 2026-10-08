@@ -111,7 +111,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		label,
 		description,
 		deprecated,
-		connectionTypes,
+		accounts,
 		annotations,
 	} = definition;
 	const { properties, required } = definition.inputSchema;
@@ -121,6 +121,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		([field]) => !RESERVED_ARGUMENTS.has(field),
 	);
 	const requiredFields = Array.isArray(required) ? required.map(String) : [];
+	const connectionTypes = Object.keys(accounts);
 	const takesConnection = connectionTypes.length > 0;
 
 	return {

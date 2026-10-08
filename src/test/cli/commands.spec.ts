@@ -306,6 +306,7 @@ describe('list', () => {
 				title: 'Get an item',
 				deprecated: false,
 				connectionTypes: ['alpha', 'alpha-oauth'],
+				scopes: ['items:read', 'profile'],
 			},
 			{
 				name: 'legacy-call',
@@ -314,6 +315,7 @@ describe('list', () => {
 				title: 'LegacyCall',
 				deprecated: true,
 				connectionTypes: ['alpha'],
+				scopes: [],
 			},
 		]);
 	});
@@ -347,9 +349,11 @@ describe('describe', () => {
 			appName: 'alpha',
 			appVersion: 2,
 			endpointName: 'getItem',
-			connectionTypes: ['alpha', 'alpha-oauth'],
+			context: 'Prefer this over LegacyCall.',
+			accounts: { alpha: { scope: ['items:read'] }, 'alpha-oauth': { scope: ['items:read', 'profile'] } },
 			annotations: { readOnlyHint: true },
 			inputSchema: { required: ['teamId', 'connectionId'] },
+			outputSchema: { properties: { id: { type: 'string' } } },
 		});
 		expect(described).not.toHaveProperty('definition');
 		expect(described).not.toHaveProperty('latest');

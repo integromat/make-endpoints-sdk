@@ -11,6 +11,11 @@ type DefinedTool = EndpointTool & { definition: EndpointDefinition };
 
 const _actionName = (tool: DefinedTool): string => deriveActionName(tool.name, tool.category);
 
+/** Union of the OAuth scopes across the endpoint's connection types, like the MCP Server's `app_endpoint_list`. */
+const _scopesOf = (definition: EndpointDefinition): string[] => [
+	...new Set(Object.values(definition.accounts).flatMap((account) => account.scope ?? [])),
+];
+
 const _requireDefinitions = (tools: DefinedTool[]): void => {
 	if (tools.length === 0) {
 		throw new Error(
@@ -70,25 +75,29 @@ const _listEndpoints = (tools: DefinedTool[]): Record<string, unknown>[] => {
 		endpointName: tool.definition.endpointName,
 		title: tool.title,
 		deprecated: tool.definition.deprecated ?? false,
-		connectionTypes: tool.definition.connectionTypes,
+		connectionTypes: Object.keys(tool.definition.accounts),
+		scopes: _scopesOf(tool.definition),
 	}));
 };
 
-/** `describe` output: the tool without its runtime parts, plus what's needed to call it. */
+/** `describe` output: the tool without its runtime parts, plus the rest of the endpoint's definition. */
 const _describeTool = ({
 	execute,
 	definition,
 	latest,
 	...tool
 }: DefinedTool): Record<string, unknown> => {
-	const { appName, appVersion, endpointName, deprecated, connectionTypes } = definition;
+	const { appName, appVersion, endpointName, context, deprecated, accounts, outputSchema } =
+		definition;
 	return {
 		...tool,
 		appName,
 		appVersion,
 		endpointName,
+		...(context ? { context } : {}),
 		...(deprecated ? { deprecated } : {}),
-		connectionTypes,
+		accounts,
+		outputSchema,
 	};
 };
 

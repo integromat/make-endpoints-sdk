@@ -16,13 +16,19 @@ const GET_ITEM_SCHEMA = {
 	additionalProperties: false,
 };
 
+const ITEM_SCHEMA = {
+	type: 'object',
+	properties: { id: { type: 'string', description: 'ID of the item.' } },
+};
+
 export const ALPHA_V1_GET_ITEM: EndpointDefinition = {
 	appName: 'alpha',
 	appVersion: 1,
 	endpointName: 'getItem',
 	label: 'Get an item (v1)',
-	connectionTypes: ['alpha'],
+	accounts: { alpha: { scope: ['items:read'] } },
 	inputSchema: GET_ITEM_SCHEMA,
+	outputSchema: ITEM_SCHEMA,
 };
 
 export const ALPHA_V2_GET_ITEM: EndpointDefinition = {
@@ -31,9 +37,11 @@ export const ALPHA_V2_GET_ITEM: EndpointDefinition = {
 	endpointName: 'getItem',
 	label: 'Get an item',
 	description: 'Gets an item by its ID.',
-	connectionTypes: ['alpha', 'alpha-oauth'],
+	context: 'Prefer this over LegacyCall.',
+	accounts: { alpha: { scope: ['items:read'] }, 'alpha-oauth': { scope: ['items:read', 'profile'] } },
 	annotations: { readOnlyHint: true },
 	inputSchema: GET_ITEM_SCHEMA,
+	outputSchema: ITEM_SCHEMA,
 };
 
 export const ALPHA_V2_LEGACY_CALL: EndpointDefinition = {
@@ -41,8 +49,9 @@ export const ALPHA_V2_LEGACY_CALL: EndpointDefinition = {
 	appVersion: 2,
 	endpointName: 'LegacyCall',
 	deprecated: true,
-	connectionTypes: ['alpha'],
+	accounts: { alpha: {} },
 	inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+	outputSchema: { type: 'object', properties: {}, additionalProperties: false },
 };
 
 export const BETA_V1_LIST_THINGS: EndpointDefinition = {
@@ -50,7 +59,7 @@ export const BETA_V1_LIST_THINGS: EndpointDefinition = {
 	appVersion: 1,
 	endpointName: 'listThings',
 	label: 'List things',
-	connectionTypes: [],
+	accounts: {},
 	inputSchema: {
 		type: 'object',
 		properties: {
@@ -60,6 +69,7 @@ export const BETA_V1_LIST_THINGS: EndpointDefinition = {
 			output: { type: 'string', description: 'Clashes with the global --output flag.' },
 		},
 	},
+	outputSchema: { type: 'object', properties: { things: { type: 'array' } } },
 };
 
 export const DEFINITIONS: EndpointDefinition[] = [

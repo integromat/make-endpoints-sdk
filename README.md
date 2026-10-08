@@ -143,7 +143,7 @@ make-endpoints-cli describe google-docs get-document     # definition with input
 make-endpoints-cli describe google-docs v1 getDocument   # explicit version, wire name
 ```
 
-`describe` prints the endpoint as a tool definition (see [Tool definitions](#tool-definitions)), including `inputSchema`. The schema of the `input` property lists the fields the endpoint requires.
+`describe` prints the endpoint as a tool definition (see [Tool definitions](#tool-definitions)) plus the rest of its manifest metadata: `inputSchema` (the schema of its `input` property lists the fields the endpoint requires), `outputSchema`, `accounts` (the connection types it accepts, each with the OAuth scopes it needs) and `context` (longer guidance for agents). It is the same information the Make MCP Server exposes for an endpoint.
 
 ### Calling an endpoint
 
