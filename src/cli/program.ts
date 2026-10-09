@@ -18,11 +18,11 @@ export type CreateProgramParams = {
  */
 const START_HERE = `
 Start here (agents):
-  1. whoami --environment               your teams and their ids (needs organizations:read, teams:read)
+  1. whoami --environment               your organizations and teams, private spaces included
   2. list --team-id <id>                apps and endpoints the team can use now, with its connections
   3. describe <app> <endpoint>          input fields and the connection types the endpoint accepts
   4. connections list --team-id <id> --app <app> --endpoint <endpoint>
-                                        which --connection-id to pass: use a row with "scoped": true
+                                        which --connection-id to pass; prefer "scoped": true, false is unconfirmed
   5. <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>
                                         call it; --input '{...}' passes the whole input as JSON instead
 Output is JSON by default; --output table gives a quick look. Exit code 2 = Make API error, 1 = usage error.

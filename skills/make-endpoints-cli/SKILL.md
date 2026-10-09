@@ -19,9 +19,9 @@ Every call runs as the user of the API key, in exactly one team per call.
 ## Auth
 
 Credentials resolve in this order: `--api-key` and `--zone` flags, then `MAKE_API_KEY` and `MAKE_ZONE`, then the
-config saved by `make-cli login`. The key needs `organizations:read` and `teams:read` for step 1, `apps:read` for
-step 2, `connections:read` for step 4 and `endpoints:run` for step 5. A 403, or an empty list where rows are
-expected, usually means a missing scope, which only a new key can fix.
+config saved by `make-cli login`. The key needs `organizations:read` for step 1, `apps:read` for step 2,
+`connections:read` for step 4 and `endpoints:run` for step 5. `Error [401]: Required scope: ...` names the missing
+scope, which only a new key can fix.
 
 ## 1. Who am I, which team: `whoami`
 
@@ -63,9 +63,10 @@ endpoint accepts, each with the scopes it needs. `context` is guidance for you, 
 make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpoint>
 ```
 
-Use a row with `"scoped": true`. `usableFor` lists the endpoints that accept the connection's type, and
-`requiredScopes` what this endpoint needs on that type. No row with `scoped` true means the user has to create or
-re-authorize a connection in Make; the CLI can't do that yet.
+`usableFor` lists the endpoints that accept the connection's type, and `requiredScopes` what this endpoint needs on
+that type. Prefer a row with `"scoped": true`. `scoped` is Make's own scope check, and `false` or `null` means it
+couldn't confirm the scopes, not that the call will fail, so try the most fitting connection before asking the
+user. No row at all means the user has to create a connection in Make; the CLI can't do that yet.
 
 ## 5. Call: `<app> <endpoint>`
 
@@ -82,7 +83,7 @@ only be passed through `--input`. `endpoints execute` reaches custom apps (`app#
 doesn't bundle. The output is the endpoint's result, unwrapped. For example, the title of a Google Doc:
 
 ```sh
-make-endpoints-cli connections list --team-id 7 --app google-docs --endpoint get-document | jq '.[] | select(.scoped)'
+make-endpoints-cli connections list --team-id 7 --app google-docs --endpoint get-document | jq '.[] | {id, name, scoped}'
 make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --document-id doc-1 | jq .title
 ```
 
@@ -90,7 +91,7 @@ make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --doc
 
 | Symptom                                                         | Next step                                                                        |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `Error [403]`, or no rows in step 1, 2 or 4                     | The key lacks a scope from Auth. Ask the user for a key that has it.             |
+| `Error [401]: Required scope: ...`                              | The key lacks that scope. Ask the user for a key that has it.                    |
 | `Error [400]: Endpoints execution is not enabled`               | Endpoints aren't enabled for this organization. Stop and tell the user.          |
 | `Error [422]` or `Error [424]` on a call                        | Wrong connection type or input. Re-run `describe`, then `connections list`.      |
 | `Error: Missing required input fields: ...` (exit 1)            | Pass the fields as flags or inside `--input`.                                    |
