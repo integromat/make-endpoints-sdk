@@ -58,7 +58,8 @@
     "make-endpoints-cli": "./dist/esm/cli/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "sideEffects": false,
   "scripts": {
