@@ -1,10 +1,11 @@
 import type { Command } from 'commander';
 
 import type { EndpointDefinition } from '../lib/shared.ts';
-import type { EndpointTool } from '../lib/tools.ts';
+import type { EndpointTool, UsableEndpointPackage } from '../lib/tools.ts';
+import { listUsableEndpoints } from '../lib/tools.ts';
 
 import type { GlobalOptions } from './commands.ts';
-import { deriveActionName } from './commands.ts';
+import { createMakeClient, deriveActionName, exitWithError } from './commands.ts';
 import { formatOutput } from './output.ts';
 
 type DefinedTool = EndpointTool & { definition: EndpointDefinition };
@@ -80,6 +81,71 @@ const _listEndpoints = (tools: DefinedTool[]): Record<string, unknown>[] => {
 	}));
 };
 
+const _parseTeamId = (teamId: string): number => {
+	if (!/^\d+$/.test(teamId)) {
+		throw new Error(`Invalid team ID "${teamId}", expected an integer.`);
+	}
+	return Number(teamId);
+};
+
+const _listUsableApps = (packages: UsableEndpointPackage[]): Record<string, unknown>[] => {
+	return packages.map(({ name, label, versions }) => ({
+		name,
+		label,
+		versions: versions.map(({ version }) => `v${version}`),
+		endpointCount: versions.reduce((count, { endpoints }) => count + endpoints.length, 0),
+	}));
+};
+
+type ListUsableEndpointsParams = {
+	packages: UsableEndpointPackage[];
+	tools: DefinedTool[];
+	teamId: number;
+	app: string;
+	appVersion: number | undefined;
+};
+
+/**
+ * Usable endpoints of one app, narrowed to one version when given. `name` is set only when this
+ * package bundles the endpoint, so `<app> v<N> <name>` exists exactly when it's present.
+ */
+const _listUsableEndpoints = ({
+	packages,
+	tools,
+	teamId,
+	app,
+	appVersion,
+}: ListUsableEndpointsParams): Record<string, unknown>[] => {
+	const appPackage = packages.find((candidate) => candidate.name === app);
+	const versions = (appPackage?.versions ?? []).filter(
+		(candidate) => appVersion === undefined || candidate.version === appVersion,
+	);
+	if (versions.length === 0) {
+		const subject =
+			appVersion === undefined ? `App "${app}"` : `Version "v${appVersion}" of app "${app}"`;
+		throw new Error(`${subject} has no usable endpoints in team ${teamId}.`);
+	}
+	return versions.flatMap(({ version, endpoints }) =>
+		endpoints.map((endpoint) => {
+			const tool = tools.find(
+				({ definition }) =>
+					definition.appName === app &&
+					definition.appVersion === version &&
+					definition.endpointName === endpoint.name,
+			);
+			return {
+				...(tool ? { name: _actionName(tool) } : {}),
+				version: `v${version}`,
+				endpointName: endpoint.name,
+				title: endpoint.label,
+				deprecated: endpoint.deprecated,
+				credentialsRequired: endpoint.credentialsRequired,
+				connections: endpoint.credentialsAvailable,
+			};
+		}),
+	);
+};
+
 /**
  * `describe` output: the tool without its runtime parts, plus the rest of the endpoint's definition.
  * Output schemas can run to hundreds of kilobytes, so they're only included on request.
@@ -102,7 +168,10 @@ const _describeTool = (
 	};
 };
 
-/** Registers `list` and `describe`, which read the endpoint definitions bundled in this package. */
+/**
+ * Registers `list` and `describe`, which read the endpoint definitions bundled in this package.
+ * `list --team-id` asks the API instead, for what that team can use.
+ */
 export const registerCatalogCommands = (program: Command, tools: EndpointTool[]): void => {
 	const definedTools = tools.filter((tool): tool is DefinedTool => tool.definition !== undefined);
 	const print = (data: unknown): void => {
@@ -115,15 +184,48 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 		.description('List apps, or the endpoints of an app or app version')
 		.argument('[app]', 'app name, e.g. google-docs')
 		.argument('[version]', 'app version, e.g. v2')
+		.option(
+			'--team-id <id>',
+			'List only what this team can use, with its connections, from the API (needs apps:read)',
+		)
 		.helpGroup('Others:')
-		.action((app: string | undefined, version: string | undefined) => {
-			_requireDefinitions(definedTools);
-			print(
-				app === undefined
-					? _listApps(definedTools)
-					: _listEndpoints(_findTools(definedTools, app, version)),
-			);
-		});
+		.action(
+			async (
+				app: string | undefined,
+				version: string | undefined,
+				options: { teamId?: string },
+				cmd: Command,
+			) => {
+				if (options.teamId === undefined) {
+					_requireDefinitions(definedTools);
+					print(
+						app === undefined
+							? _listApps(definedTools)
+							: _listEndpoints(_findTools(definedTools, app, version)),
+					);
+					return;
+				}
+				try {
+					const teamId = _parseTeamId(options.teamId);
+					const appVersion = version === undefined ? undefined : _parseVersion(version);
+					const { make } = await createMakeClient(cmd);
+					const packages = await listUsableEndpoints(make, teamId);
+					print(
+						app === undefined
+							? _listUsableApps(packages)
+							: _listUsableEndpoints({
+									packages,
+									tools: definedTools,
+									teamId,
+									app,
+									appVersion,
+								}),
+					);
+				} catch (error) {
+					exitWithError(error);
+				}
+			},
+		);
 
 	program
 		.command('describe')

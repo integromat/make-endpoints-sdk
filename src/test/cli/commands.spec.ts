@@ -97,11 +97,20 @@ describe('command tree', () => {
 		expect(program.commands.map((command) => command.name())).toEqual([
 			'list',
 			'describe',
+			'whoami',
 			'alpha',
 			'beta',
+			'connections',
 			'endpoints',
 		]);
 		expect(findCommand(program, 'endpoints', 'execute')).toBeDefined();
+		expect(findCommand(program, 'endpoints', 'list-usable')).toBeDefined();
+	});
+
+	it('filters connections by type or by app and endpoint', () => {
+		expect(
+			findCommand(program, 'connections', 'list')?.options.map((option) => option.long),
+		).toEqual(['--team-id', '--type', '--scopes', '--app', '--app-version', '--endpoint']);
 	});
 
 	it('skips input fields whose flag would shadow a global option', () => {
