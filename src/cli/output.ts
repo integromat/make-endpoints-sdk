@@ -1,10 +1,12 @@
+import { styleText } from 'node:util';
+
 export type OutputFormat = 'json' | 'compact' | 'table';
 
 const MAX_COL_WIDTH = 60;
 
 const _formatTable = (data: unknown): string => {
 	const rows: unknown[] = Array.isArray(data) ? data : [data];
-	if (rows.length === 0) return '(empty)';
+	if (rows.length === 0) return styleText('dim', '(empty)');
 	const keys = [
 		...new Set(rows.flatMap((row) => (row && typeof row === 'object' ? Object.keys(row) : []))),
 	];
@@ -29,8 +31,10 @@ const _formatTable = (data: unknown): string => {
 	);
 	const width = (key: string): number => widths.get(key) ?? key.length;
 
-	const header = keys.map((key) => key.padEnd(width(key))).join(' | ');
-	const separator = keys.map((key) => '-'.repeat(width(key))).join('-+-');
+	// `styleText` validates `process.stdout` by default: plain text when it isn't a terminal or
+	// `NO_COLOR` is set, so piped and agent output stays clean.
+	const header = styleText('bold', keys.map((key) => key.padEnd(width(key))).join(' | '));
+	const separator = styleText('dim', keys.map((key) => '-'.repeat(width(key))).join('-+-'));
 	const body = rows.map((row) =>
 		keys.map((key) => serialize(getCell(row, key)).padEnd(width(key))).join(' | '),
 	);
