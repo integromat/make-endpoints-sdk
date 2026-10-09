@@ -31,7 +31,9 @@ make-endpoints-cli whoami                  # name, email, zone
 make-endpoints-cli whoami --environment    # plus organizations and their teams; private spaces count as teams
 ```
 
-Take the team id from `organizations[].teams[].id`. When several teams fit, ask the user instead of choosing.
+Take the team id from `organizations[].teams[].id`. When the task doesn't say which team, start with the user's
+private space (`type: personal`) and move on to that organization's other teams only when step 4 finds no
+connection there. Don't walk every team; after three, ask the user.
 
 ## 2. What can this team run: `list --team-id`
 
@@ -67,10 +69,11 @@ make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpo
 ```
 
 `usableFor` lists the endpoints that accept the connection's type, and `requiredScopes` what this endpoint needs on
-that type. Prefer a row with `"scoped": true`. `scoped` is Make's own scope check, and `false` or `null` means it
-couldn't confirm the scopes, not that the call will fail, so try the most fitting connection before asking the
-user. A connection belongs to the team you listed it in: pass that same `--team-id` in step 5. No row at all
-means the user has to create a connection in Make; the CLI can't do that yet.
+that type. Pick in this order: a row with `"scoped": true`, then a row whose `name` carries the user's name from
+step 1, then any other. `scoped` is Make's own scope check, and `false` or `null` means it couldn't confirm the
+scopes, not that the call will fail. A connection belongs to the team you listed it in: pass that same `--team-id`
+in step 5. Try at most two connections for one call; when both fail, stop and tell the user which ones you tried.
+No row at all means the user has to create a connection in Make; the CLI can't do that yet.
 
 ## 5. Call: `<app> <endpoint>`
 
@@ -97,7 +100,7 @@ make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --doc
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | `Error [401]: Required scope: apps:read` in step 2              | Only the live listing needs it. Go on with step 3.                               |
 | `Error [401]: Required scope: ...` elsewhere                     | The key lacks that scope. Ask the user for a key that has it.                    |
-| `Error [424]` mentioning `invalid_grant` or an expired token    | That connection's authorization expired. Try another row from step 4.           |
+| `Error [424]` mentioning `invalid_grant` or an expired token    | That connection's authorization expired. Try one other row from step 4, then ask. |
 | `Error [400]: Endpoints execution is not enabled`               | Endpoints aren't enabled for this organization. Stop and tell the user.          |
 | `Error [422]` or another `Error [424]` on a call                | Wrong team for the connection, connection type or input. Re-run step 4 and `describe`. |
 | `Error: Missing required input fields: ...` (exit 1)            | Pass the fields as flags or inside `--input`.                                    |
