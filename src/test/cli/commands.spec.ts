@@ -353,10 +353,19 @@ describe('describe', () => {
 			accounts: { alpha: { scope: ['items:read'] }, 'alpha-oauth': { scope: ['items:read', 'profile'] } },
 			annotations: { readOnlyHint: true },
 			inputSchema: { required: ['teamId', 'connectionId'] },
-			outputSchema: { properties: { id: { type: 'string' } } },
 		});
+		expect(described).not.toHaveProperty('outputSchema');
 		expect(described).not.toHaveProperty('definition');
 		expect(described).not.toHaveProperty('latest');
+	});
+
+	it('includes the output schema only with --output-schema', async () => {
+		await run(['describe', 'alpha', 'get-item', '--output-schema']);
+
+		expect(JSON.parse(stdout)).toMatchObject({
+			name: 'alpha_get-item',
+			outputSchema: { properties: { id: { type: 'string' } } },
+		});
 	});
 
 	it('accepts the wire endpoint name and an explicit version', async () => {

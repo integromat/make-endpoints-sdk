@@ -80,13 +80,14 @@ const _listEndpoints = (tools: DefinedTool[]): Record<string, unknown>[] => {
 	}));
 };
 
-/** `describe` output: the tool without its runtime parts, plus the rest of the endpoint's definition. */
-const _describeTool = ({
-	execute,
-	definition,
-	latest,
-	...tool
-}: DefinedTool): Record<string, unknown> => {
+/**
+ * `describe` output: the tool without its runtime parts, plus the rest of the endpoint's definition.
+ * Output schemas can run to hundreds of kilobytes, so they're only included on request.
+ */
+const _describeTool = (
+	{ execute, definition, latest, ...tool }: DefinedTool,
+	options: { outputSchema: boolean },
+): Record<string, unknown> => {
 	const { appName, appVersion, endpointName, context, deprecated, accounts, outputSchema } =
 		definition;
 	return {
@@ -97,7 +98,7 @@ const _describeTool = ({
 		...(context ? { context } : {}),
 		...(deprecated ? { deprecated } : {}),
 		accounts,
-		outputSchema,
+		...(options.outputSchema ? { outputSchema } : {}),
 	};
 };
 
@@ -127,10 +128,11 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 	program
 		.command('describe')
 		.description('Show the definition of an endpoint, including its input schema')
-		.usage('<app> [v<N>] <endpoint>')
+		.usage('<app> [v<N>] <endpoint> [--output-schema]')
 		.argument('<parts...>', 'app, optional version (latest when omitted) and endpoint')
+		.option('--output-schema', 'Include the output JSON Schema, which can be very large')
 		.helpGroup('Others:')
-		.action((parts: string[]) => {
+		.action((parts: string[], options: { outputSchema?: boolean }) => {
 			_requireDefinitions(definedTools);
 			const [app, version, endpoint] =
 				parts.length === 3 ? parts : [parts[0], undefined, parts[1]];
@@ -155,6 +157,6 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 					`Unknown endpoint "${endpoint}" of app "${app}". Run "make-endpoints-cli list ${app}" to see its endpoints.`,
 				);
 			}
-			print(_describeTool(tool));
+			print(_describeTool(tool, { outputSchema: options.outputSchema === true }));
 		});
 };
