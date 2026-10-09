@@ -1,5 +1,6 @@
 import type { Make } from '@makehq/sdk';
 
+import { EndpointsSdk } from './endpoints-sdk.ts';
 import { definitions } from './generated/definitions.ts';
 import type {
 	EndpointAnnotations,
@@ -96,7 +97,9 @@ const _callEndpoint = async (
 	if (input !== undefined && !_isRecord(input)) {
 		throw new Error('input must be an object.');
 	}
-	const { output } = await new SdkTransport(make).callEndpoint<JSONValue>({ teamId }, pointer, {
+	// The SDK's own escape hatch for pointer-based calls, so tools share its call path.
+	const sdk = new EndpointsSdk({ transport: new SdkTransport(make), teamId });
+	const { output } = await sdk.execute<JSONValue>(pointer, {
 		input: input ?? {},
 		...(connectionId === undefined ? {} : { connectionId }),
 	});
