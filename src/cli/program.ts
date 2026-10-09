@@ -19,7 +19,7 @@ export type CreateProgramParams = {
 const START_HERE = `
 Start here (agents):
   1. whoami --environment               your organizations and teams, private spaces included
-  2. list --team-id <id>                apps and endpoints the team can use now, with its connections
+  2. list --team-id <id>                apps and endpoints the team can use now; skip when you know the app
   3. describe <app> <endpoint>          input fields and the connection types the endpoint accepts
   4. connections list --team-id <id> --app <app> --endpoint <endpoint>
                                         which --connection-id to pass; prefer "scoped": true, false is unconfirmed

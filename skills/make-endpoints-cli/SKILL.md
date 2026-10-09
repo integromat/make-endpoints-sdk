@@ -12,9 +12,10 @@ connections. The flow is always the same: find the team, see what it can run, in
 connection, call.
 
 **Ground rules.** Never guess a team id, connection id or field name; each one comes from a command below.
-`--help` works on any command. Output is JSON by default, so pipe it to `jq`; `--output table` is for a quick
-look. Exit code 2 is a Make API error, with the message on stderr; exit code 1 is a usage or validation error.
-Every call runs as the user of the API key, in exactly one team per call.
+`--help` works on any command. Run `describe` before the first call; most endpoints require more than the obvious
+field. Output is JSON by default, so pipe it to `jq`, but only once a call succeeds, because a pipe hides the
+error text. Exit code 2 is a Make API error, with the message on stderr; exit code 1 is a usage or validation
+error. Every call runs as the user of the API key, in exactly one team per call.
 
 ## Auth
 
@@ -41,9 +42,11 @@ make-endpoints-cli list                           # static fallback: every app t
 make-endpoints-cli list <app>                     # static fallback: its endpoints and their connection types
 ```
 
-Each row of `list <app> --team-id` carries `connections`, the connections that already cover the endpoint's
-scopes, and `name` only when this build bundles the endpoint: then `<app> <name>` calls it, otherwise use
-`endpoints execute`. `endpoints list-usable --team-id <id>` prints the raw API payload.
+This step finds what to call. When the user already named the app and endpoint, skip to step 3: `describe` and
+the call itself don't need `apps:read`, and `Error [401]: Required scope: apps:read` here only means the live
+listing is unavailable. Each row of `list <app> --team-id` carries `connections`, the connections that already
+cover the endpoint's scopes, and `name` only when this build bundles the endpoint: then `<app> <name>` calls it,
+otherwise use `endpoints execute`. `endpoints list-usable --team-id <id>` prints the raw API payload.
 `Error [400]: Endpoints execution is not enabled` means the organization isn't in the beta: stop and tell the user.
 
 ## 3. Inspect an endpoint: `describe`
@@ -66,7 +69,8 @@ make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpo
 `usableFor` lists the endpoints that accept the connection's type, and `requiredScopes` what this endpoint needs on
 that type. Prefer a row with `"scoped": true`. `scoped` is Make's own scope check, and `false` or `null` means it
 couldn't confirm the scopes, not that the call will fail, so try the most fitting connection before asking the
-user. No row at all means the user has to create a connection in Make; the CLI can't do that yet.
+user. A connection belongs to the team you listed it in: pass that same `--team-id` in step 5. No row at all
+means the user has to create a connection in Make; the CLI can't do that yet.
 
 ## 5. Call: `<app> <endpoint>`
 
@@ -91,9 +95,11 @@ make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --doc
 
 | Symptom                                                         | Next step                                                                        |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `Error [401]: Required scope: ...`                              | The key lacks that scope. Ask the user for a key that has it.                    |
+| `Error [401]: Required scope: apps:read` in step 2              | Only the live listing needs it. Go on with step 3.                               |
+| `Error [401]: Required scope: ...` elsewhere                     | The key lacks that scope. Ask the user for a key that has it.                    |
+| `Error [424]` mentioning `invalid_grant` or an expired token    | That connection's authorization expired. Try another row from step 4.           |
 | `Error [400]: Endpoints execution is not enabled`               | Endpoints aren't enabled for this organization. Stop and tell the user.          |
-| `Error [422]` or `Error [424]` on a call                        | Wrong connection type or input. Re-run `describe`, then `connections list`.      |
+| `Error [422]` or another `Error [424]` on a call                | Wrong team for the connection, connection type or input. Re-run step 4 and `describe`. |
 | `Error: Missing required input fields: ...` (exit 1)            | Pass the fields as flags or inside `--input`.                                    |
 | `required option '--team-id <value>' not specified` (exit 1)    | Every call needs `--team-id`; most need `--connection-id` too.                   |
 | `Unknown app` or `Unknown endpoint`                             | Names are the CLI's kebab-case ones. Run `list <app>` to find the right one.     |
