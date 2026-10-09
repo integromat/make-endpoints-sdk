@@ -33,7 +33,7 @@ export const registerWhoamiCommand = (program: Command): void => {
 		.description('Show the current user and zone')
 		.option(
 			'--environment',
-			'Include the organizations and teams this token can reach, including private spaces',
+			'Include the organizations and teams this token can reach, including private spaces (needs organizations:read and teams:read)',
 		)
 		.helpGroup('Others:')
 		.action(async (options: { environment?: boolean }, cmd: Command) => {
