@@ -119,9 +119,29 @@ There's no SDK-specific error type. A failing call rejects with whatever the tra
 
 The package includes `make-endpoints-cli`, which follows the conventions of [Make CLI](https://www.npmjs.com/package/@makehq/cli) (`make-cli`). Every endpoint is a command, which makes it easy to use from scripts and AI agents.
 
+### Installation
+
+Installed globally, the command is on your `PATH` (npm installs the `@makehq/sdk` peer dependency alongside):
+
+```sh
+npm install -g @makehq/endpoints-sdk
+make-endpoints-cli --help
+```
+
+In a project that already depends on the package, run the binary from `node_modules` instead:
+
+```sh
+npm install @makehq/endpoints-sdk @makehq/sdk
+npx make-endpoints-cli --help      # or: npm exec make-endpoints-cli -- --help
+```
+
+To try it without installing anything:
+
 ```sh
 npx -p @makehq/endpoints-sdk make-endpoints-cli --help
 ```
+
+The examples below assume the global install.
 
 ### Authentication
 
