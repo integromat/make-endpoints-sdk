@@ -143,7 +143,7 @@ make-endpoints-cli describe google-docs get-document     # definition with input
 make-endpoints-cli describe google-docs v1 getDocument   # explicit version, wire name
 ```
 
-`describe` prints the endpoint as a tool definition (see [Tool definitions](#tool-definitions)) plus the rest of its manifest metadata: `inputSchema` (the schema of its `input` property lists the fields the endpoint requires), `outputSchema`, `accounts` (the connection types it accepts, each with the OAuth scopes it needs) and `context` (longer guidance for agents). It is the same information the Make MCP Server exposes for an endpoint.
+`describe` prints the endpoint as a tool definition (see [Tool definitions](#tool-definitions)) plus the rest of its manifest metadata: `inputSchema` (the schema of its `input` property lists the fields the endpoint requires), `accounts` (the connection types it accepts, each with the OAuth scopes it needs) and `context` (longer guidance for agents). Add `--output-schema` to include `outputSchema` as well; output schemas can run to hundreds of kilobytes, so they're left out by default. It is the same information the Make MCP Server exposes for an endpoint.
 
 ### Calling an endpoint
 
@@ -161,7 +161,7 @@ make-endpoints-cli endpoints execute --app-name app#my-app --app-version 1 --end
 	--team-id 77 --connection-id 42 --input '{"key":"value"}'
 ```
 
-`--output json|compact|table` sets the output format (default `json`). Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
+`--output json|compact|table` sets the output format (default `json`). The table is colored only when stdout is a terminal and `NO_COLOR` is unset, so piped output stays plain. Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
 
 ## Tool definitions
 

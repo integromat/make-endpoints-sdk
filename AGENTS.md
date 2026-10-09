@@ -21,7 +21,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
   - `src/lib/endpoints-sdk.ts`: `EndpointsSdk` with the root catalog.
   - `src/lib/shared.ts`: types the generated code builds on.
   - `src/lib/transport/`: the `Transport` contract and `SdkTransport`.
-  - `src/lib/tools.ts`: the `./tools` entry. Definitions become `MakeTool`-shaped `EndpointTool`s, plus the generic `endpoints_execute`.
+  - `src/lib/tools.ts`: the `./tools` entry. Definitions become `MakeTool`-shaped `EndpointTool`s, plus the generic `endpoints_execute`. Tools execute through `EndpointsSdk.execute`, the SDK's own call path. `outputSchema` stays on `tool.definition` only, never on the tool itself: an MCP `tools/list` would otherwise ship every output schema to the model, and `describe` prints it only with `--output-schema`.
   - `src/cli/`: the `make-endpoints-cli` bin, a port of `@makehq/cli` (`make-cli`) over `EndpointTools`. Files mirror make-cli's; `catalog-commands.ts` adds `list` and `describe`.
 - **Generated code, not owned here:** `src/lib/generated/**`, marked `linguist-generated` in `.gitattributes`.
   - It is produced by Make's code generator, which lives outside this repository, and synced here by automation as commits on `main`.
