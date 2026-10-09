@@ -340,10 +340,17 @@ describe('whoami', () => {
 	});
 
 	it('includes organizations and their teams with --environment', async () => {
-		organizationsList.mockResolvedValue([{ id: 1, name: 'Org' }]);
-		teamsList.mockResolvedValue([
-			{ id: 7, name: 'Team', type: 'standard' },
-			{ id: 8, name: 'Ada', type: 'personal' },
+		// `teams` and `privateSpaces` are columns of an organization, `null` when empty (the API's
+		// shape, not the SDK type's). No `teams.list`: it answers 403 in an organization the user
+		// doesn't administer.
+		organizationsList.mockResolvedValue([
+			{
+				id: 1,
+				name: 'Org',
+				teams: [{ id: 7, name: 'Team' }],
+				privateSpaces: [{ id: 8, name: 'Ada', isOwner: true, hasAdminVisibility: false }],
+			},
+			{ id: 2, name: 'Other', teams: null, privateSpaces: null },
 		]);
 
 		await run(['whoami', '--environment']);
@@ -361,13 +368,13 @@ describe('whoami', () => {
 						{ id: 8, name: 'Ada', type: 'personal' },
 					],
 				},
+				{ id: 2, name: 'Other', teams: [] },
 			],
 		});
-		expect(organizationsList).toHaveBeenCalledWith({ cols: ['id', 'name'] });
-		expect(teamsList).toHaveBeenCalledWith(1, {
-			includePrivateSpaces: true,
-			cols: ['id', 'name', 'type'],
+		expect(organizationsList).toHaveBeenCalledWith({
+			cols: ['id', 'name', 'teams', 'privateSpaces'],
 		});
+		expect(teamsList).not.toHaveBeenCalled();
 	});
 
 	it('exits with 2 and prints nothing on an API error', async () => {
