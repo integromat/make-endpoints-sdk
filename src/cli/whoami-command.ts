@@ -11,19 +11,29 @@ type Environment = {
 	teams: { id: number; name: string; type: 'personal' | 'standard' }[];
 }[];
 
-/** Organizations of the user with their teams, like the Make MCP Server's `environment_get`. */
+/**
+ * Organizations of the user with their teams, like the Make MCP Server's `environment_get`. One
+ * `organizations.list` call: `teams` and `privateSpaces` are columns of an organization, so this
+ * needs no admin rights, unlike `teams.list`, which answers 403 in an organization the user is a
+ * member of but doesn't administer.
+ */
 const _getEnvironment = async (make: Make): Promise<Environment> => {
-	const organizations = await make.organizations.list({ cols: ['id', 'name'] });
-	return Promise.all(
-		organizations.map(async ({ id, name }) => ({
-			id,
-			name,
-			teams: await make.teams.list(id, {
-				includePrivateSpaces: true,
-				cols: ['id', 'name', 'type'],
-			}),
-		})),
-	);
+	const organizations = await make.organizations.list({
+		cols: ['id', 'name', 'teams', 'privateSpaces'],
+	});
+	// Both columns are `null` when empty, whatever `@makehq/sdk` declares.
+	return organizations.map(({ id, name, teams, privateSpaces }) => ({
+		id,
+		name,
+		teams: [
+			...(teams ?? []).map((team) => ({ id: team.id, name: team.name, type: 'standard' as const })),
+			...(privateSpaces ?? []).map((space) => ({
+				id: space.id,
+				name: space.name,
+				type: 'personal' as const,
+			})),
+		],
+	}));
 };
 
 /** Registers `whoami`: the current user and zone, plus the teams they can reach on request. */
@@ -33,7 +43,7 @@ export const registerWhoamiCommand = (program: Command): void => {
 		.description('Show the current user and zone')
 		.option(
 			'--environment',
-			'Include the organizations and teams this token can reach, including private spaces (needs organizations:read and teams:read)',
+			'Include the organizations and teams this token can reach, including private spaces (needs organizations:read)',
 		)
 		.helpGroup('Others:')
 		.action(async (options: { environment?: boolean }, cmd: Command) => {
