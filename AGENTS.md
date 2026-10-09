@@ -21,8 +21,11 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
   - `src/lib/endpoints-sdk.ts`: `EndpointsSdk` with the root catalog.
   - `src/lib/shared.ts`: types the generated code builds on.
   - `src/lib/transport/`: the `Transport` contract and `SdkTransport`.
-  - `src/lib/tools.ts`: the `./tools` entry. Definitions become `MakeTool`-shaped `EndpointTool`s, plus the generic `endpoints_execute`. Tools execute through `EndpointsSdk.execute`, the SDK's own call path. `outputSchema` stays on `tool.definition` only, never on the tool itself: an MCP `tools/list` would otherwise ship every output schema to the model, and `describe` prints it only with `--output-schema`.
-  - `src/cli/`: the `make-endpoints-cli` bin, a port of `@makehq/cli` (`make-cli`) over `EndpointTools`. Files mirror make-cli's; `catalog-commands.ts` adds `list` and `describe`.
+  - `src/lib/tools.ts`: the `./tools` entry. Definitions become `MakeTool`-shaped `EndpointTool`s, followed by `connections_list`, `endpoints_list-usable` and, always last, the generic `endpoints_execute`. Endpoint tools execute through `EndpointsSdk.execute`, the SDK's own call path; `endpoints_list-usable` uses `SdkTransport.send` and `connections_list` uses `make.connections.list`.
+    - `endpoints_list-usable` calls `GET /imt/endpoints-usable`, the route behind the Make MCP Server's tool of the same name. In web-api's OpenAPI it's `x-internal` (no stability promise) and gated by the per-user `is_endpoints_execution_enabled` flag, which answers HTTP 400 when off.
+    - `connections_list` derives `type` and per-type `scopes` from the definitions. The API sets `scoped: true` for types sent without scopes, and reads a type's scopes only when the type is also in `type[]`, so the tool rejects `scopes` keys missing from `type`. `outputSchema` stays on `tool.definition` only, never on the tool itself: an MCP `tools/list` would otherwise ship every output schema to the model, and `describe` prints it only with `--output-schema`.
+  - `src/cli/`: the `make-endpoints-cli` bin, a port of `@makehq/cli` (`make-cli`) over `EndpointTools`. Files mirror make-cli's; `catalog-commands.ts` adds `list` and `describe` (`list --team-id` asks the API through `listUsableEndpoints` instead of reading the bundled definitions), and `whoami-command.ts` adds `whoami`.
+    - `sdk-tools.ts` adds `users_me`, `organizations_list` and `teams_list` from `@makehq/sdk/tools`. It's the only runtime import of that subpath; never import it in `src/lib/**`, where the CommonJS/`node10` build can't resolve it. The subpath loads every SDK tool definition (about 220 KB), which every CLI run parses.
 - **Generated code, not owned here:** `src/lib/generated/**`, marked `linguist-generated` in `.gitattributes`.
   - It is produced by Make's code generator, which lives outside this repository, and synced here by automation as commits on `main`.
   - Each sync replaces the whole directory and commits it as `feat:`, or `feat!:` when generated files were deleted (removed endpoints break consumers). A sync doesn't touch `package.json`.
@@ -44,7 +47,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
 ## Public API surface (`package.json` `exports`)
 
 - `.` is the root entry.
-- `./tools` maps to `dist/{esm,cjs}/lib/tools.js` and mirrors `@makehq/sdk/tools`: `EndpointTools`, `buildEndpointTools`, `EndpointTool` and `JSONSchema`.
+- `./tools` maps to `dist/{esm,cjs}/lib/tools.js` and mirrors `@makehq/sdk/tools`: `EndpointTools`, `buildEndpointTools`, `EndpointTool` and `JSONSchema`, plus `listUsableEndpoints` and the `UsableEndpoint`, `UsableEndpointPackage` and `UsableConnection` types.
   - `EndpointTool` and `JSONSchema` are declared locally: `@makehq/sdk/tools` doesn't resolve under `node10` (no `typesVersions`). `src/test/tools.spec.ts` assigns `EndpointTool[]` to `MakeTool[]`, so type-check catches drift.
 - `./apps/*` maps to `dist/{esm,cjs}/lib/generated/*/_catalog.js`, which gives `@makehq/endpoints-sdk/apps/<app>` and `/apps/<app>/v<N>`. App clients live under `apps/` so app names can never collide with other subpaths. Add new non-app entry points as top-level subpaths outside `apps/`.
 - Every entry point has an `import` and a `require` condition, each with its own `types`. TypeScript's `node10` resolution ignores `exports`, so `main`/`types` (root) and `typesVersions` (`apps/*`, `tools`) mirror the CommonJS entries. Keep all three in sync when adding entry points.
@@ -59,6 +62,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
   - It fails on an empty catalog, so a sync that removed every endpoint can't be published. It also fails on the placeholder catalog that existed before the first sync.
   - Don't add specs that name specific generated endpoints. Syncs land on `main` without review, and `publish.yml` runs the tests, so such a spec could block every release.
 - `src/test/tools.spec.ts` and `src/test/cli/*.spec.ts` use hand-written definitions from `src/test/fixtures/`, never the generated catalog, for the same reason. CLI specs run a fresh `createProgram()` with `Make` mocked and `process.exit`/stdout/stderr stubbed.
+  - `discovery-commands.spec.ts` also mocks `Make`'s namespaces (`users`, `organizations`, `teams`, `connections`): the real `Make` binds `fetch` into them at construction, and the SDK tools call namespace methods. It runs the real `@makehq/sdk/tools`.
 
 ## Release
 
