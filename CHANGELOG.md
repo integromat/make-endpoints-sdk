@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.2.0...v0.3.0) (2026-10-09)
+
+
+### Features
+
+* add make-endpoints-cli and ./tools entry point ([#5](https://github.com/integromat/make-endpoints-sdk/issues/5)) ([a9e11be](https://github.com/integromat/make-endpoints-sdk/commit/a9e11bea25b377d04b44ce8d487ef0ad5af1867b))
+
 ## [0.2.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.1.0...v0.2.0) (2026-10-08)
 
 
