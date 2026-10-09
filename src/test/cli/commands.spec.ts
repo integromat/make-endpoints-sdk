@@ -98,6 +98,7 @@ describe('command tree', () => {
 			'list',
 			'describe',
 			'whoami',
+			'agent',
 			'alpha',
 			'beta',
 			'connections',
@@ -119,6 +120,30 @@ describe('command tree', () => {
 		);
 
 		expect(flags).toEqual(['--team-id', '--include-archived', '--limit', '--tags', '--input']);
+	});
+
+	it('marks required flags, including required input fields, in their descriptions', () => {
+		const descriptionOf = (path: string[], flag: string): string | undefined =>
+			findCommand(program, ...path)?.options.find((option) => option.long === flag)
+				?.description;
+
+		expect(descriptionOf(['alpha', 'get-item'], '--team-id')).toMatch(/ \(required\)$/);
+		expect(descriptionOf(['alpha', 'get-item'], '--connection-id')).toMatch(/ \(required\)$/);
+		expect(descriptionOf(['alpha', 'get-item'], '--item-id')).toMatch(/ \(required\)$/);
+		expect(descriptionOf(['alpha', 'get-item'], '--input')).not.toContain('(required)');
+		expect(descriptionOf(['beta', 'list-things'], '--include-archived')).not.toContain('(required)');
+		expect(descriptionOf(['beta', 'list-things'], '--limit')).not.toContain('(required)');
+		expect(descriptionOf(['endpoints', 'execute'], '--app-name')).toMatch(/ \(required\)$/);
+	});
+
+	it('ends the root help with the start-here flow, and only the root help', () => {
+		program.outputHelp();
+		expect(stdout).toContain('\nStart here (agents):\n');
+		expect(stdout).toMatch(/Full guide: make-endpoints-cli agent\n$/);
+
+		stdout = '';
+		findCommand(program, 'list')?.outputHelp();
+		expect(stdout).not.toContain('Start here');
 	});
 });
 

@@ -153,6 +153,33 @@ Credentials are resolved like in `make-cli`:
 
 `make-endpoints-cli` has no login command of its own. Run `make-cli login` once and both CLIs share the saved credentials.
 
+### For AI agents
+
+Agents learn the CLI from `--help`: the root help ends with the five steps to a call (find the team, list what it can use, describe the endpoint, pick a connection, call). `make-endpoints-cli agent` prints the fuller guide, an [Agent Skill](https://agentskills.io) that the package also ships as `skills/make-endpoints-cli/SKILL.md`. Install it into a project either from this repository or from the installed package:
+
+```sh
+npx skills add integromat/make-endpoints-sdk
+mkdir -p .agents/skills/make-endpoints-cli && make-endpoints-cli agent > .agents/skills/make-endpoints-cli/SKILL.md
+```
+
+Claude Code reads `.claude/skills/` instead, so link the directory there: `ln -s ../../.agents/skills/make-endpoints-cli .claude/skills/make-endpoints-cli`.
+
+For agents that don't load skills, `make-endpoints-cli agent --snippet` prints this block for the project's `AGENTS.md`:
+
+```markdown
+## Make Endpoints (make-endpoints-cli)
+
+`make-endpoints-cli` calls third-party apps (Google Docs, Slack, Notion, ...) through Make Endpoints. Run `make-endpoints-cli --help` once, then:
+
+1. `make-endpoints-cli whoami --environment` lists your organizations and teams, private spaces included; take the team id from there.
+2. `make-endpoints-cli list --team-id <id>` lists the apps the team can use, and `list <app> --team-id <id>` their endpoints with usable connections. Skip it when you already know the app and endpoint.
+3. `make-endpoints-cli describe <app> <endpoint>` shows the input fields and the connection types the endpoint accepts.
+4. `make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpoint>` gives the connection id; prefer a row with `"scoped": true`, but `false` only means Make couldn't confirm the scopes.
+5. `make-endpoints-cli <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>` calls it; `--input '{...}'` passes the whole input as JSON.
+
+Output is JSON. Exit code 2 is a Make API error, 1 a usage error. Never guess ids. Full guide: `make-endpoints-cli agent`.
+```
+
 ### Discovering endpoints
 
 ```sh
