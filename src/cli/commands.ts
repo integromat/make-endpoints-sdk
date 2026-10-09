@@ -19,7 +19,11 @@ const RESERVED_FLAGS = new Set(['api-key', 'zone', 'output', 'help', 'version'])
 
 /** Descriptions of tool categories that aren't apps, like make-cli's category titles. */
 const CATEGORY_TITLES: Record<string, string> = {
-	endpoints: 'Call any endpoint by app, version and name',
+	endpoints: 'List the endpoints a team can use, or call any endpoint by name',
+	connections: 'Connections of a team, filtered by app or endpoint',
+	users: 'The current user',
+	organizations: 'List your organizations',
+	teams: 'List the teams of an organization',
 };
 
 /** Commands this module created to group other commands, as opposed to commands that run a tool. */
@@ -102,7 +106,8 @@ const _getOrCreateGroup = (
 	return group;
 };
 
-const _exitWithError = (error: unknown): never => {
+/** Prints an error and exits: `2` for a failed API call, `1` for anything else, as in `make-cli`. */
+export const exitWithError = (error: unknown): never => {
 	if (error instanceof MakeError) {
 		process.stderr.write(`Error [${error.statusCode}]: ${error.message}\n`);
 		return process.exit(2);
@@ -113,6 +118,13 @@ const _exitWithError = (error: unknown): never => {
 	}
 	process.stderr.write(`Unknown error: ${String(error)}\n`);
 	return process.exit(1);
+};
+
+/** Resolves credentials from the global options, like `make-cli`, and builds a `Make` client. */
+export const createMakeClient = async (cmd: Command): Promise<{ make: Make; zone: string }> => {
+	const { apiKey, zone: zoneOption } = cmd.optsWithGlobals<GlobalOptions>();
+	const { token, zone } = await resolveAuth({ apiKey, zone: zoneOption });
+	return { make: new Make(token, zone), zone };
 };
 
 const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName: string): void => {
@@ -153,11 +165,7 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 
 	cmd.action(async (localOptions: Record<string, unknown>) => {
 		const globalOptions = cmd.optsWithGlobals<GlobalOptions>();
-		const { token, zone } = await resolveAuth({
-			apiKey: globalOptions.apiKey,
-			zone: globalOptions.zone,
-		});
-		const make = new Make(token, zone);
+		const { make } = await createMakeClient(cmd);
 		const args: Record<string, JSONValue> = {};
 		for (const [key, value] of Object.entries(localOptions)) {
 			const property = optionProperties.get(key);
@@ -169,7 +177,7 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 			const result = await tool.execute(make, args);
 			process.stdout.write(`${formatOutput(result, globalOptions.output ?? 'json')}\n`);
 		} catch (error) {
-			_exitWithError(error);
+			exitWithError(error);
 		}
 	});
 };
