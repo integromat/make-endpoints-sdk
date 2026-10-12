@@ -1,6 +1,7 @@
 // Generated file. Do not edit by hand.
 import type { EndpointCaller } from '../shared.ts';
 
+import { endpoints as airtableEndpoints } from './airtable/_catalog.ts';
 import { endpoints as asanaEndpoints } from './asana/_catalog.ts';
 import { endpoints as calendlyEndpoints } from './calendly/_catalog.ts';
 import { endpoints as canvaEndpoints } from './canva/_catalog.ts';
@@ -20,6 +21,7 @@ import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts'
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
+import { endpoints as jotformEndpoints } from './jotform/_catalog.ts';
 import { endpoints as linearEndpoints } from './linear/_catalog.ts';
 import { endpoints as linkedinEndpoints } from './linkedin/_catalog.ts';
 import { endpoints as mailchimpEndpoints } from './mailchimp/_catalog.ts';
@@ -40,6 +42,7 @@ import { endpoints as youtubeEndpoints } from './youtube/_catalog.ts';
 
 export const endpoints = (endpointCaller: EndpointCaller) => {
 	return {
+		airtable: airtableEndpoints(endpointCaller),
 		asana: asanaEndpoints(endpointCaller),
 		calendly: calendlyEndpoints(endpointCaller),
 		canva: canvaEndpoints(endpointCaller),
@@ -59,6 +62,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
+		jotform: jotformEndpoints(endpointCaller),
 		linear: linearEndpoints(endpointCaller),
 		linkedin: linkedinEndpoints(endpointCaller),
 		mailchimp: mailchimpEndpoints(endpointCaller),

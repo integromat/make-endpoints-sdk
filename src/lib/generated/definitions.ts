@@ -1,6 +1,7 @@
 // Generated file. Do not edit by hand.
 import type { EndpointDefinition } from '../shared.ts';
 
+import { definitions as airtableV3Definitions } from './airtable/v3/_definitions.ts';
 import { definitions as asanaV2Definitions } from './asana/v2/_definitions.ts';
 import { definitions as calendlyV2Definitions } from './calendly/v2/_definitions.ts';
 import { definitions as canvaV1Definitions } from './canva/v1/_definitions.ts';
@@ -20,6 +21,7 @@ import { definitions as googleSlidesV1Definitions } from './google-slides/v1/_de
 import { definitions as highlevelV1Definitions } from './highlevel/v1/_definitions.ts';
 import { definitions as httpV4Definitions } from './http/v4/_definitions.ts';
 import { definitions as jiraV2Definitions } from './jira/v2/_definitions.ts';
+import { definitions as jotformV1Definitions } from './jotform/v1/_definitions.ts';
 import { definitions as linearV1Definitions } from './linear/v1/_definitions.ts';
 import { definitions as linkedinV2Definitions } from './linkedin/v2/_definitions.ts';
 import { definitions as mailchimpV2Definitions } from './mailchimp/v2/_definitions.ts';
@@ -39,6 +41,7 @@ import { definitions as typesafeV1Definitions } from './typesafe/v1/_definitions
 import { definitions as youtubeV4Definitions } from './youtube/v4/_definitions.ts';
 
 export const definitions: EndpointDefinition[] = [
+	...airtableV3Definitions,
 	...asanaV2Definitions,
 	...calendlyV2Definitions,
 	...canvaV1Definitions,
@@ -58,6 +61,7 @@ export const definitions: EndpointDefinition[] = [
 	...highlevelV1Definitions,
 	...httpV4Definitions,
 	...jiraV2Definitions,
+	...jotformV1Definitions,
 	...linearV1Definitions,
 	...linkedinV2Definitions,
 	...mailchimpV2Definitions,
