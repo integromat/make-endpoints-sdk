@@ -1,12 +1,27 @@
-import { styleText } from 'node:util';
-
 export type OutputFormat = 'json' | 'compact' | 'table';
 
 const MAX_COL_WIDTH = 60;
 
+/** SGR open and close codes, the pairs `util.inspect.colors` uses. */
+const STYLES = {
+	bold: ['\u001b[1m', '\u001b[22m'],
+	dim: ['\u001b[2m', '\u001b[22m'],
+} as const;
+
+/**
+ * Styles `text` only when stdout is a terminal and `NO_COLOR` is unset, so piped and agent output
+ * stays plain. Done here rather than with `util.styleText`, which Node.js 20 gained in 20.12 and
+ * which checks the stream only from 20.18 and 22.8; `engines` allows every 20.x.
+ */
+const _style = (style: keyof typeof STYLES, text: string): string => {
+	if (!process.stdout.isTTY || process.env.NO_COLOR) return text;
+	const [open, close] = STYLES[style];
+	return `${open}${text}${close}`;
+};
+
 const _formatTable = (data: unknown): string => {
 	const rows: unknown[] = Array.isArray(data) ? data : [data];
-	if (rows.length === 0) return styleText('dim', '(empty)');
+	if (rows.length === 0) return _style('dim', '(empty)');
 	const keys = [
 		...new Set(rows.flatMap((row) => (row && typeof row === 'object' ? Object.keys(row) : []))),
 	];
@@ -31,10 +46,8 @@ const _formatTable = (data: unknown): string => {
 	);
 	const width = (key: string): number => widths.get(key) ?? key.length;
 
-	// `styleText` validates `process.stdout` by default: plain text when it isn't a terminal or
-	// `NO_COLOR` is set, so piped and agent output stays clean.
-	const header = styleText('bold', keys.map((key) => key.padEnd(width(key))).join(' | '));
-	const separator = styleText('dim', keys.map((key) => '-'.repeat(width(key))).join('-+-'));
+	const header = _style('bold', keys.map((key) => key.padEnd(width(key))).join(' | '));
+	const separator = _style('dim', keys.map((key) => '-'.repeat(width(key))).join('-+-'));
 	const body = rows.map((row) =>
 		keys.map((key) => serialize(getCell(row, key)).padEnd(width(key))).join(' | '),
 	);
