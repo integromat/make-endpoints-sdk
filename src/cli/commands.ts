@@ -135,6 +135,9 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 	const cmd = parent.command(actionName).description(tool.description);
 	const properties = tool.inputSchema.properties ?? {};
 	const required = new Set(tool.inputSchema.required ?? []);
+	// Endpoint input fields aren't in the tool's `required` (they can arrive inside `--input`, so
+	// `execute` checks them), but help should still say which ones the endpoint needs.
+	const inputRequired = new Set(properties.input?.required ?? []);
 	// Flag names are derived lossily, so map each option back to the property it was made for.
 	const optionProperties = new Map<string, string>();
 
@@ -148,10 +151,11 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 			continue;
 		}
 		const isBoolean = schema.type === 'boolean';
+		const isRequired = !isBoolean && (required.has(property) || inputRequired.has(property));
 		// No defaults: a default would override the same key passed inside `--input`.
 		const option = cmd.createOption(
 			isBoolean ? `--${flagName} [value]` : `--${flagName} <value>`,
-			schema.description ?? '',
+			isRequired ? `${schema.description ?? ''} (required)`.trim() : (schema.description ?? ''),
 		);
 		if (required.has(property) && !isBoolean) {
 			option.makeOptionMandatory(true);
