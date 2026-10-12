@@ -28,6 +28,12 @@ npm install @makehq/endpoints-sdk @makehq/sdk
 
 The package ships both ES module and CommonJS builds, with types for each, so `import` and `require()` both work.
 
+Working with an AI agent? Install the CLI's skill into the project as well, so the agent knows the flow from team to call (see [For AI agents](#for-ai-agents)):
+
+```sh
+npx skills add integromat/make-endpoints-sdk
+```
+
 ## Usage
 
 Requests go through a `Make` client from `@makehq/sdk` (a peer dependency), which handles authentication. Wrap the client in `SdkTransport`:
