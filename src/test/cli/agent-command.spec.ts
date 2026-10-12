@@ -5,14 +5,14 @@ import { fileURLToPath } from 'node:url';
 import type { Command } from 'commander';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AGENTS_SNIPPET } from '../../cli/agent-command.ts';
 import { createProgram } from '../../cli/program.ts';
 import { sdkDiscoveryTools } from '../../cli/sdk-tools.ts';
 import { buildEndpointTools } from '../../lib/tools.ts';
 import { DEFINITIONS } from '../fixtures/endpoint-definitions.ts';
 
-// Independent of how `agent` finds the file, so the spec checks that resolution too.
+// Independent of how `agent` finds the files, so the spec checks that resolution too.
 const SKILL_FILE = new URL('../../../skills/make-endpoints-cli/SKILL.md', import.meta.url);
+const SNIPPET_FILE = new URL('../../../skills/make-endpoints-cli/snippet.md', import.meta.url);
 const README_FILE = new URL('../../../README.md', import.meta.url);
 
 // Keys the Agent Skills spec (agentskills.io) allows in the frontmatter.
@@ -124,10 +124,10 @@ describe('agent', () => {
 		expect(stdout).toBe(await readFile(SKILL_FILE, 'utf8'));
 	});
 
-	it('prints the AGENTS.md snippet with --snippet', async () => {
+	it('prints the AGENTS.md snippet file with --snippet', async () => {
 		await run(['agent', '--snippet']);
 
-		expect(stdout).toBe(`${AGENTS_SNIPPET}\n`);
+		expect(stdout).toBe(await readFile(SNIPPET_FILE, 'utf8'));
 		for (const command of [
 			'make-endpoints-cli whoami --environment',
 			'make-endpoints-cli list --team-id <id>',
@@ -141,9 +141,13 @@ describe('agent', () => {
 	});
 
 	it('is repeated verbatim in the README', async () => {
-		const readme = await readFile(README_FILE, 'utf8');
+		const [readme, snippet] = await Promise.all([
+			readFile(README_FILE, 'utf8'),
+			readFile(SNIPPET_FILE, 'utf8'),
+		]);
 
-		expect(readme).toContain(`\`\`\`markdown\n${AGENTS_SNIPPET}\n\`\`\``);
+		expect(snippet).toMatch(/[^\n]\n$/);
+		expect(readme).toContain(`\`\`\`markdown\n${snippet}\`\`\``);
 	});
 });
 
@@ -169,10 +173,13 @@ describe('SKILL.md', () => {
 		expect(lines.length).toBeLessThanOrEqual(500);
 	});
 
-	it('only mentions commands that exist', async () => {
+	it('only mentions commands that exist, and so does the snippet', async () => {
 		const program = createFullProgram();
 		const { body } = parseSkill(await readFile(SKILL_FILE, 'utf8'));
-		const mentions = mentionsOf(codeOf(body)).filter((tokens) => tokens.length > 0);
+		const snippet = await readFile(SNIPPET_FILE, 'utf8');
+		const mentions = mentionsOf(codeOf(`${body}\n${snippet}`)).filter(
+			(tokens) => tokens.length > 0,
+		);
 		const resolved = mentions
 			.filter((tokens) => !EXAMPLE_APPS.includes(tokens[0] ?? ''))
 			.map((tokens) => resolveMention(program, tokens));
