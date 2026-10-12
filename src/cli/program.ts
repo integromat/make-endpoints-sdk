@@ -4,6 +4,7 @@ import type { EndpointTool } from '../lib/tools.ts';
 
 import { registerCatalogCommands } from './catalog-commands.ts';
 import { buildCommands } from './commands.ts';
+import { registerWhoamiCommand } from './whoami-command.ts';
 
 export type CreateProgramParams = {
 	version: string;
@@ -26,6 +27,7 @@ export const createProgram = ({ version, tools }: CreateProgramParams): Command 
 		);
 	// Before the tool commands, so an app can never take these names.
 	registerCatalogCommands(program, tools);
+	registerWhoamiCommand(program);
 	buildCommands(program, tools);
 	return program;
 };
