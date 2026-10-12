@@ -1,7 +1,7 @@
 ---
 name: make-endpoints-cli
 description: Use when calling a third-party app (Google Docs, Slack, Notion, GitHub, ...) through Make Endpoints from a shell with make-endpoints-cli, i.e. finding the team id, which endpoints the team can run, which connection id to pass, and calling an endpoint with flags or --input JSON. Not for building or running Make scenarios (use the Make MCP server) and not for authoring apps.
-compatibility: Requires Node.js 24 or 26 (the package's engines field), make-endpoints-cli (npm install -g @makehq/endpoints-sdk, or npx -p @makehq/endpoints-sdk make-endpoints-cli) and a Make API key, from make-cli login or MAKE_API_KEY plus MAKE_ZONE. Endpoints are in closed beta, so a 400 "not enabled" error means Make hasn't enabled them for the organization yet.
+compatibility: Requires Node.js 20 or later, make-endpoints-cli (npm install -g @makehq/endpoints-sdk, or npx -p @makehq/endpoints-sdk make-endpoints-cli) and a Make API key, from make-cli login or MAKE_API_KEY plus MAKE_ZONE. Endpoints are in closed beta, so a 400 "not enabled" error means Make hasn't enabled them for the organization yet.
 ---
 
 # Make Endpoints from the shell

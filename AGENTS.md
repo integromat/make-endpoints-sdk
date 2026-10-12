@@ -4,7 +4,7 @@
 
 `@makehq/endpoints-sdk` is a public npm package (MIT, closed beta: API calls only work for organizations Make has enabled) for calling Make **Endpoints**: one typed method per app, app version and endpoint. Each call is sent as `POST /endpoints/execute` through a `Make` client from `@makehq/sdk` (a peer dependency, used for auth) wrapped in `SdkTransport`.
 
-Stack: TypeScript, Node.js 24/26 (`engines`), npm. Tests use **Vitest**, not Jest. `npm run type-check` covers specs as well, while `build` only covers `src` without tests.
+Stack: TypeScript, Node.js 20 or later (`engines`), npm. Tests use **Vitest**, not Jest. `npm run type-check` covers specs as well, while `build` only covers `src` without tests.
 
 The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bundler (`scripts/build.mjs`):
 - `tsconfig.build.json` emits ESM to `dist/esm`.
@@ -79,7 +79,7 @@ The package ships **both ESM and CommonJS**, built by two `tsc` runs with no bun
   - The `npm` environment accepts deployments only from `main`.
   - Only the `publish` job may request `id-token: write`. That job must not check out code or install dependencies; it publishes the tarball that `build` packed.
   - Dependencies install with `--ignore-scripts`, and release builds use no dependency cache.
-- `.github/workflows/test.yml` runs type-check, tests and build on pull requests (Node.js 24 and 26). It uses `pull_request`, never `pull_request_target`, so pull request code runs with a read-only token and no secrets. Synced and release commits don't go through pull requests, so `publish.yml` repeats test and build before publishing.
+- `.github/workflows/test.yml` runs type-check, tests and build on pull requests (Node.js 20, 22, 24 and 26; 20 is the floor in `engines`, and `src/cli/output.ts` decides colours itself because `util.styleText` is incomplete before 20.18). It uses `pull_request`, never `pull_request_target`, so pull request code runs with a read-only token and no secrets. Synced and release commits don't go through pull requests, so `publish.yml` repeats test and build before publishing.
 
 ## When in Plan Mode
 
