@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.3.0...v0.4.0) (2026-10-12)
+
+
+### Features
+
+* add agent onboarding to make-endpoints-cli (help flow, skill, agent command) ([#10](https://github.com/integromat/make-endpoints-sdk/issues/10)) ([ff2a070](https://github.com/integromat/make-endpoints-sdk/commit/ff2a07020225db8f779383682cdc37459ad7036d))
+* add team-aware discovery commands to make-endpoints-cli ([#8](https://github.com/integromat/make-endpoints-sdk/issues/8)) ([30879d8](https://github.com/integromat/make-endpoints-sdk/commit/30879d89fe3d4f04fc242549733f0402393129e1))
+* update generated endpoints ([f5730fa](https://github.com/integromat/make-endpoints-sdk/commit/f5730fa4d75eea79c797f0b36f909e472ce30c4b))
+
+
+### Bug Fixes
+
+* support Node.js 20 and later ([#11](https://github.com/integromat/make-endpoints-sdk/issues/11)) ([9394736](https://github.com/integromat/make-endpoints-sdk/commit/93947361ab3809838da221dbc9b168446d8314ec))
+
 ## [0.3.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.2.0...v0.3.0) (2026-10-09)
 
 
