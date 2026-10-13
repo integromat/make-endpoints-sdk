@@ -87,7 +87,9 @@ make-endpoints-cli endpoints execute --app-name app#my-app --app-version 1 --end
 Each input field is a flag (`documentId` becomes `--document-id`). `--input` takes the whole input as JSON, and
 separate flags override its keys. A field whose flag would clash with a global one (`output`, `zone`, ...) can
 only be passed through `--input`. `endpoints execute` reaches custom apps (`app#name`) and endpoints this build
-doesn't bundle. The output is the endpoint's result, unwrapped. For example, the title of a Google Doc:
+doesn't bundle. Add `--confidential` when the data must not stay in Make's Endpoint execution log: the run is
+still listed there, but without its input, output or error. The output is the endpoint's result, unwrapped. For
+example, the title of a Google Doc:
 
 ```sh
 make-endpoints-cli connections list --team-id 7 --app google-docs --endpoint get-document | jq '.[] | {id, name, scoped}'

@@ -119,7 +119,7 @@ describe('command tree', () => {
 			(option) => option.long,
 		);
 
-		expect(flags).toEqual(['--team-id', '--include-archived', '--limit', '--tags', '--input']);
+		expect(flags).toEqual(['--team-id', '--confidential', '--include-archived', '--limit', '--tags', '--input']);
 	});
 
 	it('marks required flags, including required input fields, in their descriptions', () => {
@@ -197,6 +197,24 @@ describe('endpoint commands', () => {
 			appVersion: 1,
 			endpointName: 'getItem',
 		});
+	});
+
+	it('sends --confidential as the body flag, not as an input field', async () => {
+		await run([
+			'alpha',
+			'get-item',
+			'--item-id',
+			'i1',
+			'--team-id',
+			'7',
+			'--connection-id',
+			'9',
+			'--input',
+			'{"teamId":"t"}',
+			'--confidential',
+		]);
+
+		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
 	});
 
 	it('lets separate flags override keys of --input', async () => {

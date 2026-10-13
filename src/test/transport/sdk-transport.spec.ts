@@ -36,6 +36,17 @@ describe('SdkTransport driving execute()', () => {
 		});
 	});
 
+	it('posts the confidential flag next to the input when set', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42, confidential: true });
+
+		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
+			method: 'POST',
+			body: { ...POINTER, input: INPUT, connectionId: 42, confidential: true, teamId: 77 },
+		});
+	});
+
 	it('resolves to the wrapped envelope', async () => {
 		const { sdk } = createSdk();
 

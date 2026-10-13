@@ -88,9 +88,11 @@ describe('buildEndpointTools', () => {
 		expect(Object.keys(inputSchema.properties ?? {})).toEqual([
 			'teamId',
 			'connectionId',
+			'confidential',
 			'itemId',
 			'input',
 		]);
+		expect(inputSchema.properties?.confidential).toMatchObject({ type: 'boolean' });
 		expect(inputSchema.properties?.teamId).toEqual({
 			type: 'number',
 			description: 'The ID of the Team the Endpoint is executed in.',
@@ -159,6 +161,50 @@ describe('endpoint tool execute', () => {
 		});
 
 		expect(fetch.mock.calls[0]?.[1]).toMatchObject({ body: { appVersion: 1 } });
+	});
+
+	it('forwards confidential as its own body field, never inside the input', async () => {
+		const { fetch, make } = createMake();
+
+		await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			confidential: true,
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(fetch.mock.calls[0]?.[1]).toMatchObject({
+			body: { confidential: true, input: { itemId: 'item-1', teamId: 'field' } },
+		});
+	});
+
+	it('leaves confidential out of the body when not passed', async () => {
+		const { fetch, make } = createMake();
+
+		await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(fetch.mock.calls[0]?.[1]).toHaveProperty('body');
+		expect(fetch.mock.calls[0]?.[1]?.body).not.toHaveProperty('confidential');
+	});
+
+	it('rejects a non-boolean confidential', async () => {
+		const { make } = createMake();
+
+		await expect(
+			getTool('alpha_get-item').execute(make, {
+				teamId: 7,
+				connectionId: 9,
+				confidential: 'yes',
+				input: { teamId: 'field' },
+				itemId: 'item-1',
+			}),
+		).rejects.toThrow('confidential must be a boolean.');
 	});
 
 	it('sends an empty input and no connection when there are none', async () => {

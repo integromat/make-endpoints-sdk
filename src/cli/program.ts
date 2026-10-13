@@ -24,7 +24,8 @@ Start here (agents):
   4. connections list --team-id <id> --app <app> --endpoint <endpoint>
                                         which --connection-id to pass; prefer "scoped": true, false is unconfirmed
   5. <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>
-                                        call it; --input '{...}' passes the whole input as JSON instead
+                                        call it; --input '{...}' passes the whole input as JSON instead,
+                                        --confidential keeps the data out of Make's execution log
 Output is JSON by default; --output table gives a quick look. Exit code 2 = Make API error, 1 = usage error.
 Full guide: make-endpoints-cli agent`;
 

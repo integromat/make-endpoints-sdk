@@ -18,6 +18,11 @@ export type EndpointPointer = {
 export type EndpointOptions = {
 	input?: JSONValue;
 	connectionId?: number;
+	/**
+	 * Run confidentially, like a scenario with "Data is confidential": Make keeps no input, output or
+	 * error data of the execution in its Endpoint execution log, only metadata. Defaults to false.
+	 */
+	confidential?: boolean;
 };
 
 export type EndpointCaller = <OUTPUT>(
