@@ -1,9 +1,19 @@
 import type { EndpointCaller, EndpointOptions, EndpointPointer } from './shared.ts';
+import { resolveProjectId } from './teams-to-projects.ts';
 import type { Transport, TransportContext } from './transport/transport.ts';
 
-export type EndpointsSdkOptions = {
-	transport: Transport;
-	teamId: number;
+/** `projectId` is the new name of `teamId`; pass either. Both is fine only when they are equal. */
+export type EndpointsSdkOptions = { transport: Transport } & (
+	| { projectId: number; teamId?: number }
+	| { teamId: number; projectId?: number }
+);
+
+const _resolveOptionsProjectId = ({ projectId, teamId }: EndpointsSdkOptions): number => {
+	const id = resolveProjectId(projectId, teamId);
+	if (typeof id !== 'number') {
+		throw new Error('projectId must be a number.');
+	}
+	return id;
 };
 
 export type EndpointsCatalog<ENDPOINTS> = (endpointCaller: EndpointCaller) => ENDPOINTS;
@@ -22,7 +32,7 @@ export class BaseEndpointsSdk<ENDPOINTS> {
 
 	constructor(options: EndpointsSdkOptions, catalog: EndpointsCatalog<ENDPOINTS>) {
 		this.#transport = options.transport;
-		this.#teamId = options.teamId;
+		this.#teamId = _resolveOptionsProjectId(options);
 		this.#endpointCaller = this.#callEndpoint.bind(this);
 		this.endpoints = catalog(this.#endpointCaller);
 	}

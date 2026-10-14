@@ -1,6 +1,8 @@
 import type { Make } from '@makehq/sdk';
 import type { Command } from 'commander';
 
+import { isTeamsToProjectsEnabled, teamOrProject } from '../lib/teams-to-projects.ts';
+
 import type { GlobalOptions } from './commands.ts';
 import { createMakeClient, exitWithError } from './commands.ts';
 import { formatOutput } from './output.ts';
@@ -9,6 +11,7 @@ type Environment = {
 	id: number;
 	name: string;
 	teams: { id: number; name: string; type: 'personal' | 'standard' }[];
+	projects?: { id: number; name: string; type: 'personal' | 'standard' }[];
 }[];
 
 /**
@@ -22,18 +25,22 @@ const _getEnvironment = async (make: Make): Promise<Environment> => {
 		cols: ['id', 'name', 'teams', 'privateSpaces'],
 	});
 	// Both columns are `null` when empty, whatever `@makehq/sdk` declares.
-	return organizations.map(({ id, name, teams, privateSpaces }) => ({
-		id,
-		name,
-		teams: [
+	return organizations.map(({ id, name, teams, privateSpaces }) => {
+		const spaces = [
 			...(teams ?? []).map((team) => ({ id: team.id, name: team.name, type: 'standard' as const })),
 			...(privateSpaces ?? []).map((space) => ({
 				id: space.id,
 				name: space.name,
 				type: 'personal' as const,
 			})),
-		],
-	}));
+		];
+		return {
+			id,
+			name,
+			teams: spaces,
+			...(isTeamsToProjectsEnabled() ? { projects: spaces } : {}),
+		};
+	});
 };
 
 /** Registers `whoami`: the current user and zone, plus the teams they can reach on request. */
@@ -43,7 +50,7 @@ export const registerWhoamiCommand = (program: Command): void => {
 		.description('Show the current user and zone')
 		.option(
 			'--environment',
-			'Include the organizations and teams this token can reach, including private spaces (needs organizations:read)',
+			`Include the organizations and ${teamOrProject('teams', 'projects (formerly teams)')} this token can reach, including private spaces (needs organizations:read)`,
 		)
 		.helpGroup('Others:')
 		.action(async (options: { environment?: boolean }, cmd: Command) => {
