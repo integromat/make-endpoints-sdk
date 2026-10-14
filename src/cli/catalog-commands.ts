@@ -2,6 +2,7 @@ import type { Command } from 'commander';
 
 import type { EndpointDefinition } from '../lib/shared.ts';
 import type { EndpointTool, UsableEndpointPackage } from '../lib/tools.ts';
+import { isTeamsToProjectsEnabled, teamOrProject } from '../lib/teams-to-projects.ts';
 import { listUsableEndpoints } from '../lib/tools.ts';
 
 import type { GlobalOptions } from './commands.ts';
@@ -83,9 +84,27 @@ const _listEndpoints = (tools: DefinedTool[]): Record<string, unknown>[] => {
 
 const _parseTeamId = (teamId: string): number => {
 	if (!/^\d+$/.test(teamId)) {
-		throw new Error(`Invalid team ID "${teamId}", expected an integer.`);
+		throw new Error(
+			`Invalid ${teamOrProject('team', 'project')} ID "${teamId}", expected an integer.`,
+		);
 	}
 	return Number(teamId);
+};
+
+/** `--project-id`, falling back to its deprecated alias `--team-id`. Rejects both when they differ. */
+const _resolveTeamIdOption = ({
+	projectId,
+	teamId,
+}: {
+	projectId?: string;
+	teamId?: string;
+}): string | undefined => {
+	if (projectId !== undefined && teamId !== undefined && projectId !== teamId) {
+		throw new Error(
+			'--project-id and --team-id differ. Pass only --project-id; --team-id is its deprecated alias.',
+		);
+	}
+	return projectId ?? teamId;
 };
 
 const _listUsableApps = (packages: UsableEndpointPackage[]): Record<string, unknown>[] => {
@@ -123,7 +142,9 @@ const _listUsableEndpoints = ({
 	if (versions.length === 0) {
 		const subject =
 			appVersion === undefined ? `App "${app}"` : `Version "v${appVersion}" of app "${app}"`;
-		throw new Error(`${subject} has no usable endpoints in team ${teamId}.`);
+		throw new Error(
+			`${subject} has no usable endpoints in ${teamOrProject('team', 'project')} ${teamId}.`,
+		);
 	}
 	return versions.flatMap(({ version, endpoints }) =>
 		endpoints.map((endpoint) => {
@@ -179,24 +200,40 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 		process.stdout.write(`${formatOutput(data, output ?? 'json')}\n`);
 	};
 
-	program
+	const listCommand = program
 		.command('list')
 		.description('List apps, or the endpoints of an app or app version')
 		.argument('[app]', 'app name, e.g. google-docs')
-		.argument('[version]', 'app version, e.g. v2')
-		.option(
+		.argument('[version]', 'app version, e.g. v2');
+	if (isTeamsToProjectsEnabled()) {
+		listCommand
+			.option(
+				'--project-id <id>',
+				'List only what this project (formerly team) can use, with its connections, from the API (needs apps:read)',
+			)
+			.option('--team-id <id>', 'Deprecated alias of --project-id: Teams were renamed to Projects');
+	} else {
+		listCommand.option(
 			'--team-id <id>',
 			'List only what this team can use, with its connections, from the API (needs apps:read)',
-		)
+		);
+	}
+	listCommand
 		.helpGroup('Others:')
 		.action(
 			async (
 				app: string | undefined,
 				version: string | undefined,
-				options: { teamId?: string },
+				options: { projectId?: string; teamId?: string },
 				cmd: Command,
 			) => {
-				if (options.teamId === undefined) {
+				let teamIdOption: string | undefined;
+				try {
+					teamIdOption = _resolveTeamIdOption(options);
+				} catch (error) {
+					exitWithError(error);
+				}
+				if (teamIdOption === undefined) {
 					_requireDefinitions(definedTools);
 					print(
 						app === undefined
@@ -206,7 +243,7 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 					return;
 				}
 				try {
-					const teamId = _parseTeamId(options.teamId);
+					const teamId = _parseTeamId(teamIdOption);
 					const appVersion = version === undefined ? undefined : _parseVersion(version);
 					const { make } = await createMakeClient(cmd);
 					const packages = await listUsableEndpoints(make, teamId);

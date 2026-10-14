@@ -2,6 +2,7 @@ import { Make, MakeError } from '@makehq/sdk';
 import { Command } from 'commander';
 
 import type { JSONValue } from '../lib/shared.ts';
+import { resolveProjectId, teamOrProject } from '../lib/teams-to-projects.ts';
 import type { EndpointTool, JSONSchema } from '../lib/tools.ts';
 
 import { resolveAuth } from './auth.ts';
@@ -19,11 +20,14 @@ const RESERVED_FLAGS = new Set(['api-key', 'zone', 'output', 'help', 'version'])
 
 /** Descriptions of tool categories that aren't apps, like make-cli's category titles. */
 const CATEGORY_TITLES: Record<string, string> = {
-	endpoints: 'List the endpoints a team can use, or call any endpoint by name',
-	connections: 'Connections of a team, filtered by app or endpoint',
+	endpoints: `List the endpoints a ${teamOrProject('team', 'project')} can use, or call any endpoint by name`,
+	connections: `Connections of a ${teamOrProject('team', 'project')}, filtered by app or endpoint`,
 	users: 'The current user',
 	organizations: 'List your organizations',
-	teams: 'List the teams of an organization',
+	teams: teamOrProject(
+		'List the teams of an organization',
+		'List the projects (formerly teams) of an organization',
+	),
 };
 
 /** Commands this module created to group other commands, as opposed to commands that run a tool. */
@@ -140,6 +144,9 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 	const inputRequired = new Set(properties.input?.required ?? []);
 	// Flag names are derived lossily, so map each option back to the property it was made for.
 	const optionProperties = new Map<string, string>();
+	// With the flag on, tools require `projectId` and keep `teamId` as its deprecated alias, so
+	// `--project-id` can't be mandatory for commander; `--team-id` alone must still work.
+	const projectAlias = required.has('projectId') && properties.teamId !== undefined;
 
 	for (const [property, schema] of Object.entries(properties)) {
 		const flagName = _toFlagName(property);
@@ -157,7 +164,7 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 			isBoolean ? `--${flagName} [value]` : `--${flagName} <value>`,
 			isRequired ? `${schema.description ?? ''} (required)`.trim() : (schema.description ?? ''),
 		);
-		if (required.has(property) && !isBoolean) {
+		if (required.has(property) && !isBoolean && !(projectAlias && property === 'projectId')) {
 			option.makeOptionMandatory(true);
 		}
 		if (schema.enum && !isBoolean) {
@@ -169,6 +176,20 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 
 	cmd.action(async (localOptions: Record<string, unknown>) => {
 		const globalOptions = cmd.optsWithGlobals<GlobalOptions>();
+		if (projectAlias) {
+			const { projectId, teamId } = localOptions;
+			if (projectId === undefined && teamId === undefined) {
+				cmd.error("error: required option '--project-id <value>' not specified");
+			}
+			try {
+				resolveProjectId(
+					projectId === undefined ? undefined : String(projectId),
+					teamId === undefined ? undefined : String(teamId),
+				);
+			} catch (error) {
+				exitWithError(error);
+			}
+		}
 		const { make } = await createMakeClient(cmd);
 		const args: Record<string, JSONValue> = {};
 		for (const [key, value] of Object.entries(localOptions)) {
