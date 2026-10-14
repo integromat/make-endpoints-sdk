@@ -9,6 +9,7 @@ import { definitions as clickupV2Definitions } from './clickup/v2/_definitions.t
 import { definitions as cloudinaryV1Definitions } from './cloudinary/v1/_definitions.ts';
 import { definitions as confluenceV1Definitions } from './confluence/v1/_definitions.ts';
 import { definitions as discordV2Definitions } from './discord/v2/_definitions.ts';
+import { definitions as dropboxV5Definitions } from './dropbox/v5/_definitions.ts';
 import { definitions as githubV4Definitions } from './github/v4/_definitions.ts';
 import { definitions as googleCalendarV5Definitions } from './google-calendar/v5/_definitions.ts';
 import { definitions as googleContactsV4Definitions } from './google-contacts/v4/_definitions.ts';
@@ -16,6 +17,7 @@ import { definitions as googleDocsV1Definitions } from './google-docs/v1/_defini
 import { definitions as googleDriveV4Definitions } from './google-drive/v4/_definitions.ts';
 import { definitions as googleEmailV4Definitions } from './google-email/v4/_definitions.ts';
 import { definitions as googleFormsV2Definitions } from './google-forms/v2/_definitions.ts';
+import { definitions as googleKeepV1Definitions } from './google-keep/v1/_definitions.ts';
 import { definitions as googleSheetsV2Definitions } from './google-sheets/v2/_definitions.ts';
 import { definitions as googleSlidesV1Definitions } from './google-slides/v1/_definitions.ts';
 import { definitions as highlevelV1Definitions } from './highlevel/v1/_definitions.ts';
@@ -29,7 +31,11 @@ import { definitions as mcpClientV1Definitions } from './mcp-client/v1/_definiti
 import { definitions as microsoftCalendarV2Definitions } from './microsoft-calendar/v2/_definitions.ts';
 import { definitions as microsoftEmailV2Definitions } from './microsoft-email/v2/_definitions.ts';
 import { definitions as microsoftExcelV2Definitions } from './microsoft-excel/v2/_definitions.ts';
+import { definitions as microsoftTeamsV1Definitions } from './microsoft-teams/v1/_definitions.ts';
+import { definitions as mondayV2Definitions } from './monday/v2/_definitions.ts';
 import { definitions as notionV1Definitions } from './notion/v1/_definitions.ts';
+import { definitions as onedriveV2Definitions } from './onedrive/v2/_definitions.ts';
+import { definitions as pinterestV2Definitions } from './pinterest/v2/_definitions.ts';
 import { definitions as pipedriveV2Definitions } from './pipedrive/v2/_definitions.ts';
 import { definitions as shopifyV3Definitions } from './shopify/v3/_definitions.ts';
 import { definitions as slackV4Definitions } from './slack/v4/_definitions.ts';
@@ -49,6 +55,7 @@ export const definitions: EndpointDefinition[] = [
 	...cloudinaryV1Definitions,
 	...confluenceV1Definitions,
 	...discordV2Definitions,
+	...dropboxV5Definitions,
 	...githubV4Definitions,
 	...googleCalendarV5Definitions,
 	...googleContactsV4Definitions,
@@ -56,6 +63,7 @@ export const definitions: EndpointDefinition[] = [
 	...googleDriveV4Definitions,
 	...googleEmailV4Definitions,
 	...googleFormsV2Definitions,
+	...googleKeepV1Definitions,
 	...googleSheetsV2Definitions,
 	...googleSlidesV1Definitions,
 	...highlevelV1Definitions,
@@ -69,7 +77,11 @@ export const definitions: EndpointDefinition[] = [
 	...microsoftCalendarV2Definitions,
 	...microsoftEmailV2Definitions,
 	...microsoftExcelV2Definitions,
+	...microsoftTeamsV1Definitions,
+	...mondayV2Definitions,
 	...notionV1Definitions,
+	...onedriveV2Definitions,
+	...pinterestV2Definitions,
 	...pipedriveV2Definitions,
 	...shopifyV3Definitions,
 	...slackV4Definitions,

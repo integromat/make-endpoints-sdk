@@ -9,6 +9,7 @@ import { endpoints as clickupEndpoints } from './clickup/_catalog.ts';
 import { endpoints as cloudinaryEndpoints } from './cloudinary/_catalog.ts';
 import { endpoints as confluenceEndpoints } from './confluence/_catalog.ts';
 import { endpoints as discordEndpoints } from './discord/_catalog.ts';
+import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
 import { endpoints as googleContactsEndpoints } from './google-contacts/_catalog.ts';
@@ -16,6 +17,7 @@ import { endpoints as googleDocsEndpoints } from './google-docs/_catalog.ts';
 import { endpoints as googleDriveEndpoints } from './google-drive/_catalog.ts';
 import { endpoints as googleEmailEndpoints } from './google-email/_catalog.ts';
 import { endpoints as googleFormsEndpoints } from './google-forms/_catalog.ts';
+import { endpoints as googleKeepEndpoints } from './google-keep/_catalog.ts';
 import { endpoints as googleSheetsEndpoints } from './google-sheets/_catalog.ts';
 import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts';
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
@@ -29,7 +31,11 @@ import { endpoints as mcpClientEndpoints } from './mcp-client/_catalog.ts';
 import { endpoints as microsoftCalendarEndpoints } from './microsoft-calendar/_catalog.ts';
 import { endpoints as microsoftEmailEndpoints } from './microsoft-email/_catalog.ts';
 import { endpoints as microsoftExcelEndpoints } from './microsoft-excel/_catalog.ts';
+import { endpoints as microsoftTeamsEndpoints } from './microsoft-teams/_catalog.ts';
+import { endpoints as mondayEndpoints } from './monday/_catalog.ts';
 import { endpoints as notionEndpoints } from './notion/_catalog.ts';
+import { endpoints as onedriveEndpoints } from './onedrive/_catalog.ts';
+import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
 import { endpoints as pipedriveEndpoints } from './pipedrive/_catalog.ts';
 import { endpoints as shopifyEndpoints } from './shopify/_catalog.ts';
 import { endpoints as slackEndpoints } from './slack/_catalog.ts';
@@ -50,6 +56,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		cloudinary: cloudinaryEndpoints(endpointCaller),
 		confluence: confluenceEndpoints(endpointCaller),
 		discord: discordEndpoints(endpointCaller),
+		dropbox: dropboxEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
 		googleContacts: googleContactsEndpoints(endpointCaller),
@@ -57,6 +64,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		googleDrive: googleDriveEndpoints(endpointCaller),
 		googleEmail: googleEmailEndpoints(endpointCaller),
 		googleForms: googleFormsEndpoints(endpointCaller),
+		googleKeep: googleKeepEndpoints(endpointCaller),
 		googleSheets: googleSheetsEndpoints(endpointCaller),
 		googleSlides: googleSlidesEndpoints(endpointCaller),
 		highlevel: highlevelEndpoints(endpointCaller),
@@ -70,7 +78,11 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		microsoftCalendar: microsoftCalendarEndpoints(endpointCaller),
 		microsoftEmail: microsoftEmailEndpoints(endpointCaller),
 		microsoftExcel: microsoftExcelEndpoints(endpointCaller),
+		microsoftTeams: microsoftTeamsEndpoints(endpointCaller),
+		monday: mondayEndpoints(endpointCaller),
 		notion: notionEndpoints(endpointCaller),
+		onedrive: onedriveEndpoints(endpointCaller),
+		pinterest: pinterestEndpoints(endpointCaller),
 		pipedrive: pipedriveEndpoints(endpointCaller),
 		shopify: shopifyEndpoints(endpointCaller),
 		slack: slackEndpoints(endpointCaller),
