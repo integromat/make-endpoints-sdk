@@ -7,7 +7,10 @@ export const definitions: EndpointDefinition[] = [
 		appVersion: 2,
 		endpointName: 'arbitraryCall',
 		label: 'Arbitrary call',
-		description: 'Performs an arbitrary authorized API call.',
+		description:
+			'Performs an arbitrary authorized API call to the Asana API, similar to the app\'s "Make an API Call" module.',
+		context:
+			'---\nname: arbitraryCall\ndescription: Performs an arbitrary authorized API call to the Asana API, similar to the app\'s "Make an API Call" module.\n---\n\n# Arbitrary call\n\nSends one HTTP request to the Asana API. This Endpoint is not scoped to a single route: it forwards an arbitrary call (method, path, query string, headers and body) and is similar to the app\'s "Make an API Call" module.\n\nThe base URL is hardcoded to `https://app.asana.com/api`. Put the versioned path in `url` with a leading slash, for example `/1.0/users/me`.\n\nUses the Asana connection as-is. This endpoint adds no extra scope.\n\nCheap read: method `GET`, url `/1.0/users/me`, no body and no query string.\n\n`qs` becomes the query string. `body` is the JSON body and is ignored for `GET`. Do not send an Authorization header; the connection adds it.\n\nDocs: https://developers.asana.com/docs/\n',
 		accounts: { asana: { scope: [] } },
 		annotations: {
 			readOnlyHint: false,
@@ -67,7 +70,7 @@ export const definitions: EndpointDefinition[] = [
 				},
 				body: {
 					description:
-						'The HTTP request query body. This input will be ignored if the HTTP request method is `GET`.',
+						'The HTTP request body. This input will be ignored if the HTTP request method is `GET`.',
 				},
 			},
 			required: ['url', 'method'],
