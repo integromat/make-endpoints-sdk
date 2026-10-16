@@ -89,10 +89,17 @@ describe('buildEndpointTools', () => {
 			'teamId',
 			'connectionId',
 			'confidential',
+			'idempotencyKey',
 			'itemId',
 			'input',
 		]);
 		expect(inputSchema.properties?.confidential).toMatchObject({ type: 'boolean' });
+		expect(inputSchema.properties?.idempotencyKey).toMatchObject({
+			type: 'string',
+			minLength: 1,
+			maxLength: 255,
+			pattern: '^[A-Za-z0-9_.:-]+$',
+		});
 		expect(inputSchema.properties?.teamId).toEqual({
 			type: 'number',
 			description: 'The ID of the Team the Endpoint is executed in.',
@@ -207,6 +214,96 @@ describe('endpoint tool execute', () => {
 		).rejects.toThrow('confidential must be a boolean.');
 	});
 
+	it('forwards idempotencyKey as its own body field, never inside the input', async () => {
+		const { fetch, make } = createMake();
+
+		await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			idempotencyKey: 'order-7',
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(fetch.mock.calls[0]?.[1]).toMatchObject({
+			body: { idempotencyKey: 'order-7', input: { itemId: 'item-1', teamId: 'field' } },
+		});
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
+	});
+
+	it('leaves idempotencyKey out of the body when not passed', async () => {
+		const { fetch, make } = createMake();
+
+		await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(fetch.mock.calls[0]?.[1]?.body).not.toHaveProperty('idempotencyKey');
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
+	});
+
+	it('returns { output, execution } when a key is passed', async () => {
+		const execution = { id: 'exec-1', replayed: true };
+		const { make } = createMake(vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution }));
+
+		const result = await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			idempotencyKey: 'order-7',
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
+	});
+
+	it('returns { output } alone for a key sent to a server that reports no execution', async () => {
+		const { make } = createMake();
+
+		const result = await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			idempotencyKey: 'order-7',
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(result).toStrictEqual({ output: { id: 'item-1' } });
+	});
+
+	it('keeps returning the bare output without a key, whatever the server reports', async () => {
+		const { make } = createMake(
+			vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution: { id: 'exec-1' } }),
+		);
+
+		const result = await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(result).toStrictEqual({ id: 'item-1' });
+	});
+
+	it('rejects a non-string idempotencyKey', async () => {
+		const { fetch, make } = createMake();
+
+		await expect(
+			getTool('alpha_get-item').execute(make, {
+				teamId: 7,
+				connectionId: 9,
+				idempotencyKey: 42,
+				input: { teamId: 'field' },
+				itemId: 'item-1',
+			}),
+		).rejects.toThrow('idempotencyKey must be a string.');
+		expect(fetch).not.toHaveBeenCalled();
+	});
+
 	it('sends an empty input and no connection when there are none', async () => {
 		const { fetch, make } = createMake();
 
@@ -264,6 +361,37 @@ describe('endpoints_execute', () => {
 				endpointName: 'doThing',
 				input: { key: 'value' },
 				connectionId: 9,
+				teamId: 7,
+			},
+		});
+	});
+
+	it('forwards confidential and the idempotency key like the endpoint tools', async () => {
+		const execution = { id: 'exec-1', confidential: true };
+		const { fetch, make } = createMake(
+			vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution }),
+		);
+
+		const result = await getTool('endpoints_execute').execute(make, {
+			appName: 'app#custom',
+			appVersion: 3,
+			endpointName: 'doThing',
+			teamId: 7,
+			confidential: true,
+			idempotencyKey: 'order-7',
+			input: { key: 'value' },
+		});
+
+		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
+		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
+			method: 'POST',
+			body: {
+				appName: 'app#custom',
+				appVersion: 3,
+				endpointName: 'doThing',
+				input: { key: 'value' },
+				confidential: true,
+				idempotencyKey: 'order-7',
 				teamId: 7,
 			},
 		});

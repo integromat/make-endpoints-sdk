@@ -117,6 +117,15 @@ const { output } = await sdk.execute<GetDocumentOutput>(
 );
 ```
 
+The envelope also carries `execution` (`{ id, replayed?, confidential? }`, the `EndpointExecution` type) when Make reports it. `idempotencyKey` makes a call safe to retry: within the team, Make runs the endpoint once per key and answers a repeat with the first run's outcome, flagged `execution.replayed`. A repeat while the first run is still going fails with 409; a key that can't be replayed (reused for a different request, or held by a confidential run) with 422. The generated methods take neither this option nor `confidential` yet, so use `execute()` for them:
+
+```ts
+const { output, execution } = await sdk.execute<GetDocumentOutput>(
+	{ appName: 'google-docs', appVersion: 1, endpointName: 'getDocument' },
+	{ input: { documentId: 'doc-1' }, connectionId: 42, idempotencyKey: 'order-7' },
+);
+```
+
 ### Errors
 
 There's no SDK-specific error type. A failing call rejects with whatever the transport throws; for `SdkTransport`, that's the `Make.fetch` rejection.
@@ -181,7 +190,7 @@ For agents that don't load skills, `make-endpoints-cli agent --snippet` prints t
 2. `make-endpoints-cli list --team-id <id>` lists the apps the team can use, and `list <app> --team-id <id>` their endpoints with usable connections. Skip it when you already know the app and endpoint.
 3. `make-endpoints-cli describe <app> <endpoint>` shows the input fields and the connection types the endpoint accepts.
 4. `make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpoint>` gives the connection id; prefer a row with `"scoped": true`, but `false` only means Make couldn't confirm the scopes.
-5. `make-endpoints-cli <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>` calls it; `--input '{...}'` passes the whole input as JSON, `--confidential` keeps the data out of Make's execution log.
+5. `make-endpoints-cli <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>` calls it; `--input '{...}'` passes the whole input as JSON, `--confidential` keeps the data out of Make's execution log, `--idempotency-key <key>` (unique per call, reused on every retry of it) stops a retry from running the endpoint twice and makes the output `{ output, execution }`.
 
 Output is JSON. Exit code 2 is a Make API error, 1 a usage error. Never guess ids. Full guide: `make-endpoints-cli agent`.
 ```
@@ -235,6 +244,8 @@ make-endpoints-cli endpoints execute --app-name app#my-app --app-version 1 --end
 	--team-id 77 --connection-id 42 --input '{"key":"value"}'
 ```
 
+`--idempotency-key <key>` makes a call safe to retry (see [Low-level escape hatch](#low-level-escape-hatch)). With it the JSON output is `{ "output": ..., "execution": { "id": ..., "replayed": true } }` instead of the bare output.
+
 `--output json|compact|table` sets the output format (default `json`). The table is colored only when stdout is a terminal and `NO_COLOR` is unset, so piped output stays plain. Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
 
 ## Tool definitions
@@ -253,6 +264,7 @@ const doc = await tool?.execute(make, { teamId: 77, connectionId: 42, documentId
 
 - Tools of an app's latest version are named `<app>_<endpoint>`, and tools of every older version `<app>-v<N>_<endpoint>`. Each tool keeps its endpoint's `definition`.
 - `inputSchema` has `teamId`, `connectionId` (only when the endpoint takes a connection), every input field, and `input`, the whole input as an object. `execute` merges separate fields over `input` and rejects when a required field is missing.
+- Every endpoint tool and `endpoints_execute` also take `idempotencyKey`. A tool returns the endpoint's output as is, except when a key is passed: then it returns `{ output, execution }`, so a replay is visible.
 - After the endpoint tools come:
   - `connections_list`: the team's connections, filtered by `type` and `scopes`, or by what an `app`, `appVersion` and `endpoint` accept. Rows are `UsableConnection`s. It supersedes the tool of the same name in `@makehq/sdk/tools`: same input plus `app`, `appVersion` and `endpoint`, rows trimmed to `id`, `name`, `accountName`, `accountLabel`, `accountType` and `expire`. Don't register both.
   - `endpoints_list-usable`: the apps, versions and endpoints a team can use, as `UsableEndpointPackage[]`, each endpoint with the connections that work for it. `listUsableEndpoints(make, teamId)` returns the same without a tool.

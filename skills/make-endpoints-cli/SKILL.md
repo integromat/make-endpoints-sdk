@@ -88,8 +88,12 @@ Each input field is a flag (`documentId` becomes `--document-id`). `--input` tak
 separate flags override its keys. A field whose flag would clash with a global one (`output`, `zone`, ...) can
 only be passed through `--input`. `endpoints execute` reaches custom apps (`app#name`) and endpoints this build
 doesn't bundle. Add `--confidential` when the data must not stay in Make's Endpoint execution log: the run is
-still listed there, but without its input, output or error. The output is the endpoint's result, unwrapped. For
-example, the title of a Google Doc:
+still listed there, but without its input, output or error. Add `--idempotency-key <key>` (1-255 characters of
+letters, digits, `_`, `.`, `:`, `-`) when a call may be repeated: use one unique key per intended call and the same
+key on every retry after a timeout or an unclear error, and Make never runs the endpoint twice but returns the
+first run's outcome. With a key the JSON is `{ "output": ..., "execution": { "id": ..., "replayed": true } }`
+(`replayed` only on a replay, `confidential` only for a confidential run). Without one the output is the endpoint's
+result, unwrapped. For example, the title of a Google Doc:
 
 ```sh
 make-endpoints-cli connections list --team-id 7 --app google-docs --endpoint get-document | jq '.[] | {id, name, scoped}'
@@ -105,6 +109,7 @@ make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --doc
 | `Error [424]` mentioning `invalid_grant` or an expired token    | That connection's authorization expired. Try one other row from step 4, then ask. |
 | `Error [400]: Endpoints execution is not enabled`               | Endpoints aren't enabled for this organization. Stop and tell the user.          |
 | `Error [422]` or another `Error [424]` on a call                | Wrong team for the connection, connection type or input. Re-run step 4 and `describe`. |
+| `Error [409]`, `[422]`, `[424]` or `[503]` with `--idempotency-key` | 409: the first run is still going, retry later with the same key. 422: the key was used for a different request or a confidential run, never retry with it. 424: the first run failed and its failure is replayed. 503: the key couldn't be checked and nothing ran, retry. |
 | `Error: Missing required input fields: ...` (exit 1)            | Pass the fields as flags or inside `--input`.                                    |
 | `required option '--team-id <value>' not specified` (exit 1)    | Every call needs `--team-id`; most need `--connection-id` too.                   |
 | `Unknown app` or `Unknown endpoint`                             | Names are the CLI's kebab-case ones. Run `list <app>` to find the right one.     |

@@ -6,6 +6,6 @@
 2. `make-endpoints-cli list --team-id <id>` lists the apps the team can use, and `list <app> --team-id <id>` their endpoints with usable connections. Skip it when you already know the app and endpoint.
 3. `make-endpoints-cli describe <app> <endpoint>` shows the input fields and the connection types the endpoint accepts.
 4. `make-endpoints-cli connections list --team-id <id> --app <app> --endpoint <endpoint>` gives the connection id; prefer a row with `"scoped": true`, but `false` only means Make couldn't confirm the scopes.
-5. `make-endpoints-cli <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>` calls it; `--input '{...}'` passes the whole input as JSON, `--confidential` keeps the data out of Make's execution log.
+5. `make-endpoints-cli <app> <endpoint> --team-id <id> --connection-id <id> --<field> <value>` calls it; `--input '{...}'` passes the whole input as JSON, `--confidential` keeps the data out of Make's execution log, `--idempotency-key <key>` (unique per call, reused on every retry of it) stops a retry from running the endpoint twice and makes the output `{ output, execution }`.
 
 Output is JSON. Exit code 2 is a Make API error, 1 a usage error. Never guess ids. Full guide: `make-endpoints-cli agent`.
