@@ -94,17 +94,24 @@ export type UsableConnection = {
 const SCOPE = 'endpoints:run';
 
 /** Tool arguments that aren't input fields. Input fields with these names are only reachable through `input`. */
-const RESERVED_ARGUMENTS = new Set(['teamId', 'connectionId', 'input']);
+const RESERVED_ARGUMENTS = new Set(['teamId', 'connectionId', 'confidential', 'input']);
 
 const TEAM_ID_SCHEMA: JSONSchema = {
 	type: 'number',
 	description: 'The ID of the Team the Endpoint is executed in.',
 };
 
+const CONFIDENTIAL_SCHEMA: JSONSchema = {
+	type: 'boolean',
+	description:
+		'Run confidentially: Make keeps no input, output or error data of the execution in its Endpoint execution log, only metadata. Defaults to false.',
+};
+
 type CallEndpointParams = {
 	pointer: EndpointPointer;
 	teamId: JSONValue;
 	connectionId: JSONValue;
+	confidential: JSONValue;
 	input: JSONValue;
 };
 
@@ -123,13 +130,16 @@ const _toKebabCase = (name: string): string => {
 
 const _callEndpoint = async (
 	make: Make,
-	{ pointer, teamId, connectionId, input }: CallEndpointParams,
+	{ pointer, teamId, connectionId, confidential, input }: CallEndpointParams,
 ): Promise<JSONValue> => {
 	if (typeof teamId !== 'number') {
 		throw new Error('teamId must be a number.');
 	}
 	if (connectionId !== undefined && typeof connectionId !== 'number') {
 		throw new Error('connectionId must be a number.');
+	}
+	if (confidential !== undefined && typeof confidential !== 'boolean') {
+		throw new Error('confidential must be a boolean.');
 	}
 	if (input !== undefined && !_isRecord(input)) {
 		throw new Error('input must be an object.');
@@ -139,6 +149,7 @@ const _callEndpoint = async (
 	const { output } = await sdk.execute<JSONValue>(pointer, {
 		input: input ?? {},
 		...(connectionId === undefined ? {} : { connectionId }),
+		...(confidential === undefined ? {} : { confidential }),
 	});
 	return output;
 };
@@ -184,6 +195,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 							},
 						}
 					: {}),
+				confidential: CONFIDENTIAL_SCHEMA,
 				...(Object.fromEntries(fields) as Record<string, JSONSchema>),
 				input: {
 					...(definition.inputSchema as JSONSchema),
@@ -196,7 +208,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		},
 		definition,
 		latest,
-		execute: async (make, { teamId, connectionId, input, ...rest }) => {
+		execute: async (make, { teamId, connectionId, confidential, input, ...rest }) => {
 			const merged = { ...(input !== undefined && _isRecord(input) ? input : {}), ...rest };
 			const missing = requiredFields.filter((field) => merged[field] === undefined);
 			if (missing.length > 0) {
@@ -206,6 +218,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 				pointer: { appName, appVersion, endpointName },
 				teamId,
 				connectionId,
+				confidential,
 				input: merged,
 			});
 		},
@@ -238,6 +251,7 @@ const EXECUTE_TOOL: EndpointTool = {
 				type: 'number',
 				description: 'ID of the Connection to be used for executing the Endpoint.',
 			},
+			confidential: CONFIDENTIAL_SCHEMA,
 			input: {
 				type: 'object',
 				description: 'Object containing input values of the Endpoint.',
@@ -245,7 +259,7 @@ const EXECUTE_TOOL: EndpointTool = {
 		},
 		required: ['appName', 'appVersion', 'endpointName', 'teamId'],
 	},
-	execute: async (make, { appName, appVersion, endpointName, teamId, connectionId, input }) => {
+	execute: async (make, { appName, appVersion, endpointName, teamId, connectionId, confidential, input }) => {
 		if (
 			typeof appName !== 'string' ||
 			typeof appVersion !== 'number' ||
@@ -257,6 +271,7 @@ const EXECUTE_TOOL: EndpointTool = {
 			pointer: { appName, appVersion, endpointName },
 			teamId,
 			connectionId,
+			confidential,
 			input,
 		});
 	},
