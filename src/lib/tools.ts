@@ -94,7 +94,13 @@ export type UsableConnection = {
 const SCOPE = 'endpoints:run';
 
 /** Tool arguments that aren't input fields. Input fields with these names are only reachable through `input`. */
-const RESERVED_ARGUMENTS = new Set(['teamId', 'connectionId', 'confidential', 'input']);
+const RESERVED_ARGUMENTS = new Set([
+	'teamId',
+	'connectionId',
+	'confidential',
+	'idempotencyKey',
+	'input',
+]);
 
 const TEAM_ID_SCHEMA: JSONSchema = {
 	type: 'number',
@@ -107,11 +113,21 @@ const CONFIDENTIAL_SCHEMA: JSONSchema = {
 		'Run confidentially: Make keeps no input, output or error data of the execution in its Endpoint execution log, only metadata. Defaults to false.',
 };
 
+const IDEMPOTENCY_KEY_SCHEMA: JSONSchema = {
+	type: 'string',
+	minLength: 1,
+	maxLength: 255,
+	pattern: '^[A-Za-z0-9_.:-]+$',
+	description:
+		'Makes the call safe to retry. Pass a unique key (1-255 characters: letters, digits, `_`, `.`, `:`, `-`) per intended call and reuse it when retrying after a timeout or an error that may have hidden a finished run: the endpoint then never runs twice. With a key the result is `{ output, execution }`, and `execution.replayed` is true on a replay. HTTP 409: the first run is still going, retry later. HTTP 422: the key was used for a different request or a confidential run, never retry with it. HTTP 503: the key could not be checked and nothing ran, retry.',
+};
+
 type CallEndpointParams = {
 	pointer: EndpointPointer;
 	teamId: JSONValue;
 	connectionId: JSONValue;
 	confidential: JSONValue;
+	idempotencyKey: JSONValue;
 	input: JSONValue;
 };
 
@@ -130,7 +146,7 @@ const _toKebabCase = (name: string): string => {
 
 const _callEndpoint = async (
 	make: Make,
-	{ pointer, teamId, connectionId, confidential, input }: CallEndpointParams,
+	{ pointer, teamId, connectionId, confidential, idempotencyKey, input }: CallEndpointParams,
 ): Promise<JSONValue> => {
 	if (typeof teamId !== 'number') {
 		throw new Error('teamId must be a number.');
@@ -141,17 +157,23 @@ const _callEndpoint = async (
 	if (confidential !== undefined && typeof confidential !== 'boolean') {
 		throw new Error('confidential must be a boolean.');
 	}
+	if (idempotencyKey !== undefined && typeof idempotencyKey !== 'string') {
+		throw new Error('idempotencyKey must be a string.');
+	}
 	if (input !== undefined && !_isRecord(input)) {
 		throw new Error('input must be an object.');
 	}
 	// The SDK's own escape hatch for pointer-based calls, so tools share its call path.
 	const sdk = new EndpointsSdk({ transport: new SdkTransport(make), teamId });
-	const { output } = await sdk.execute<JSONValue>(pointer, {
+	const { output, execution } = await sdk.execute<JSONValue>(pointer, {
 		input: input ?? {},
 		...(connectionId === undefined ? {} : { connectionId }),
 		...(confidential === undefined ? {} : { confidential }),
+		...(idempotencyKey === undefined ? {} : { idempotencyKey }),
 	});
-	return output;
+	// A key opts into `{ output, execution }` so a replay is visible; without one the result stays
+	// the bare output, which callers already read directly.
+	return idempotencyKey === undefined ? output : { output, ...(execution ? { execution } : {}) };
 };
 
 const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): EndpointTool => {
@@ -196,6 +218,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 						}
 					: {}),
 				confidential: CONFIDENTIAL_SCHEMA,
+				idempotencyKey: IDEMPOTENCY_KEY_SCHEMA,
 				...(Object.fromEntries(fields) as Record<string, JSONSchema>),
 				input: {
 					...(definition.inputSchema as JSONSchema),
@@ -208,7 +231,10 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		},
 		definition,
 		latest,
-		execute: async (make, { teamId, connectionId, confidential, input, ...rest }) => {
+		execute: async (
+			make,
+			{ teamId, connectionId, confidential, idempotencyKey, input, ...rest },
+		) => {
 			const merged = { ...(input !== undefined && _isRecord(input) ? input : {}), ...rest };
 			const missing = requiredFields.filter((field) => merged[field] === undefined);
 			if (missing.length > 0) {
@@ -219,6 +245,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 				teamId,
 				connectionId,
 				confidential,
+				idempotencyKey,
 				input: merged,
 			});
 		},
@@ -252,6 +279,7 @@ const EXECUTE_TOOL: EndpointTool = {
 				description: 'ID of the Connection to be used for executing the Endpoint.',
 			},
 			confidential: CONFIDENTIAL_SCHEMA,
+			idempotencyKey: IDEMPOTENCY_KEY_SCHEMA,
 			input: {
 				type: 'object',
 				description: 'Object containing input values of the Endpoint.',
@@ -259,7 +287,19 @@ const EXECUTE_TOOL: EndpointTool = {
 		},
 		required: ['appName', 'appVersion', 'endpointName', 'teamId'],
 	},
-	execute: async (make, { appName, appVersion, endpointName, teamId, connectionId, confidential, input }) => {
+	execute: async (
+		make,
+		{
+			appName,
+			appVersion,
+			endpointName,
+			teamId,
+			connectionId,
+			confidential,
+			idempotencyKey,
+			input,
+		},
+	) => {
 		if (
 			typeof appName !== 'string' ||
 			typeof appVersion !== 'number' ||
@@ -272,6 +312,7 @@ const EXECUTE_TOOL: EndpointTool = {
 			teamId,
 			connectionId,
 			confidential,
+			idempotencyKey,
 			input,
 		});
 	},

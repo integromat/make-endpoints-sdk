@@ -1,6 +1,6 @@
 import type { URLSearchParams } from 'node:url';
 
-import type { EndpointOptions, EndpointPointer, JSONValue } from '../shared.ts';
+import type { EndpointExecution, EndpointOptions, EndpointPointer, JSONValue } from '../shared.ts';
 
 export type { JSONValue } from '../shared.ts';
 
@@ -35,5 +35,5 @@ export type Transport = {
 		context: TransportContext,
 		pointer: EndpointPointer,
 		options: EndpointOptions,
-	) => Promise<{ output: OUTPUT }>;
+	) => Promise<{ output: OUTPUT; execution?: EndpointExecution }>;
 };

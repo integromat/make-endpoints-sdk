@@ -34,12 +34,12 @@ export class BaseEndpointsSdk<ENDPOINTS> {
 	}
 
 	async #callEndpoint<OUTPUT>(pointer: EndpointPointer, options: EndpointOptions) {
-		const { output } = await this.#transport.callEndpoint<OUTPUT>(
+		const { output, execution } = await this.#transport.callEndpoint<OUTPUT>(
 			this.#transportContext,
 			pointer,
 			options,
 		);
-		return { output };
+		return { output, ...(execution === undefined ? {} : { execution }) };
 	}
 
 	public execute<OUTPUT>(pointer: EndpointPointer, options: EndpointOptions) {

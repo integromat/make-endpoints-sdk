@@ -119,7 +119,15 @@ describe('command tree', () => {
 			(option) => option.long,
 		);
 
-		expect(flags).toEqual(['--team-id', '--confidential', '--include-archived', '--limit', '--tags', '--input']);
+		expect(flags).toEqual([
+			'--team-id',
+			'--confidential',
+			'--idempotency-key',
+			'--include-archived',
+			'--limit',
+			'--tags',
+			'--input',
+		]);
 	});
 
 	it('marks required flags, including required input fields, in their descriptions', () => {
@@ -215,6 +223,52 @@ describe('endpoint commands', () => {
 		]);
 
 		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
+	});
+
+	it('sends --idempotency-key as a header and prints the execution block', async () => {
+		const execution = { id: 'exec-1', replayed: true };
+		fetchMock.mockResolvedValue({ output: { id: 'item-1' }, execution });
+
+		await run([
+			'alpha',
+			'get-item',
+			'--item-id',
+			'i1',
+			'--team-id',
+			'7',
+			'--connection-id',
+			'9',
+			'--input',
+			'{"teamId":"t"}',
+			'--idempotency-key',
+			'order-7',
+		]);
+
+		expect(fetchMock.mock.lastCall?.[1]).toMatchObject({
+			headers: { 'Idempotency-Key': 'order-7' },
+			body: { input: { itemId: 'i1', teamId: 't' } },
+		});
+		expect(lastBody()).not.toHaveProperty('idempotencyKey');
+		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution });
+	});
+
+	it('keeps the key a string even when it looks like a number', async () => {
+		await run([
+			'endpoints',
+			'execute',
+			'--app-name',
+			'alpha',
+			'--app-version',
+			'2',
+			'--endpoint-name',
+			'getItem',
+			'--team-id',
+			'7',
+			'--idempotency-key',
+			'12345',
+		]);
+
+		expect(fetchMock.mock.lastCall?.[1]).toMatchObject({ headers: { 'Idempotency-Key': '12345' } });
 	});
 
 	it('lets separate flags override keys of --input', async () => {

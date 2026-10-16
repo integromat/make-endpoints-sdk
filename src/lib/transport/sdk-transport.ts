@@ -1,6 +1,6 @@
 import type { Make } from '@makehq/sdk';
 
-import type { EndpointOptions, EndpointPointer } from '../shared.ts';
+import type { EndpointExecution, EndpointOptions, EndpointPointer } from '../shared.ts';
 
 import type {
 	Transport,
@@ -30,18 +30,23 @@ export class SdkTransport implements Transport {
 		context: TransportContext,
 		pointer: EndpointPointer,
 		options: EndpointOptions,
-	): Promise<{ output: OUTPUT }> {
-		const response = await this.send<{ output: OUTPUT }>({
+	): Promise<{ output: OUTPUT; execution?: EndpointExecution }> {
+		// The public API takes the key as the `Idempotency-Key` header, so it stays out of the body.
+		const { idempotencyKey, ...bodyOptions } = options;
+		const response = await this.send<{ output: OUTPUT; execution?: EndpointExecution }>({
 			method: 'POST',
 			path: `/endpoints/execute`,
+			...(idempotencyKey === undefined
+				? {}
+				: { headers: { 'Idempotency-Key': idempotencyKey } }),
 			body: {
 				...pointer,
-				...options,
+				...bodyOptions,
 				teamId: context.teamId,
 			},
 		});
 		const { body } = response;
-		const { output } = body;
-		return { output };
+		const { output, execution } = body;
+		return { output, ...(execution === undefined ? {} : { execution }) };
 	}
 }

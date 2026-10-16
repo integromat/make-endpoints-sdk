@@ -47,10 +47,47 @@ describe('SdkTransport driving execute()', () => {
 		});
 	});
 
+	it('sends the idempotency key as the Idempotency-Key header, not in the body', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42, idempotencyKey: 'order-7:retry' });
+
+		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
+			method: 'POST',
+			headers: { 'Idempotency-Key': 'order-7:retry' },
+			body: { ...POINTER, input: INPUT, connectionId: 42, teamId: 77 },
+		});
+	});
+
+	it('sends no headers when there is no idempotency key', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42 });
+
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
+	});
+
 	it('resolves to the wrapped envelope', async () => {
 		const { sdk } = createSdk();
 
 		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toEqual({
+			output: OUTPUT,
+		});
+	});
+
+	it('passes the execution block through', async () => {
+		const execution = { id: 'exec-1', replayed: true, confidential: true } as const;
+		const { sdk } = createSdk(vi.fn().mockResolvedValue({ output: OUTPUT, execution }));
+
+		await expect(
+			sdk.execute(POINTER, { input: INPUT, connectionId: 42, idempotencyKey: 'k' }),
+		).resolves.toStrictEqual({ output: OUTPUT, execution });
+	});
+
+	it('leaves execution out when the server sends none', async () => {
+		const { sdk } = createSdk();
+
+		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toStrictEqual({
 			output: OUTPUT,
 		});
 	});

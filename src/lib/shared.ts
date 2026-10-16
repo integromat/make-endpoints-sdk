@@ -23,12 +23,29 @@ export type EndpointOptions = {
 	 * error data of the execution in its Endpoint execution log, only metadata. Defaults to false.
 	 */
 	confidential?: boolean;
+	/**
+	 * Makes the call safe to retry: within the team, Make runs the endpoint once per key and returns
+	 * the outcome of that run for every repeat of the key. 1 to 255 characters of letters, digits,
+	 * `_`, `.`, `:` and `-`. Travels beside `input`, never inside it.
+	 */
+	idempotencyKey?: string;
+};
+
+/**
+ * What Make reports about an execution; servers that predate it send none. `id` is the execution's
+ * id in the Endpoint execution log. `replayed`: the output comes from the earlier run that holds
+ * the idempotency key, so the endpoint did not run again. `confidential`: Make stored no run data.
+ */
+export type EndpointExecution = {
+	id: string;
+	replayed?: true;
+	confidential?: true;
 };
 
 export type EndpointCaller = <OUTPUT>(
 	pointer: EndpointPointer,
 	options: EndpointOptions,
-) => Promise<{ output: OUTPUT }>;
+) => Promise<{ output: OUTPUT; execution?: EndpointExecution }>;
 
 export type EndpointFunctionThis = {
 	endpointCaller: EndpointCaller;
