@@ -47,23 +47,29 @@ describe('SdkTransport driving execute()', () => {
 		});
 	});
 
-	it('sends the idempotency key as the Idempotency-Key header, not in the body', async () => {
+	it('posts the idempotency key next to the input, not in a header', async () => {
 		const { fetch, sdk } = createSdk();
 
 		await sdk.execute(POINTER, { input: INPUT, connectionId: 42, idempotencyKey: 'order-7:retry' });
 
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
-			headers: { 'Idempotency-Key': 'order-7:retry' },
-			body: { ...POINTER, input: INPUT, connectionId: 42, teamId: 77 },
+			body: {
+				...POINTER,
+				input: INPUT,
+				connectionId: 42,
+				idempotencyKey: 'order-7:retry',
+				teamId: 77,
+			},
 		});
 	});
 
-	it('sends no headers when there is no idempotency key', async () => {
+	it('leaves the idempotency key out of the body when there is none', async () => {
 		const { fetch, sdk } = createSdk();
 
 		await sdk.execute(POINTER, { input: INPUT, connectionId: 42 });
 
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('body.idempotencyKey');
 		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
 	});
 

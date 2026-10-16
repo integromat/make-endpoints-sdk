@@ -31,17 +31,12 @@ export class SdkTransport implements Transport {
 		pointer: EndpointPointer,
 		options: EndpointOptions,
 	): Promise<{ output: OUTPUT; execution?: EndpointExecution }> {
-		// The public API takes the key as the `Idempotency-Key` header, so it stays out of the body.
-		const { idempotencyKey, ...bodyOptions } = options;
 		const response = await this.send<{ output: OUTPUT; execution?: EndpointExecution }>({
 			method: 'POST',
 			path: `/endpoints/execute`,
-			...(idempotencyKey === undefined
-				? {}
-				: { headers: { 'Idempotency-Key': idempotencyKey } }),
 			body: {
 				...pointer,
-				...bodyOptions,
+				...options,
 				teamId: context.teamId,
 			},
 		});

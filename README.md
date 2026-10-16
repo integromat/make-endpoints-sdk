@@ -117,7 +117,7 @@ const { output } = await sdk.execute<GetDocumentOutput>(
 );
 ```
 
-The envelope also carries `execution` (`{ id, replayed?, confidential? }`, the `EndpointExecution` type) when Make reports it. `idempotencyKey` makes a call safe to retry: within the team, Make runs the endpoint once per key and answers a repeat with the first run's outcome, flagged `execution.replayed`. The SDK sends it as the `Idempotency-Key` header. A repeat while the first run is still going fails with 409; a key that can't be replayed (reused for a different request, or held by a confidential run) with 422. The generated methods take neither this option nor `confidential` yet, so use `execute()` for them:
+The envelope also carries `execution` (`{ id, replayed?, confidential? }`, the `EndpointExecution` type) when Make reports it. `idempotencyKey` makes a call safe to retry: within the team, Make runs the endpoint once per key and answers a repeat with the first run's outcome, flagged `execution.replayed`. A repeat while the first run is still going fails with 409; a key that can't be replayed (reused for a different request, or held by a confidential run) with 422. The generated methods take neither this option nor `confidential` yet, so use `execute()` for them:
 
 ```ts
 const { output, execution } = await sdk.execute<GetDocumentOutput>(

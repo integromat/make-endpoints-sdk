@@ -225,7 +225,7 @@ describe('endpoint commands', () => {
 		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
 	});
 
-	it('sends --idempotency-key as a header and prints the execution block', async () => {
+	it('sends --idempotency-key in the body and prints the execution block', async () => {
 		const execution = { id: 'exec-1', replayed: true };
 		fetchMock.mockResolvedValue({ output: { id: 'item-1' }, execution });
 
@@ -244,11 +244,11 @@ describe('endpoint commands', () => {
 			'order-7',
 		]);
 
-		expect(fetchMock.mock.lastCall?.[1]).toMatchObject({
-			headers: { 'Idempotency-Key': 'order-7' },
-			body: { input: { itemId: 'i1', teamId: 't' } },
+		expect(lastBody()).toMatchObject({
+			idempotencyKey: 'order-7',
+			input: { itemId: 'i1', teamId: 't' },
 		});
-		expect(lastBody()).not.toHaveProperty('idempotencyKey');
+		expect(fetchMock.mock.lastCall?.[1]).not.toHaveProperty('headers');
 		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution });
 	});
 
@@ -268,7 +268,7 @@ describe('endpoint commands', () => {
 			'12345',
 		]);
 
-		expect(fetchMock.mock.lastCall?.[1]).toMatchObject({ headers: { 'Idempotency-Key': '12345' } });
+		expect(lastBody()).toMatchObject({ idempotencyKey: '12345' });
 	});
 
 	it('lets separate flags override keys of --input', async () => {

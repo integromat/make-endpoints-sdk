@@ -214,7 +214,7 @@ describe('endpoint tool execute', () => {
 		).rejects.toThrow('confidential must be a boolean.');
 	});
 
-	it('forwards idempotencyKey as a header, never in the body or the input', async () => {
+	it('forwards idempotencyKey as its own body field, never inside the input', async () => {
 		const { fetch, make } = createMake();
 
 		await getTool('alpha_get-item').execute(make, {
@@ -226,13 +226,12 @@ describe('endpoint tool execute', () => {
 		});
 
 		expect(fetch.mock.calls[0]?.[1]).toMatchObject({
-			headers: { 'Idempotency-Key': 'order-7' },
-			body: { input: { itemId: 'item-1', teamId: 'field' } },
+			body: { idempotencyKey: 'order-7', input: { itemId: 'item-1', teamId: 'field' } },
 		});
-		expect(fetch.mock.calls[0]?.[1]?.body).not.toHaveProperty('idempotencyKey');
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
 	});
 
-	it('leaves the idempotency header out when no key is passed', async () => {
+	it('leaves idempotencyKey out of the body when not passed', async () => {
 		const { fetch, make } = createMake();
 
 		await getTool('alpha_get-item').execute(make, {
@@ -242,6 +241,7 @@ describe('endpoint tool execute', () => {
 			itemId: 'item-1',
 		});
 
+		expect(fetch.mock.calls[0]?.[1]?.body).not.toHaveProperty('idempotencyKey');
 		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
 	});
 
@@ -385,13 +385,13 @@ describe('endpoints_execute', () => {
 		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
-			headers: { 'Idempotency-Key': 'order-7' },
 			body: {
 				appName: 'app#custom',
 				appVersion: 3,
 				endpointName: 'doThing',
 				input: { key: 'value' },
 				confidential: true,
+				idempotencyKey: 'order-7',
 				teamId: 7,
 			},
 		});
