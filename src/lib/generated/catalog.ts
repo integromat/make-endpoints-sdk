@@ -3,6 +3,7 @@ import type { EndpointCaller } from '../shared.ts';
 
 import { endpoints as airtableEndpoints } from './airtable/_catalog.ts';
 import { endpoints as asanaEndpoints } from './asana/_catalog.ts';
+import { endpoints as boxEndpoints } from './box/_catalog.ts';
 import { endpoints as calendlyEndpoints } from './calendly/_catalog.ts';
 import { endpoints as canvaEndpoints } from './canva/_catalog.ts';
 import { endpoints as clickupEndpoints } from './clickup/_catalog.ts';
@@ -20,6 +21,7 @@ import { endpoints as googleFormsEndpoints } from './google-forms/_catalog.ts';
 import { endpoints as googleKeepEndpoints } from './google-keep/_catalog.ts';
 import { endpoints as googleSheetsEndpoints } from './google-sheets/_catalog.ts';
 import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts';
+import { endpoints as googleTasksEndpoints } from './google-tasks/_catalog.ts';
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
@@ -33,6 +35,7 @@ import { endpoints as microsoftEmailEndpoints } from './microsoft-email/_catalog
 import { endpoints as microsoftExcelEndpoints } from './microsoft-excel/_catalog.ts';
 import { endpoints as microsoftTeamsEndpoints } from './microsoft-teams/_catalog.ts';
 import { endpoints as mondayEndpoints } from './monday/_catalog.ts';
+import { endpoints as netsuiteEndpoints } from './netsuite/_catalog.ts';
 import { endpoints as notionEndpoints } from './notion/_catalog.ts';
 import { endpoints as onedriveEndpoints } from './onedrive/_catalog.ts';
 import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
@@ -42,6 +45,7 @@ import { endpoints as slackEndpoints } from './slack/_catalog.ts';
 import { endpoints as stripeEndpoints } from './stripe/_catalog.ts';
 import { endpoints as tallyEndpoints } from './tally/_catalog.ts';
 import { endpoints as telegramEndpoints } from './telegram/_catalog.ts';
+import { endpoints as todoistEndpoints } from './todoist/_catalog.ts';
 import { endpoints as typeformEndpoints } from './typeform/_catalog.ts';
 import { endpoints as typesafeEndpoints } from './typesafe/_catalog.ts';
 import { endpoints as youtubeEndpoints } from './youtube/_catalog.ts';
@@ -50,6 +54,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 	return {
 		airtable: airtableEndpoints(endpointCaller),
 		asana: asanaEndpoints(endpointCaller),
+		box: boxEndpoints(endpointCaller),
 		calendly: calendlyEndpoints(endpointCaller),
 		canva: canvaEndpoints(endpointCaller),
 		clickup: clickupEndpoints(endpointCaller),
@@ -67,6 +72,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		googleKeep: googleKeepEndpoints(endpointCaller),
 		googleSheets: googleSheetsEndpoints(endpointCaller),
 		googleSlides: googleSlidesEndpoints(endpointCaller),
+		googleTasks: googleTasksEndpoints(endpointCaller),
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
@@ -80,6 +86,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		microsoftExcel: microsoftExcelEndpoints(endpointCaller),
 		microsoftTeams: microsoftTeamsEndpoints(endpointCaller),
 		monday: mondayEndpoints(endpointCaller),
+		netsuite: netsuiteEndpoints(endpointCaller),
 		notion: notionEndpoints(endpointCaller),
 		onedrive: onedriveEndpoints(endpointCaller),
 		pinterest: pinterestEndpoints(endpointCaller),
@@ -89,6 +96,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		stripe: stripeEndpoints(endpointCaller),
 		tally: tallyEndpoints(endpointCaller),
 		telegram: telegramEndpoints(endpointCaller),
+		todoist: todoistEndpoints(endpointCaller),
 		typeform: typeformEndpoints(endpointCaller),
 		typesafe: typesafeEndpoints(endpointCaller),
 		youtube: youtubeEndpoints(endpointCaller),

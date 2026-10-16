@@ -10,6 +10,62 @@ export type ToolsListInput = {
 
 export type ToolsListOutput = {
 	/**
+	 * Server metadata, including server information and the Make connection label in separate namespaces.
+	 */
+	_meta?: {
+		/**
+		 * Metadata supplied by Make. Server-supplied values in this namespace are replaced.
+		 */
+		'com.make/mcp-client'?: {
+			/**
+			 * The user's Make connection label. Separate from the server-reported name. Omitted when unavailable.
+			 */
+			connectionLabel?: string;
+		};
+		/**
+		 * Server-supplied response metadata, with MCP initialisation metadata as a fallback for older servers. This is not a verified identity. Omitted when unavailable.
+		 */
+		'io.modelcontextprotocol/serverInfo'?: {
+			/**
+			 * Server name intended for programmatic use. Use it for display when title is absent.
+			 */
+			name: string;
+			/**
+			 * Version of the server implementation.
+			 */
+			version: string;
+			/**
+			 * Optional description of the server and its capabilities.
+			 */
+			description?: string;
+			/**
+			 * Optional URL of the server's website.
+			 */
+			websiteUrl?: string;
+			/**
+			 * Optional icons the server publishes for display.
+			 */
+			icons?: {
+				/**
+				 * URL or data URI of the icon.
+				 */
+				src: string;
+				/**
+				 * Optional MIME type of the icon.
+				 */
+				mimeType?: string;
+				/**
+				 * Optional supported sizes, such as 48x48 or any for scalable icons.
+				 */
+				sizes?: string[];
+				/**
+				 * Optional background theme: light or dark. When absent, the icon supports either theme.
+				 */
+				theme?: string;
+			}[];
+		};
+	};
+	/**
 	 * Tools the server exposes. Every tool is returned as the server sent it, so a tool can carry fields this list does not name.
 	 */
 	tools?: {
@@ -51,15 +107,11 @@ export type ToolsListOutput = {
 	 * Present when more tools are available. Pass it as `cursor` to get the next page.
 	 */
 	nextCursor?: string;
-	/**
-	 * Metadata the server attached to the response.
-	 */
-	_meta?: Record<string, JSONValue>;
 };
 
 /**
  * List tools
- * Returns the tools the connected MCP server offers.
+ * Returns the tools and server information the connected MCP server reports.
  */
 export async function toolsList(
 	this: EndpointFunctionThis,

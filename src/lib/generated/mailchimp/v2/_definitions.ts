@@ -8,6 +8,8 @@ export const definitions: EndpointDefinition[] = [
 		endpointName: 'arbitraryCall',
 		label: 'Arbitrary call',
 		description: 'Performs an arbitrary authorized API call.',
+		context:
+			'---\nname: arbitraryCall\ndescription: Performs an arbitrary authorized API call.\n---\n\n# Arbitrary call\n\nSends one HTTP request to the Mailchimp Marketing API. The host comes from the connection (`connection.apiEndpoint`, for example `https://us1.api.mailchimp.com`). The path is appended after `/3.0/`. Put the path in `url`, for example `/ping`.\n\nWorks with Mailchimp (`mailchimp2`) and Mailchimp (Legacy) (`mailchimp`). This endpoint adds no extra scope.\n\nCheap read: method `GET`, url `/ping`, no body and no query string.\n\nDocs: https://mailchimp.com/developer/marketing/api/\n\n`qs` becomes the query string. `body` is the JSON body and is ignored for `GET`. Do not send an Authorization header; the connection adds it.',
 		accounts: { mailchimp: { scope: [] }, mailchimp2: { scope: [] } },
 		annotations: {
 			readOnlyHint: false,
@@ -22,7 +24,7 @@ export const definitions: EndpointDefinition[] = [
 				url: {
 					type: 'string',
 					description:
-						'Enter a path relative to `{you_mailchimp_domain.com}/3.0`.\ne.g.`/campaigns`',
+						'Enter a path relative to the connection host, for example `https://us1.api.mailchimp.com/3.0`. For example, `/ping`.',
 				},
 				method: {
 					type: 'string',

@@ -1,0 +1,15651 @@
+// Generated file. Do not edit by hand.
+import type { EndpointDefinition } from '../../../shared.ts';
+
+export const definitions: EndpointDefinition[] = [
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'arbitraryCall',
+		label: 'Arbitrary call',
+		description: 'Performs an arbitrary authorized API call.',
+		context:
+			'---\nname: arbitraryCall\ndescription: Performs an arbitrary authorized API call.\n---\n\nThis Endpoint is not scoped to a single route — it forwards an arbitrary call (method, path, query string,\nheaders and body) to the Box API, mirroring the "Make an API Call" module.\n\nThe base URL is `https://api.box.com`. Provide the remaining path in the URL parameter\n(e.g. `/2.0/users/me`). Authentication is handled automatically via the app\'s connection.\n\nRefer to the [Box API reference](https://developer.box.com/reference/) for available\nendpoints, required parameters, and response schemas.\n',
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: true,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				url: {
+					type: 'string',
+					description:
+						'Enter the part of the URL that comes after `https://api.box.com`. For example, `/2.0/users/me`.',
+				},
+				method: {
+					type: 'string',
+					description: 'The HTTP request method.',
+					enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+				},
+				headers: {
+					type: 'array',
+					description:
+						"The HTTP request headers. You don't have to add authorization headers; we already did that for you.",
+					items: {
+						type: 'object',
+						properties: {
+							key: { type: 'string', description: 'The HTTP request header key.' },
+							value: {
+								type: 'string',
+								description: 'The HTTP request header value.',
+							},
+						},
+						required: [],
+					},
+				},
+				qs: {
+					type: 'array',
+					description: 'The HTTP request query parameters.',
+					items: {
+						type: 'object',
+						properties: {
+							key: {
+								type: 'string',
+								description: "The HTTP request query parameter's key.",
+							},
+							value: {
+								type: 'string',
+								description: "The HTTP request query parameter's value.",
+							},
+						},
+						required: [],
+					},
+				},
+				body: {
+					description:
+						'The HTTP request body. This input will be ignored if the HTTP request method is `GET`.',
+				},
+			},
+			required: ['url', 'method'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				body: { description: 'The HTTP response body.' },
+				headers: {
+					type: 'object',
+					description: 'The HTTP response headers.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				statusCode: { type: 'number', description: 'The HTTP response status code.' },
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'cancelSignRequest',
+		label: 'Cancel a sign request',
+		description: 'Cancels a Box Sign request that has not been completed yet.',
+		context:
+			"---\nname: cancelSignRequest\ndescription: Cancels a Box Sign request that has not been completed yet.\n---\n\nCancels a sign request.\n\nThis Endpoint wraps `POST /sign_requests/{sign_request_id}/cancel` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Only requests that are still in progress can be cancelled; signers are notified. The response is the updated sign request with `status` set to `cancelled`.\n\nReference: [Cancel Box Sign request](https://developer.box.com/reference/post-sign-requests-id-cancel/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: true,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				sign_request_id: {
+					type: 'string',
+					description: 'The ID of the signature request.',
+				},
+				reason: {
+					type: 'string',
+					description: 'An optional reason for cancelling the sign request.',
+				},
+			},
+			required: ['sign_request_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				is_document_preparation_needed: {
+					type: 'boolean',
+					description:
+						'Indicates if the sender should receive a `prepare_url` in the response to complete document preparation using the UI.',
+				},
+				redirect_url: {
+					type: 'string',
+					description:
+						'When specified, the signature request will be redirected to this url when a document is signed.',
+				},
+				declined_redirect_url: {
+					type: 'string',
+					description:
+						'The uri that a signer will be redirected to after declining to sign a document.',
+				},
+				are_text_signatures_enabled: {
+					type: 'boolean',
+					description: 'Disables the usage of signatures generated by typing (text).',
+				},
+				email_subject: {
+					type: 'string',
+					description:
+						'Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+				},
+				email_message: {
+					type: 'string',
+					description:
+						'Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+				},
+				are_reminders_enabled: {
+					type: 'boolean',
+					description:
+						'Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.',
+				},
+				name: { type: 'string', description: 'Name of the signature request.' },
+				prefill_tags: {
+					type: 'array',
+					description:
+						"When a document contains sign-related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.",
+					items: {
+						type: 'object',
+						properties: {
+							document_tag_id: {
+								type: 'string',
+								description:
+									'This references the ID of a specific tag contained in a file of the signature request.',
+							},
+							text_value: { type: 'string', description: 'Text prefill value.' },
+							checkbox_value: {
+								type: 'boolean',
+								description: 'Checkbox prefill value.',
+							},
+							date_value: { type: 'string', description: 'Date prefill value.' },
+						},
+						required: [],
+					},
+				},
+				days_valid: {
+					type: 'number',
+					description:
+						'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+				},
+				external_id: {
+					type: 'string',
+					description:
+						'This can be used to reference an ID in an external system that the sign request is related to.',
+				},
+				template_id: {
+					type: 'string',
+					description:
+						'When a signature request is created from a template this field will indicate the id of that template.',
+				},
+				external_system_name: {
+					type: 'string',
+					description:
+						'Used as an optional system name to appear in the signature log next to the signers who have been assigned the `embed_url_external_id`.',
+				},
+				request_flow: {
+					type: 'string',
+					description:
+						'The flow type of the sign request. Values can include `standard` or `cfr11`. When not specified during creation, a default is chosen based on admin settings.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `sign-request`. One of `sign-request`.',
+				},
+				source_files: {
+					type: 'array',
+					description:
+						'List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description: 'The value will always be `file`. One of `file`.',
+							},
+						},
+						required: [],
+					},
+				},
+				signers: {
+					type: 'array',
+					description: 'Array of signers for the signature request.',
+					items: {
+						type: 'object',
+						properties: {
+							email: {
+								type: 'string',
+								description:
+									'Email address of the signer. The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.',
+							},
+							role: {
+								type: 'string',
+								description:
+									'Defines the role of the signer in the signature request. A `signer` must sign the document and an `approver` must approve the document. A `final_copy_reader` only receives the final signed document and signing log. One of `signer`, `approver`, `final_copy_reader`.',
+							},
+							is_in_person: {
+								type: 'boolean',
+								description:
+									'Used in combination with an embed URL for a sender. After the sender signs, they are redirected to the next `in_person` signer.',
+							},
+							order: { type: 'number', description: 'Order of the signer.' },
+							embed_url_external_user_id: {
+								type: 'string',
+								description:
+									'User ID for the signer in an external application responsible for authentication when accessing the embed URL.',
+							},
+							redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirected to after signing a document. Defining this URL overrides default or global redirect URL settings for a specific signer. If no declined redirect URL is specified, this URL will be used for decline actions as well.',
+							},
+							declined_redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirect to after declining to sign a document. Defining this URL overrides default or global declined redirect URL settings for a specific signer.',
+							},
+							login_required: {
+								type: 'boolean',
+								description:
+									'If set to true, the signer will need to log in to a Box account before signing the request. If the signer does not have an existing account, they will have the option to create a free Box account.',
+							},
+							verification_phone_number: {
+								type: 'string',
+								description:
+									'If set, this phone number will be used to verify the signer via two-factor authentication before they are able to sign the document. Cannot be selected in combination with `login_required`.',
+							},
+							signer_group_id: {
+								type: 'string',
+								description:
+									'If set, signers who have the same value will be assigned to the same input and to the same signer group. A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be used/accessed within this Sign Request. A signer group is expected to have more than one signer. If the provided value is only used for one signer, this value will be ignored and request will be handled as it was intended for an individual signer. The value provided can be any string and only used to determine which signers belongs to same group. A successful response will provide a generated UUID value instead for signers in the same signer group.',
+							},
+							suppress_notifications: {
+								type: 'boolean',
+								description:
+									'If true, no emails about the sign request will be sent.',
+							},
+							language: {
+								type: 'string',
+								description:
+									'The language of the user, formatted in modified version of the [ISO 639-1](https://developer.box.com/guides/api-calls/language-codes) format.',
+							},
+							has_viewed_document: {
+								type: 'boolean',
+								description: 'Set to `true` if the signer views the document.',
+							},
+							signer_decision: {
+								type: 'object',
+								description: 'Final decision made by the signer.',
+								properties: {
+									type: {
+										type: 'string',
+										description:
+											'Type of decision made by the signer. One of `signed`, `declined`.',
+									},
+									finalized_at: {
+										type: 'string',
+										description: 'Date and Time that the decision was made.',
+									},
+									additional_info: {
+										type: 'string',
+										description:
+											'Additional info about the decision, such as the decline reason from the signer.',
+									},
+								},
+								required: [],
+							},
+							inputs: {
+								type: 'array',
+								description: 'The inputs.',
+								items: {
+									type: 'object',
+									properties: {
+										document_tag_id: {
+											type: 'string',
+											description:
+												'This references the ID of a specific tag contained in a file of the signature request.',
+										},
+										text_value: {
+											type: 'string',
+											description: 'Text prefill value.',
+										},
+										checkbox_value: {
+											type: 'boolean',
+											description: 'Checkbox prefill value.',
+										},
+										date_value: {
+											type: 'string',
+											description: 'Date prefill value.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'Type of input. One of `signature`, `date`, `text`, `checkbox`, `radio`, `dropdown`.',
+										},
+										content_type: {
+											type: 'string',
+											description:
+												'Content type of input. One of `signature`, `initial`, `stamp`, `date`, `checkbox`, `text`, `full_name`, `first_name`, `last_name`, `company`, `title`, `email`, `attachment`, `radio`, `dropdown`.',
+										},
+										page_index: {
+											type: 'number',
+											description: 'Index of page that the input is on.',
+										},
+										read_only: {
+											type: 'boolean',
+											description:
+												'Indicates whether this input is read-only (cannot be modified by signers).',
+										},
+										validation: {
+											type: 'object',
+											description:
+												'Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.',
+											properties: {
+												validation_type: {
+													type: 'string',
+													description:
+														'Validates that the text input is an email address. One of `email`.',
+												},
+												custom_regex: {
+													type: 'string',
+													description:
+														'Regular expression used for validation.',
+												},
+												custom_error_message: {
+													type: 'string',
+													description:
+														'Error message shown if input fails custom regular expression validation.',
+												},
+											},
+											required: [],
+										},
+										reason: {
+											type: 'string',
+											description:
+												"The reason for the signer's input, applicable to signature or initial content types in a `cfr11` request flow. The value is `null` when not applicable.",
+										},
+										is_validated: {
+											type: 'boolean',
+											description:
+												"Indicates whether the signer's input has been validated through re-authentication. Applicable only for signature or initial content types in a `cfr11` request flow. The value is `null` for standard request flows or non-applicable input types.",
+										},
+									},
+									required: [],
+								},
+							},
+							embed_url: {
+								type: 'string',
+								description: 'URL to direct a signer to for signing.',
+							},
+							iframeable_embed_url: {
+								type: 'string',
+								description:
+									'This URL is specifically designed for signing documents within an HTML `iframe` tag. It will be returned in the response only if the `embed_url_external_user_id` parameter was passed in the `create Box Sign request` call.',
+							},
+							attachments: {
+								type: 'array',
+								description: 'Attachments that the signer uploaded.',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description: 'Identifier of the attachment file.',
+										},
+										name: {
+											type: 'string',
+											description: 'Display name of the attachment file.',
+										},
+									},
+									required: [],
+								},
+							},
+						},
+						required: [],
+					},
+				},
+				signature_color: {
+					type: 'string',
+					description: 'Force a specific color for the signature (blue, black, or red).',
+				},
+				id: { type: 'string', description: 'Box Sign request ID.' },
+				prepare_url: {
+					type: 'string',
+					description:
+						'This URL is returned if `is_document_preparation_needed` is set to `true` in the request. The parameter is used to prepare the signature request using the UI. The signature request is not sent until the preparation phase is complete.',
+				},
+				signing_log: {
+					type: 'object',
+					description:
+						'A mini representation of a file, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `file`. One of `file`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the file.' },
+						sha1: {
+							type: 'string',
+							description:
+								'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+						},
+						file_version: {
+							type: 'object',
+							description:
+								'A mini representation of a file version, used when nested within another resource.',
+							properties: {
+								id: {
+									type: 'string',
+									description:
+										'The unique identifier that represent a file version.',
+								},
+								type: {
+									type: 'string',
+									description:
+										'The value will always be `file_version`. One of `file_version`.',
+								},
+								sha1: {
+									type: 'string',
+									description: 'The SHA1 hash of this version of the file.',
+								},
+							},
+							required: [],
+						},
+					},
+					required: [],
+				},
+				status: {
+					type: 'string',
+					description:
+						'Describes the status of the signature request. One of `converting`, `created`, `sent`, `viewed`, `signed`, `cancelled`, `declined`, `error`, `error_converting`, `error_sending`, `expired`, `finalizing`, `error_finalizing`.',
+				},
+				sign_files: {
+					type: 'object',
+					description:
+						'List of files that will be signed, which are copies of the original source files. A new version of these files are created as signers sign and can be downloaded at any point in the signing process.',
+					properties: {
+						files: {
+							type: 'array',
+							description: 'The files.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						is_ready_for_download: {
+							type: 'boolean',
+							description:
+								'Indicates whether the `sign_files` documents are processing and the PDFs may be out of date. A change to any document requires processing on all `sign_files`. We recommended waiting until processing is finished (and this value is true) before downloading the PDFs.',
+						},
+					},
+					required: [],
+				},
+				auto_expire_at: {
+					type: 'string',
+					description:
+						'Uses `days_valid` to calculate the date and time, in GMT, the sign request will expire if unsigned.',
+				},
+				parent_folder: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				collaborator_level: {
+					type: 'string',
+					description:
+						'The collaborator level of the user to the sign request. Values can include "owner", "editor", and "viewer".',
+				},
+				short_id: { type: 'string', description: 'Short identifier for the sign request.' },
+				created_at: {
+					type: 'string',
+					description: 'Timestamp marking when the sign request was created.',
+				},
+				finished_at: {
+					type: 'string',
+					description: 'Timestamp indicating when all signing actions completed.',
+				},
+				error_code: {
+					type: 'string',
+					description:
+						'When the sign request is in an error state, identifies the specific reason. Null when no error code applies.',
+				},
+				sender_email: {
+					type: 'string',
+					description: 'The email address of the sender of the sign request.',
+				},
+				sender_id: {
+					type: 'number',
+					description: 'The user ID of the sender of the sign request.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'copyFolder',
+		label: 'Copy a folder',
+		description: 'Creates a copy of a folder within a destination folder.',
+		context:
+			"---\nname: copyFolder\ndescription: Creates a copy of a folder within a destination folder.\n---\n\nCreates a copy of a folder within a destination folder. The original folder will not be changed.\n\nThis Endpoint wraps `POST /folders/{folder_id}/copy` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- The original folder is left unchanged. If a folder with the same name already exists in the destination, Box returns a `409 item_name_in_use` error unless you provide a different `name`. The root folder (`0`) cannot be copied.\n\nReference: [Copy folder](https://developer.box.com/reference/post-folders-id-copy/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier of the folder to copy. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder with the ID `0` can not be copied.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				name: {
+					type: 'string',
+					description:
+						'An optional new name for the copied folder. There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\\`), as well as names with trailing spaces are prohibited. Additionally, the names `.` and `..` are not allowed either.',
+					minimum: 1,
+					maximum: 255,
+				},
+				parent: {
+					type: 'object',
+					description: 'The destination folder to copy the folder to.',
+					properties: { id: { type: 'string', description: 'The ID of parent folder.' } },
+					required: ['id'],
+				},
+			},
+			required: ['folder_id', 'parent'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `folder`. One of `folder`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the folder.' },
+				created_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was created. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				modified_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was last updated. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				description: {
+					type: 'string',
+					description: 'The optional description of this folder.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The folder size in bytes. Be careful parsing this integer as its value can get very large.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this folder was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this folder is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was originally created.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was last updated.',
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description:
+						'The `folder_upload_email` parameter is not `null` if one of the following options is **true**: * The **Allow uploads to this folder via email** and the **Only allow email uploads from collaborators in this folder** are [enabled for a folder in the Admin Console](https://support.box.com/hc/en-us/articles/360043697534-Upload-to-Box-Through-Email), and the user has at least **Upload** permissions granted. * The **Allow uploads to this folder via email** setting is enabled for a folder in the Admin Console, and the **Only allow email uploads from collaborators in this folder** setting is deactivated (unchecked). If the conditions are not met, the parameter will have the following value: `folder_upload_email: null`.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address. One of `open`, `collaborators`.',
+						},
+						email: {
+							type: 'string',
+							description: 'The optional upload email address for this folder.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				item_collection: {
+					type: 'object',
+					description:
+						'A list of files, folders, and web links in their mini representation.',
+					properties: {
+						limit: {
+							type: 'number',
+							description:
+								'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+						},
+						next_marker: {
+							type: 'string',
+							description: 'The marker for the start of the next page of results.',
+						},
+						prev_marker: {
+							type: 'string',
+							description:
+								'The marker for the start of the previous page of results.',
+						},
+						total_count: {
+							type: 'number',
+							description:
+								'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						offset: {
+							type: 'number',
+							description:
+								'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						order: {
+							type: 'array',
+							description:
+								'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+							items: {
+								type: 'object',
+								properties: {
+									by: { type: 'string', description: 'The field to order by.' },
+									direction: {
+										type: 'string',
+										description:
+											'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+									},
+								},
+								required: [],
+							},
+						},
+						entries: {
+							type: 'array',
+							description: 'The items in this collection.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+									description: {
+										type: 'string',
+										description:
+											'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+									},
+									size: {
+										type: 'number',
+										description:
+											'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+									},
+									path_collection: {
+										type: 'object',
+										description: 'A list of parent folders for an item.',
+										properties: {
+											total_count: {
+												type: 'number',
+												description: 'The number of folders in this list.',
+											},
+											entries: {
+												type: 'array',
+												description: 'The parent folders for this item.',
+												items: {
+													type: 'object',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was created on Box.',
+									},
+									modified_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was last updated on Box.',
+									},
+									trashed_at: {
+										type: 'string',
+										description:
+											'The time at which this file was put in the trash.',
+									},
+									purged_at: {
+										type: 'string',
+										description:
+											'The time at which this file is expected to be purged from the trash.',
+									},
+									content_created_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+									},
+									content_modified_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									modified_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									owned_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									shared_link: {
+										type: 'object',
+										description:
+											'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+											},
+											download_url: {
+												type: 'string',
+												description:
+													'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+											},
+											vanity_url: {
+												type: 'string',
+												description:
+													'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+											},
+											vanity_name: {
+												type: 'string',
+												description:
+													'The custom name of a shared link, as used in the `vanity_url` field.',
+											},
+											access: {
+												type: 'string',
+												description:
+													'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+											},
+											effective_access: {
+												type: 'string',
+												description:
+													'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+											},
+											effective_permission: {
+												type: 'string',
+												description:
+													'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+											},
+											unshared_at: {
+												type: 'string',
+												description:
+													'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+											},
+											is_password_enabled: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link requires a password to access the item.',
+											},
+											permissions: {
+												type: 'object',
+												description:
+													'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+												properties: {
+													can_download: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+													},
+													can_preview: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+													},
+													can_edit: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+													},
+												},
+												required: [],
+											},
+											download_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been downloaded.',
+											},
+											preview_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been previewed.',
+											},
+										},
+										required: [],
+									},
+									parent: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested under another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+										},
+										required: [],
+									},
+									item_status: {
+										type: 'string',
+										description:
+											'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+									},
+									version_number: {
+										type: 'string',
+										description: 'The version number of this file.',
+									},
+									comment_count: {
+										type: 'number',
+										description: 'The number of comments on this file.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'The permissions that the authenticated user has for a file.',
+										properties: {
+											can_delete: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can delete this item.',
+											},
+											can_download: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can download this item.',
+											},
+											can_invite_collaborator: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+											},
+											can_rename: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can rename this item.',
+											},
+											can_set_share_access: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can change the access level of an existing shared link on this item.',
+											},
+											can_share: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can create a shared link for this item.',
+											},
+											can_annotate: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place annotations on this file.',
+											},
+											can_comment: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place comments on this file.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can preview this file.',
+											},
+											can_upload: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can upload a new version of this file.',
+											},
+											can_view_annotations_all: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view all annotations placed on this file.',
+											},
+											can_view_annotations_self: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view annotations placed by themselves on this file.',
+											},
+											can_apply_watermark: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can apply a watermark to this file.',
+											},
+										},
+										required: [],
+									},
+									tags: {
+										type: 'array',
+										description:
+											"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+										items: { type: 'string', description: 'The tag.' },
+									},
+									lock: {
+										type: 'object',
+										description:
+											'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this lock.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `lock`. One of `lock`.',
+											},
+											created_by: {
+												type: 'object',
+												description:
+													'A mini representation of a user, as can be returned when nested within other resources.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier for this user.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `user`. One of `user`.',
+													},
+													name: {
+														type: 'string',
+														description:
+															'The display name of this user.',
+													},
+													login: {
+														type: 'string',
+														description:
+															'The primary email address of this user.',
+													},
+												},
+												required: [],
+											},
+											created_at: {
+												type: 'string',
+												description: 'The time this lock was created at.',
+											},
+											expired_at: {
+												type: 'string',
+												description:
+													'The time this lock is to expire at, which might be in the past.',
+											},
+											is_download_prevented: {
+												type: 'boolean',
+												description:
+													'Whether or not the file can be downloaded while locked.',
+											},
+											app_type: {
+												type: 'string',
+												description:
+													'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+											},
+										},
+										required: [],
+									},
+									extension: {
+										type: 'string',
+										description:
+											'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+									},
+									is_package: {
+										type: 'boolean',
+										description:
+											'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+									},
+									expiring_embed_link: {
+										type: 'object',
+										description: 'An expiring Box Embed Link.',
+										properties: {
+											access_token: {
+												type: 'string',
+												description: 'The requested access token.',
+											},
+											expires_in: {
+												type: 'number',
+												description:
+													'The time in seconds by which this token will expire.',
+											},
+											token_type: {
+												type: 'string',
+												description:
+													'The type of access token returned. One of `bearer`.',
+											},
+											restricted_to: {
+												type: 'array',
+												description:
+													'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+												items: {
+													type: 'object',
+													properties: {
+														scope: {
+															type: 'string',
+															description:
+																'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+														},
+														object: {
+															type: 'object',
+															description:
+																'The file or folder resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																},
+																etag: {
+																	type: 'string',
+																	description:
+																		'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `folder`. One of `folder`.',
+																},
+																sequence_id: {
+																	type: 'string',
+																	description:
+																		'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																},
+																name: {
+																	type: 'string',
+																	description:
+																		'The name of the folder.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+																},
+																file_version: {
+																	type: 'object',
+																	description:
+																		'A mini representation of a file version, used when nested within another resource.',
+																	properties: {
+																		id: {
+																			type: 'string',
+																			description:
+																				'The unique identifier that represent a file version.',
+																		},
+																		type: {
+																			type: 'string',
+																			description:
+																				'The value will always be `file_version`. One of `file_version`.',
+																		},
+																		sha1: {
+																			type: 'string',
+																			description:
+																				'The SHA1 hash of this version of the file.',
+																		},
+																	},
+																	required: [],
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											url: {
+												type: 'string',
+												description:
+													'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+											},
+										},
+										required: [],
+									},
+									watermark_info: {
+										type: 'object',
+										description:
+											'Details about the watermark applied to this item.',
+										properties: {
+											is_watermarked: {
+												type: 'boolean',
+												description:
+													'Specifies if this item has a watermark applied.',
+											},
+											is_watermark_inherited: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+											},
+											is_watermarked_by_access_policy: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is enforced by an access policy.',
+											},
+										},
+										required: [],
+									},
+									is_accessible_via_shared_link: {
+										type: 'boolean',
+										description:
+											'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+									},
+									allowed_invitee_roles: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+										},
+									},
+									is_externally_owned: {
+										type: 'boolean',
+										description:
+											'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+									},
+									has_collaborations: {
+										type: 'boolean',
+										description:
+											'Specifies if this file has any other collaborators.',
+									},
+									metadata: {
+										type: 'object',
+										description:
+											'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+										properties: {},
+										required: [],
+										additionalProperties: true,
+									},
+									expires_at: {
+										type: 'string',
+										description: 'When the file will automatically be deleted.',
+									},
+									representations: {
+										type: 'object',
+										description: 'A list of file representations.',
+										properties: {
+											entries: {
+												type: 'array',
+												description: 'A list of files.',
+												items: {
+													type: 'object',
+													properties: {
+														content: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to actually fetch the representation.',
+															properties: {
+																url_template: {
+																	type: 'string',
+																	description:
+																		"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+																},
+															},
+															required: [],
+														},
+														info: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to fetch more info on this representation.',
+															properties: {
+																url: {
+																	type: 'string',
+																	description:
+																		'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+																},
+															},
+															required: [],
+														},
+														properties: {
+															type: 'object',
+															description:
+																'An object containing the size and type of this presentation.',
+															properties: {
+																dimensions: {
+																	type: 'string',
+																	description:
+																		'The width by height size of this representation in pixels.',
+																},
+																paged: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation is build up out of multiple pages.',
+																},
+																thumb: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation can be used as a thumbnail of the file.',
+																},
+															},
+															required: [],
+														},
+														representation: {
+															type: 'string',
+															description:
+																'Indicates the file type of the returned representation.',
+														},
+														status: {
+															type: 'object',
+															description:
+																'An object containing the status of this representation.',
+															properties: {
+																state: {
+																	type: 'string',
+																	description:
+																		'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									classification: {
+										type: 'object',
+										description: 'The classification applied to an item.',
+										properties: {
+											name: {
+												type: 'string',
+												description: 'The name of the classification.',
+											},
+											definition: {
+												type: 'string',
+												description:
+													'An explanation of the meaning of this classification.',
+											},
+											color: {
+												type: 'string',
+												description:
+													'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+											},
+										},
+										required: [],
+									},
+									uploader_display_name: {
+										type: 'string',
+										description:
+											'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+									},
+									disposition_at: {
+										type: 'string',
+										description:
+											'The retention expiration timestamp for the given file.',
+									},
+									shared_link_permission_options: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+										},
+									},
+									is_associated_with_app_item: {
+										type: 'boolean',
+										description:
+											'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+									},
+									collections: {
+										type: 'array',
+										description:
+											'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier for this collection.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `collection`. One of `collection`.',
+												},
+												name: {
+													type: 'string',
+													description:
+														'The name of the collection. One of `Favorites`.',
+												},
+												collection_type: {
+													type: 'string',
+													description:
+														'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+												},
+											},
+											required: [],
+										},
+									},
+									is_download_available: {
+										type: 'boolean',
+										description:
+											"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+									},
+									authenticated_download_url: {
+										type: 'string',
+										description:
+											'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+									},
+									allowed_shared_link_access_levels: {
+										type: 'array',
+										description:
+											'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+										items: {
+											type: 'string',
+											description:
+												'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+										},
+									},
+									url: {
+										type: 'string',
+										description: 'The URL this web link points to.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive. One of `synced`, `not_synced`, `partially_synced`.",
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this folder has any other collaborators.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a folder.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description: 'Specifies if the user can upload into this folder.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this folder and its contents.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				can_non_owners_invite: {
+					type: 'boolean',
+					description:
+						'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this folder is owned by a user outside of the authenticated enterprise.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				is_collaboration_restricted_to_enterprise: {
+					type: 'boolean',
+					description:
+						'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this folder. The list depends on item policy and user authorization. For some folders, like the root folder, this is always empty as sharing is not allowed at that level.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this folder.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the folder can be accessed with the direct shared link or a shared link to a parent folder.',
+				},
+				can_non_owners_view_collaborators: {
+					type: 'boolean',
+					description:
+						'Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators.',
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the folder or any ancestor of the folder is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the folder.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this folder belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'createComment',
+		label: 'Create a comment',
+		description: 'Adds a comment to a file or replies to an existing comment.',
+		context:
+			"---\nname: createComment\ndescription: Adds a comment to a file or replies to an existing comment.\n---\n\nAdds a comment by the user to a specific file, or as a reply to an other comment.\n\nThis Endpoint wraps `POST /comments` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Set `item.type` to `file` to comment on a file, or to `comment` to reply to an existing comment (`item.id` is then the comment ID). Use `tagged_message` instead of `message` when you want to @-mention a user with the `@[user_id:name]` syntax; the mentioned user receives an email notification.\n\nReference: [Create comment](https://developer.box.com/reference/post-comments/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				message: {
+					type: 'string',
+					description:
+						'The text of the comment. To mention a user, use the `tagged_message` parameter instead.',
+				},
+				tagged_message: {
+					type: 'string',
+					description:
+						"The text of the comment, including `@[user_id:name]` somewhere in the message to mention another user, which will send them an email notification, letting them know they have been mentioned. The `user_id` is the target user's ID, where the `name` can be any custom phrase. In the Box UI this name will link to the user's profile. If you are not mentioning another user, use `message` instead.",
+				},
+				item: {
+					type: 'object',
+					description: 'The item to attach the comment to.',
+					properties: {
+						id: { type: 'string', description: 'The ID of the item.' },
+						type: {
+							type: 'string',
+							description:
+								'The type of the item that this comment will be placed on.',
+							enum: ['file', 'comment'],
+						},
+					},
+					required: ['id', 'type'],
+				},
+			},
+			required: ['message', 'item'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: { type: 'string', description: 'The unique identifier for this comment.' },
+				type: {
+					type: 'string',
+					description: 'The value will always be `comment`. One of `comment`.',
+				},
+				is_reply_comment: {
+					type: 'boolean',
+					description: 'Whether or not this comment is a reply to another comment.',
+				},
+				message: {
+					type: 'string',
+					description: 'The text of the comment, as provided by the user.',
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				created_at: { type: 'string', description: 'The time this comment was created.' },
+				modified_at: {
+					type: 'string',
+					description: 'The time this comment was last modified.',
+				},
+				item: {
+					type: 'object',
+					description: 'The bare basic reference for an object.',
+					properties: {
+						id: {
+							type: 'string',
+							description: 'The unique identifier for this object.',
+						},
+						type: { type: 'string', description: 'The type for this object.' },
+					},
+					required: [],
+				},
+				tagged_message: {
+					type: 'string',
+					description:
+						"The string representing the comment text with @mentions included. @mention format is @[id:username] where `id` is user's Box ID and `username` is their display name.",
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'createFileMetadataInstance',
+		label: 'Create a file metadata instance',
+		description: 'Applies an instance of a metadata template to a file.',
+		context:
+			"---\nname: createFileMetadataInstance\ndescription: Applies an instance of a metadata template to a file.\n---\n\nApplies an instance of a metadata template to a file. In most cases only values that are present in the metadata template will be accepted, except for the `global.properties` template which accepts any key-value pair.\n\nThis Endpoint wraps `POST /files/{file_id}/metadata/{scope}/{template_key}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Use `scope` = `enterprise` for templates defined in your enterprise and `global` for the built-in templates (for example the `properties` template, which accepts arbitrary keys with string values only — numbers, booleans and arrays are rejected with `400 bad_request`). `template_key` is the key of the template, not its display name.\n- To find a template's `template_key` and the keys, types and allowed values of its fields, call **List enterprise metadata templates** (or **List global metadata templates**) and **Get a metadata template**.\n- A file can hold at most one instance of a given template; applying it again returns a `409 tuple_already_exists` error. Use the **Update file metadata** Endpoint to change an existing instance.\n- The response contains the instance with its system fields (`$id`, `$parent`, `$scope`, `$template`, `$version`, `$type`, `$typeVersion`, `$canEdit`) followed by the template fields you set.\n\nReference: [Create metadata instance on file](https://developer.box.com/reference/post-files-id-metadata-id-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				file_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represents a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				scope: {
+					type: 'string',
+					description: 'The scope of the metadata template.',
+					enum: ['global', 'enterprise'],
+				},
+				template_key: { type: 'string', description: 'The name of the metadata template.' },
+				metadata: {
+					description:
+						'An object with one key per metadata template field and the value to set, for example `{"category": "online", "contractValue": 100000}`. Only fields that exist on the template are accepted, except for the `global.properties` template, which accepts any keys but only string values. Multi-select and taxonomy fields take an array of values. Sent as the request body.',
+				},
+			},
+			required: ['file_id', 'scope', 'template_key', 'metadata'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				$parent: {
+					type: 'string',
+					description:
+						'The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.',
+				},
+				$template: { type: 'string', description: 'The name of the template.' },
+				$scope: {
+					type: 'string',
+					description:
+						'An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.',
+				},
+				$version: {
+					type: 'number',
+					description:
+						'The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.',
+				},
+				$canEdit: {
+					type: 'boolean',
+					description: 'Whether the user can edit this metadata instance.',
+				},
+				$id: { type: 'string', description: 'A UUID to identify the metadata instance.' },
+				$type: {
+					type: 'string',
+					description:
+						'A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.',
+				},
+				$typeVersion: {
+					type: 'number',
+					description:
+						'The last-known version of the template of the object. This is an internal system property and should not be used by a client application.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'createFolder',
+		label: 'Create a folder',
+		description: 'Creates a new empty folder within the specified parent folder.',
+		context:
+			"---\nname: createFolder\ndescription: Creates a new empty folder within the specified parent folder.\n---\n\nCreates a new empty folder within the specified parent folder.\n\nThis Endpoint wraps `POST /folders` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Use `parent.id` = `0` to create the folder in the root of the account. Folder names must be unique within the parent folder (case-insensitive) and may not contain `/` or `\\`.\n\nReference: [Create folder](https://developer.box.com/reference/post-folders/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				name: {
+					type: 'string',
+					description:
+						'The name for the new folder. The following restrictions to folder names apply: names containing non-printable ASCII characters, forward and backward slashes (`/`, `\\`), names with trailing spaces, and names `.` and `..` are not allowed. Folder names must be unique within their parent folder. The name check is case-insensitive, so a folder named `New Folder` cannot be created in a parent folder that already contains a folder named `new folder`.',
+					minimum: 1,
+					maximum: 255,
+				},
+				parent: {
+					type: 'object',
+					description: 'The parent folder to create the new folder within.',
+					properties: { id: { type: 'string', description: 'The ID of parent folder.' } },
+					required: ['id'],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description: 'The Write Folder Upload Email object.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address.',
+							default: '',
+							enum: ['', 'open', 'collaborators'],
+						},
+					},
+					required: [],
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.",
+					default: '',
+					enum: ['', 'synced', 'not_synced', 'partially_synced'],
+				},
+			},
+			required: ['name', 'parent'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `folder`. One of `folder`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the folder.' },
+				created_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was created. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				modified_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was last updated. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				description: {
+					type: 'string',
+					description: 'The optional description of this folder.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The folder size in bytes. Be careful parsing this integer as its value can get very large.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this folder was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this folder is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was originally created.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was last updated.',
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description:
+						'The `folder_upload_email` parameter is not `null` if one of the following options is **true**: * The **Allow uploads to this folder via email** and the **Only allow email uploads from collaborators in this folder** are [enabled for a folder in the Admin Console](https://support.box.com/hc/en-us/articles/360043697534-Upload-to-Box-Through-Email), and the user has at least **Upload** permissions granted. * The **Allow uploads to this folder via email** setting is enabled for a folder in the Admin Console, and the **Only allow email uploads from collaborators in this folder** setting is deactivated (unchecked). If the conditions are not met, the parameter will have the following value: `folder_upload_email: null`.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address. One of `open`, `collaborators`.',
+						},
+						email: {
+							type: 'string',
+							description: 'The optional upload email address for this folder.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				item_collection: {
+					type: 'object',
+					description:
+						'A list of files, folders, and web links in their mini representation.',
+					properties: {
+						limit: {
+							type: 'number',
+							description:
+								'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+						},
+						next_marker: {
+							type: 'string',
+							description: 'The marker for the start of the next page of results.',
+						},
+						prev_marker: {
+							type: 'string',
+							description:
+								'The marker for the start of the previous page of results.',
+						},
+						total_count: {
+							type: 'number',
+							description:
+								'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						offset: {
+							type: 'number',
+							description:
+								'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						order: {
+							type: 'array',
+							description:
+								'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+							items: {
+								type: 'object',
+								properties: {
+									by: { type: 'string', description: 'The field to order by.' },
+									direction: {
+										type: 'string',
+										description:
+											'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+									},
+								},
+								required: [],
+							},
+						},
+						entries: {
+							type: 'array',
+							description: 'The items in this collection.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+									description: {
+										type: 'string',
+										description:
+											'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+									},
+									size: {
+										type: 'number',
+										description:
+											'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+									},
+									path_collection: {
+										type: 'object',
+										description: 'A list of parent folders for an item.',
+										properties: {
+											total_count: {
+												type: 'number',
+												description: 'The number of folders in this list.',
+											},
+											entries: {
+												type: 'array',
+												description: 'The parent folders for this item.',
+												items: {
+													type: 'object',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was created on Box.',
+									},
+									modified_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was last updated on Box.',
+									},
+									trashed_at: {
+										type: 'string',
+										description:
+											'The time at which this file was put in the trash.',
+									},
+									purged_at: {
+										type: 'string',
+										description:
+											'The time at which this file is expected to be purged from the trash.',
+									},
+									content_created_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+									},
+									content_modified_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									modified_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									owned_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									shared_link: {
+										type: 'object',
+										description:
+											'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+											},
+											download_url: {
+												type: 'string',
+												description:
+													'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+											},
+											vanity_url: {
+												type: 'string',
+												description:
+													'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+											},
+											vanity_name: {
+												type: 'string',
+												description:
+													'The custom name of a shared link, as used in the `vanity_url` field.',
+											},
+											access: {
+												type: 'string',
+												description:
+													'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+											},
+											effective_access: {
+												type: 'string',
+												description:
+													'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+											},
+											effective_permission: {
+												type: 'string',
+												description:
+													'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+											},
+											unshared_at: {
+												type: 'string',
+												description:
+													'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+											},
+											is_password_enabled: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link requires a password to access the item.',
+											},
+											permissions: {
+												type: 'object',
+												description:
+													'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+												properties: {
+													can_download: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+													},
+													can_preview: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+													},
+													can_edit: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+													},
+												},
+												required: [],
+											},
+											download_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been downloaded.',
+											},
+											preview_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been previewed.',
+											},
+										},
+										required: [],
+									},
+									parent: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested under another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+										},
+										required: [],
+									},
+									item_status: {
+										type: 'string',
+										description:
+											'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+									},
+									version_number: {
+										type: 'string',
+										description: 'The version number of this file.',
+									},
+									comment_count: {
+										type: 'number',
+										description: 'The number of comments on this file.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'The permissions that the authenticated user has for a file.',
+										properties: {
+											can_delete: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can delete this item.',
+											},
+											can_download: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can download this item.',
+											},
+											can_invite_collaborator: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+											},
+											can_rename: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can rename this item.',
+											},
+											can_set_share_access: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can change the access level of an existing shared link on this item.',
+											},
+											can_share: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can create a shared link for this item.',
+											},
+											can_annotate: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place annotations on this file.',
+											},
+											can_comment: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place comments on this file.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can preview this file.',
+											},
+											can_upload: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can upload a new version of this file.',
+											},
+											can_view_annotations_all: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view all annotations placed on this file.',
+											},
+											can_view_annotations_self: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view annotations placed by themselves on this file.',
+											},
+											can_apply_watermark: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can apply a watermark to this file.',
+											},
+										},
+										required: [],
+									},
+									tags: {
+										type: 'array',
+										description:
+											"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+										items: { type: 'string', description: 'The tag.' },
+									},
+									lock: {
+										type: 'object',
+										description:
+											'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this lock.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `lock`. One of `lock`.',
+											},
+											created_by: {
+												type: 'object',
+												description:
+													'A mini representation of a user, as can be returned when nested within other resources.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier for this user.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `user`. One of `user`.',
+													},
+													name: {
+														type: 'string',
+														description:
+															'The display name of this user.',
+													},
+													login: {
+														type: 'string',
+														description:
+															'The primary email address of this user.',
+													},
+												},
+												required: [],
+											},
+											created_at: {
+												type: 'string',
+												description: 'The time this lock was created at.',
+											},
+											expired_at: {
+												type: 'string',
+												description:
+													'The time this lock is to expire at, which might be in the past.',
+											},
+											is_download_prevented: {
+												type: 'boolean',
+												description:
+													'Whether or not the file can be downloaded while locked.',
+											},
+											app_type: {
+												type: 'string',
+												description:
+													'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+											},
+										},
+										required: [],
+									},
+									extension: {
+										type: 'string',
+										description:
+											'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+									},
+									is_package: {
+										type: 'boolean',
+										description:
+											'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+									},
+									expiring_embed_link: {
+										type: 'object',
+										description: 'An expiring Box Embed Link.',
+										properties: {
+											access_token: {
+												type: 'string',
+												description: 'The requested access token.',
+											},
+											expires_in: {
+												type: 'number',
+												description:
+													'The time in seconds by which this token will expire.',
+											},
+											token_type: {
+												type: 'string',
+												description:
+													'The type of access token returned. One of `bearer`.',
+											},
+											restricted_to: {
+												type: 'array',
+												description:
+													'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+												items: {
+													type: 'object',
+													properties: {
+														scope: {
+															type: 'string',
+															description:
+																'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+														},
+														object: {
+															type: 'object',
+															description:
+																'The file or folder resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																},
+																etag: {
+																	type: 'string',
+																	description:
+																		'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `folder`. One of `folder`.',
+																},
+																sequence_id: {
+																	type: 'string',
+																	description:
+																		'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																},
+																name: {
+																	type: 'string',
+																	description:
+																		'The name of the folder.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+																},
+																file_version: {
+																	type: 'object',
+																	description:
+																		'A mini representation of a file version, used when nested within another resource.',
+																	properties: {
+																		id: {
+																			type: 'string',
+																			description:
+																				'The unique identifier that represent a file version.',
+																		},
+																		type: {
+																			type: 'string',
+																			description:
+																				'The value will always be `file_version`. One of `file_version`.',
+																		},
+																		sha1: {
+																			type: 'string',
+																			description:
+																				'The SHA1 hash of this version of the file.',
+																		},
+																	},
+																	required: [],
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											url: {
+												type: 'string',
+												description:
+													'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+											},
+										},
+										required: [],
+									},
+									watermark_info: {
+										type: 'object',
+										description:
+											'Details about the watermark applied to this item.',
+										properties: {
+											is_watermarked: {
+												type: 'boolean',
+												description:
+													'Specifies if this item has a watermark applied.',
+											},
+											is_watermark_inherited: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+											},
+											is_watermarked_by_access_policy: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is enforced by an access policy.',
+											},
+										},
+										required: [],
+									},
+									is_accessible_via_shared_link: {
+										type: 'boolean',
+										description:
+											'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+									},
+									allowed_invitee_roles: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+										},
+									},
+									is_externally_owned: {
+										type: 'boolean',
+										description:
+											'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+									},
+									has_collaborations: {
+										type: 'boolean',
+										description:
+											'Specifies if this file has any other collaborators.',
+									},
+									metadata: {
+										type: 'object',
+										description:
+											'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+										properties: {},
+										required: [],
+										additionalProperties: true,
+									},
+									expires_at: {
+										type: 'string',
+										description: 'When the file will automatically be deleted.',
+									},
+									representations: {
+										type: 'object',
+										description: 'A list of file representations.',
+										properties: {
+											entries: {
+												type: 'array',
+												description: 'A list of files.',
+												items: {
+													type: 'object',
+													properties: {
+														content: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to actually fetch the representation.',
+															properties: {
+																url_template: {
+																	type: 'string',
+																	description:
+																		"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+																},
+															},
+															required: [],
+														},
+														info: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to fetch more info on this representation.',
+															properties: {
+																url: {
+																	type: 'string',
+																	description:
+																		'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+																},
+															},
+															required: [],
+														},
+														properties: {
+															type: 'object',
+															description:
+																'An object containing the size and type of this presentation.',
+															properties: {
+																dimensions: {
+																	type: 'string',
+																	description:
+																		'The width by height size of this representation in pixels.',
+																},
+																paged: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation is build up out of multiple pages.',
+																},
+																thumb: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation can be used as a thumbnail of the file.',
+																},
+															},
+															required: [],
+														},
+														representation: {
+															type: 'string',
+															description:
+																'Indicates the file type of the returned representation.',
+														},
+														status: {
+															type: 'object',
+															description:
+																'An object containing the status of this representation.',
+															properties: {
+																state: {
+																	type: 'string',
+																	description:
+																		'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									classification: {
+										type: 'object',
+										description: 'The classification applied to an item.',
+										properties: {
+											name: {
+												type: 'string',
+												description: 'The name of the classification.',
+											},
+											definition: {
+												type: 'string',
+												description:
+													'An explanation of the meaning of this classification.',
+											},
+											color: {
+												type: 'string',
+												description:
+													'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+											},
+										},
+										required: [],
+									},
+									uploader_display_name: {
+										type: 'string',
+										description:
+											'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+									},
+									disposition_at: {
+										type: 'string',
+										description:
+											'The retention expiration timestamp for the given file.',
+									},
+									shared_link_permission_options: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+										},
+									},
+									is_associated_with_app_item: {
+										type: 'boolean',
+										description:
+											'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+									},
+									collections: {
+										type: 'array',
+										description:
+											'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier for this collection.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `collection`. One of `collection`.',
+												},
+												name: {
+													type: 'string',
+													description:
+														'The name of the collection. One of `Favorites`.',
+												},
+												collection_type: {
+													type: 'string',
+													description:
+														'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+												},
+											},
+											required: [],
+										},
+									},
+									is_download_available: {
+										type: 'boolean',
+										description:
+											"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+									},
+									authenticated_download_url: {
+										type: 'string',
+										description:
+											'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+									},
+									allowed_shared_link_access_levels: {
+										type: 'array',
+										description:
+											'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+										items: {
+											type: 'string',
+											description:
+												'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+										},
+									},
+									url: {
+										type: 'string',
+										description: 'The URL this web link points to.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive. One of `synced`, `not_synced`, `partially_synced`.",
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this folder has any other collaborators.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a folder.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description: 'Specifies if the user can upload into this folder.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this folder and its contents.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				can_non_owners_invite: {
+					type: 'boolean',
+					description:
+						'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this folder is owned by a user outside of the authenticated enterprise.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				is_collaboration_restricted_to_enterprise: {
+					type: 'boolean',
+					description:
+						'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this folder. The list depends on item policy and user authorization. For some folders, like the root folder, this is always empty as sharing is not allowed at that level.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this folder.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the folder can be accessed with the direct shared link or a shared link to a parent folder.',
+				},
+				can_non_owners_view_collaborators: {
+					type: 'boolean',
+					description:
+						'Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators.',
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the folder or any ancestor of the folder is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the folder.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this folder belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'createFolderMetadataInstance',
+		label: 'Create a folder metadata instance',
+		description: 'Applies an instance of a metadata template to a folder.',
+		context:
+			"---\nname: createFolderMetadataInstance\ndescription: Applies an instance of a metadata template to a folder.\n---\n\nApplies an instance of a metadata template to a folder. In most cases only values that are present in the metadata template will be accepted, except for the `global.properties` template which accepts any key-value pair. To display the metadata template in the Box web app the enterprise needs to be configured to enable **Cascading Folder Level Metadata** for the user in the admin console.\n\nThis Endpoint wraps `POST /folders/{folder_id}/metadata/{scope}/{template_key}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Use `scope` = `enterprise` for templates defined in your enterprise and `global` for the built-in templates (for example the `properties` template, which accepts arbitrary keys with string values only — numbers, booleans and arrays are rejected with `400 bad_request`). `template_key` is the key of the template, not its display name.\n- To find a template's `template_key` and the keys, types and allowed values of its fields, call **List enterprise metadata templates** (or **List global metadata templates**) and **Get a metadata template**.\n- A folder can hold at most one instance of a given template; applying it again returns a `409 tuple_already_exists` error. Use the **Update folder metadata** Endpoint to change an existing instance.\n- The response contains the instance with its system fields (`$id`, `$parent`, `$scope`, `$template`, `$version`, `$type`, `$typeVersion`, `$canEdit`) followed by the template fields you set.\n\nReference: [Create metadata instance on folder](https://developer.box.com/reference/post-folders-id-metadata-id-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				scope: {
+					type: 'string',
+					description: 'The scope of the metadata template.',
+					enum: ['global', 'enterprise'],
+				},
+				template_key: { type: 'string', description: 'The name of the metadata template.' },
+				metadata: {
+					description:
+						'An object with one key per metadata template field and the value to set, for example `{"category": "online", "contractValue": 100000}`. Only fields that exist on the template are accepted, except for the `global.properties` template, which accepts any keys but only string values. Multi-select and taxonomy fields take an array of values. Sent as the request body.',
+				},
+			},
+			required: ['folder_id', 'scope', 'template_key', 'metadata'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				$parent: {
+					type: 'string',
+					description:
+						'The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.',
+				},
+				$template: { type: 'string', description: 'The name of the template.' },
+				$scope: {
+					type: 'string',
+					description:
+						'An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.',
+				},
+				$version: {
+					type: 'number',
+					description:
+						'The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.',
+				},
+				$canEdit: {
+					type: 'boolean',
+					description: 'Whether the user can edit this metadata instance.',
+				},
+				$id: { type: 'string', description: 'A UUID to identify the metadata instance.' },
+				$type: {
+					type: 'string',
+					description:
+						'A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.',
+				},
+				$typeVersion: {
+					type: 'number',
+					description:
+						'The last-known version of the template of the object. This is an internal system property and should not be used by a client application.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'createSignRequest',
+		label: 'Create a sign request',
+		description: 'Creates a Box Sign request to collect signatures on one or more files.',
+		context:
+			"---\nname: createSignRequest\ndescription: Creates a Box Sign request to collect signatures on one or more files.\n---\n\nCreates a signature request. This involves preparing a document for signing and sending the signature request to signers.\n\nThis Endpoint wraps `POST /sign_requests` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Provide either `source_files` (up to 10 files, each with `id` and `type` = `file`) or a `template_id` (find it with the **List sign templates** Endpoint; the template's `signers[].inputs[].document_tag_id` values are what `prefill_tags[].document_tag_id` refers to, and its `are_*_locked` flags tell you which parts of the request cannot be overridden). `parent_folder` is the folder that receives the signed documents and signing log; the root folder (`0`) cannot be used and the folder is required unless the request is created from a template.\n- Each signer needs an `email`; `role` defaults to `signer`. Use `order` to enforce sequential signing. Reminders (`are_reminders_enabled`) go out on day 3, 8, 13 and 18 to outstanding signers.\n\nReference: [Create Box Sign request](https://developer.box.com/reference/post-sign-requests/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: false,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				is_document_preparation_needed: {
+					type: 'boolean',
+					description:
+						'Indicates if the sender should receive a `prepare_url` in the response to complete document preparation using the UI.',
+				},
+				redirect_url: {
+					type: 'string',
+					description:
+						'When specified, the signature request will be redirected to this url when a document is signed.',
+				},
+				declined_redirect_url: {
+					type: 'string',
+					description:
+						'The uri that a signer will be redirected to after declining to sign a document.',
+				},
+				are_text_signatures_enabled: {
+					type: 'boolean',
+					description: 'Disables the usage of signatures generated by typing (text).',
+				},
+				email_subject: {
+					type: 'string',
+					description:
+						'Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+				},
+				email_message: {
+					type: 'string',
+					description:
+						'Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+				},
+				are_reminders_enabled: {
+					type: 'boolean',
+					description:
+						'Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.',
+				},
+				name: { type: 'string', description: 'Name of the signature request.' },
+				prefill_tags: {
+					type: 'array',
+					description:
+						'Prefills sign-related tags contained in the document. Reference each tag by its `document_tag_id` (for a template, the `signers[].inputs[].document_tag_id` values returned by the **List sign templates** Endpoint) and supply exactly one of `text_value`, `checkbox_value` or `date_value`.',
+					items: {
+						type: 'object',
+						properties: {
+							document_tag_id: {
+								type: 'string',
+								description:
+									'This references the ID of a specific tag contained in a file of the signature request.',
+							},
+							text_value: { type: 'string', description: 'Text prefill value.' },
+							checkbox_value: {
+								type: 'boolean',
+								description: 'Checkbox prefill value.',
+							},
+							date_value: { type: 'string', description: 'Date prefill value.' },
+						},
+						required: [],
+					},
+				},
+				days_valid: {
+					type: 'number',
+					description:
+						'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+					minimum: 0,
+					maximum: 730,
+				},
+				external_id: {
+					type: 'string',
+					description:
+						'This can be used to reference an ID in an external system that the sign request is related to.',
+				},
+				template_id: {
+					type: 'string',
+					description:
+						'The ID of the Box Sign template to create the request from. Find it with the **List sign templates** Endpoint. Settings locked in the template (`are_fields_locked`, `are_recipients_locked`, `are_files_locked`, `are_email_settings_locked`) cannot be overridden by the request.',
+				},
+				external_system_name: {
+					type: 'string',
+					description:
+						'Used as an optional system name to appear in the signature log next to the signers who have been assigned the `embed_url_external_id`.',
+				},
+				request_flow: {
+					type: 'string',
+					description:
+						'The flow type of the sign request: `standard`, or `cfr11` for a 21 CFR Part 11 compliant flow. When not specified, a default is chosen based on admin settings.',
+					default: '',
+					enum: ['', 'standard', 'cfr11'],
+				},
+				source_files: {
+					type: 'array',
+					description:
+						'List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`. Required when source file is provided.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `file`. Required when source file is provided.',
+								default: '',
+								enum: ['', 'file'],
+							},
+						},
+						required: [],
+					},
+					maxItems: 10,
+				},
+				signature_color: {
+					type: 'string',
+					description: 'Force a specific color for the signature (blue, black, or red).',
+					default: '',
+					enum: ['', 'blue', 'black', 'red'],
+				},
+				signers: {
+					type: 'array',
+					description:
+						'Array of signers for the signature request. 35 is the max number of signers permitted. **Note**: It may happen that some signers belong to conflicting [segments](https://developer.box.com/reference/resources/shield-information-barrier-segment-member) (user groups). This means that due to the security policies, users are assigned to segments to prevent exchanges or communication that could lead to ethical conflicts. In such a case, an attempt to send the sign request will result in an error. Read more about [segments and ethical walls](https://support.box.com/hc/en-us/articles/9920431507603-Understanding-Information-Barriers#h_01GFVJEHQA06N7XEZ4GCZ9GFAQ).',
+					items: {
+						type: 'object',
+						properties: {
+							email: {
+								type: 'string',
+								description:
+									'Email address of the signer. The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.',
+							},
+							role: {
+								type: 'string',
+								description:
+									'Defines the role of the signer in the signature request. A `signer` must sign the document and an `approver` must approve the document. A `final_copy_reader` only receives the final signed document and signing log.',
+								default: '',
+								enum: ['', 'signer', 'approver', 'final_copy_reader'],
+							},
+							is_in_person: {
+								type: 'boolean',
+								description:
+									'Used in combination with an embed URL for a sender. After the sender signs, they are redirected to the next `in_person` signer.',
+							},
+							order: {
+								type: 'number',
+								description: 'Order of the signer.',
+								minimum: 0,
+							},
+							embed_url_external_user_id: {
+								type: 'string',
+								description:
+									'User ID for the signer in an external application responsible for authentication when accessing the embed URL.',
+							},
+							redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirected to after signing a document. Defining this URL overrides default or global redirect URL settings for a specific signer. If no declined redirect URL is specified, this URL will be used for decline actions as well.',
+							},
+							declined_redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirect to after declining to sign a document. Defining this URL overrides default or global declined redirect URL settings for a specific signer.',
+							},
+							login_required: {
+								type: 'boolean',
+								description:
+									'If set to true, the signer will need to log in to a Box account before signing the request. If the signer does not have an existing account, they will have the option to create a free Box account.',
+							},
+							verification_phone_number: {
+								type: 'string',
+								description:
+									'If set, this phone number will be used to verify the signer via two-factor authentication before they are able to sign the document. Cannot be selected in combination with `login_required`.',
+							},
+							password: {
+								type: 'string',
+								description:
+									'If set, the signer is required to enter the password before they are able to sign a document. This field is write only.',
+							},
+							signer_group_id: {
+								type: 'string',
+								description:
+									'If set, signers who have the same value will be assigned to the same input and to the same signer group. A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be used/accessed within this Sign Request. A signer group is expected to have more than one signer. If the provided value is only used for one signer, this value will be ignored and request will be handled as it was intended for an individual signer. The value provided can be any string and only used to determine which signers belongs to same group. A successful response will provide a generated UUID value instead for signers in the same signer group.',
+							},
+							suppress_notifications: {
+								type: 'boolean',
+								description:
+									'If true, no emails about the sign request will be sent.',
+							},
+							language: {
+								type: 'string',
+								description:
+									'The language of the user, formatted in modified version of the [ISO 639-1](https://developer.box.com/guides/api-calls/language-codes) format.',
+							},
+						},
+						required: [],
+					},
+				},
+				parent_folder: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`. Required when parent folder is provided.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description:
+								'The value will always be `folder`. Required when parent folder is provided.',
+							default: '',
+							enum: ['', 'folder'],
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+			},
+			required: ['signers'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				is_document_preparation_needed: {
+					type: 'boolean',
+					description:
+						'Indicates if the sender should receive a `prepare_url` in the response to complete document preparation using the UI.',
+				},
+				redirect_url: {
+					type: 'string',
+					description:
+						'When specified, the signature request will be redirected to this url when a document is signed.',
+				},
+				declined_redirect_url: {
+					type: 'string',
+					description:
+						'The uri that a signer will be redirected to after declining to sign a document.',
+				},
+				are_text_signatures_enabled: {
+					type: 'boolean',
+					description: 'Disables the usage of signatures generated by typing (text).',
+				},
+				email_subject: {
+					type: 'string',
+					description:
+						'Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+				},
+				email_message: {
+					type: 'string',
+					description:
+						'Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+				},
+				are_reminders_enabled: {
+					type: 'boolean',
+					description:
+						'Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.',
+				},
+				name: { type: 'string', description: 'Name of the signature request.' },
+				prefill_tags: {
+					type: 'array',
+					description:
+						"When a document contains sign-related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.",
+					items: {
+						type: 'object',
+						properties: {
+							document_tag_id: {
+								type: 'string',
+								description:
+									'This references the ID of a specific tag contained in a file of the signature request.',
+							},
+							text_value: { type: 'string', description: 'Text prefill value.' },
+							checkbox_value: {
+								type: 'boolean',
+								description: 'Checkbox prefill value.',
+							},
+							date_value: { type: 'string', description: 'Date prefill value.' },
+						},
+						required: [],
+					},
+				},
+				days_valid: {
+					type: 'number',
+					description:
+						'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+				},
+				external_id: {
+					type: 'string',
+					description:
+						'This can be used to reference an ID in an external system that the sign request is related to.',
+				},
+				template_id: {
+					type: 'string',
+					description:
+						'When a signature request is created from a template this field will indicate the id of that template.',
+				},
+				external_system_name: {
+					type: 'string',
+					description:
+						'Used as an optional system name to appear in the signature log next to the signers who have been assigned the `embed_url_external_id`.',
+				},
+				request_flow: {
+					type: 'string',
+					description:
+						'The flow type of the sign request. Values can include `standard` or `cfr11`. When not specified during creation, a default is chosen based on admin settings.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `sign-request`. One of `sign-request`.',
+				},
+				source_files: {
+					type: 'array',
+					description:
+						'List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description: 'The value will always be `file`. One of `file`.',
+							},
+						},
+						required: [],
+					},
+				},
+				signers: {
+					type: 'array',
+					description: 'Array of signers for the signature request.',
+					items: {
+						type: 'object',
+						properties: {
+							email: {
+								type: 'string',
+								description:
+									'Email address of the signer. The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.',
+							},
+							role: {
+								type: 'string',
+								description:
+									'Defines the role of the signer in the signature request. A `signer` must sign the document and an `approver` must approve the document. A `final_copy_reader` only receives the final signed document and signing log. One of `signer`, `approver`, `final_copy_reader`.',
+							},
+							is_in_person: {
+								type: 'boolean',
+								description:
+									'Used in combination with an embed URL for a sender. After the sender signs, they are redirected to the next `in_person` signer.',
+							},
+							order: { type: 'number', description: 'Order of the signer.' },
+							embed_url_external_user_id: {
+								type: 'string',
+								description:
+									'User ID for the signer in an external application responsible for authentication when accessing the embed URL.',
+							},
+							redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirected to after signing a document. Defining this URL overrides default or global redirect URL settings for a specific signer. If no declined redirect URL is specified, this URL will be used for decline actions as well.',
+							},
+							declined_redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirect to after declining to sign a document. Defining this URL overrides default or global declined redirect URL settings for a specific signer.',
+							},
+							login_required: {
+								type: 'boolean',
+								description:
+									'If set to true, the signer will need to log in to a Box account before signing the request. If the signer does not have an existing account, they will have the option to create a free Box account.',
+							},
+							verification_phone_number: {
+								type: 'string',
+								description:
+									'If set, this phone number will be used to verify the signer via two-factor authentication before they are able to sign the document. Cannot be selected in combination with `login_required`.',
+							},
+							signer_group_id: {
+								type: 'string',
+								description:
+									'If set, signers who have the same value will be assigned to the same input and to the same signer group. A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be used/accessed within this Sign Request. A signer group is expected to have more than one signer. If the provided value is only used for one signer, this value will be ignored and request will be handled as it was intended for an individual signer. The value provided can be any string and only used to determine which signers belongs to same group. A successful response will provide a generated UUID value instead for signers in the same signer group.',
+							},
+							suppress_notifications: {
+								type: 'boolean',
+								description:
+									'If true, no emails about the sign request will be sent.',
+							},
+							language: {
+								type: 'string',
+								description:
+									'The language of the user, formatted in modified version of the [ISO 639-1](https://developer.box.com/guides/api-calls/language-codes) format.',
+							},
+							has_viewed_document: {
+								type: 'boolean',
+								description: 'Set to `true` if the signer views the document.',
+							},
+							signer_decision: {
+								type: 'object',
+								description: 'Final decision made by the signer.',
+								properties: {
+									type: {
+										type: 'string',
+										description:
+											'Type of decision made by the signer. One of `signed`, `declined`.',
+									},
+									finalized_at: {
+										type: 'string',
+										description: 'Date and Time that the decision was made.',
+									},
+									additional_info: {
+										type: 'string',
+										description:
+											'Additional info about the decision, such as the decline reason from the signer.',
+									},
+								},
+								required: [],
+							},
+							inputs: {
+								type: 'array',
+								description: 'The inputs.',
+								items: {
+									type: 'object',
+									properties: {
+										document_tag_id: {
+											type: 'string',
+											description:
+												'This references the ID of a specific tag contained in a file of the signature request.',
+										},
+										text_value: {
+											type: 'string',
+											description: 'Text prefill value.',
+										},
+										checkbox_value: {
+											type: 'boolean',
+											description: 'Checkbox prefill value.',
+										},
+										date_value: {
+											type: 'string',
+											description: 'Date prefill value.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'Type of input. One of `signature`, `date`, `text`, `checkbox`, `radio`, `dropdown`.',
+										},
+										content_type: {
+											type: 'string',
+											description:
+												'Content type of input. One of `signature`, `initial`, `stamp`, `date`, `checkbox`, `text`, `full_name`, `first_name`, `last_name`, `company`, `title`, `email`, `attachment`, `radio`, `dropdown`.',
+										},
+										page_index: {
+											type: 'number',
+											description: 'Index of page that the input is on.',
+										},
+										read_only: {
+											type: 'boolean',
+											description:
+												'Indicates whether this input is read-only (cannot be modified by signers).',
+										},
+										validation: {
+											type: 'object',
+											description:
+												'Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.',
+											properties: {
+												validation_type: {
+													type: 'string',
+													description:
+														'Validates that the text input is an email address. One of `email`.',
+												},
+												custom_regex: {
+													type: 'string',
+													description:
+														'Regular expression used for validation.',
+												},
+												custom_error_message: {
+													type: 'string',
+													description:
+														'Error message shown if input fails custom regular expression validation.',
+												},
+											},
+											required: [],
+										},
+										reason: {
+											type: 'string',
+											description:
+												"The reason for the signer's input, applicable to signature or initial content types in a `cfr11` request flow. The value is `null` when not applicable.",
+										},
+										is_validated: {
+											type: 'boolean',
+											description:
+												"Indicates whether the signer's input has been validated through re-authentication. Applicable only for signature or initial content types in a `cfr11` request flow. The value is `null` for standard request flows or non-applicable input types.",
+										},
+									},
+									required: [],
+								},
+							},
+							embed_url: {
+								type: 'string',
+								description: 'URL to direct a signer to for signing.',
+							},
+							iframeable_embed_url: {
+								type: 'string',
+								description:
+									'This URL is specifically designed for signing documents within an HTML `iframe` tag. It will be returned in the response only if the `embed_url_external_user_id` parameter was passed in the `create Box Sign request` call.',
+							},
+							attachments: {
+								type: 'array',
+								description: 'Attachments that the signer uploaded.',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description: 'Identifier of the attachment file.',
+										},
+										name: {
+											type: 'string',
+											description: 'Display name of the attachment file.',
+										},
+									},
+									required: [],
+								},
+							},
+						},
+						required: [],
+					},
+				},
+				signature_color: {
+					type: 'string',
+					description: 'Force a specific color for the signature (blue, black, or red).',
+				},
+				id: { type: 'string', description: 'Box Sign request ID.' },
+				prepare_url: {
+					type: 'string',
+					description:
+						'This URL is returned if `is_document_preparation_needed` is set to `true` in the request. The parameter is used to prepare the signature request using the UI. The signature request is not sent until the preparation phase is complete.',
+				},
+				signing_log: {
+					type: 'object',
+					description:
+						'A mini representation of a file, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `file`. One of `file`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the file.' },
+						sha1: {
+							type: 'string',
+							description:
+								'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+						},
+						file_version: {
+							type: 'object',
+							description:
+								'A mini representation of a file version, used when nested within another resource.',
+							properties: {
+								id: {
+									type: 'string',
+									description:
+										'The unique identifier that represent a file version.',
+								},
+								type: {
+									type: 'string',
+									description:
+										'The value will always be `file_version`. One of `file_version`.',
+								},
+								sha1: {
+									type: 'string',
+									description: 'The SHA1 hash of this version of the file.',
+								},
+							},
+							required: [],
+						},
+					},
+					required: [],
+				},
+				status: {
+					type: 'string',
+					description:
+						'Describes the status of the signature request. One of `converting`, `created`, `sent`, `viewed`, `signed`, `cancelled`, `declined`, `error`, `error_converting`, `error_sending`, `expired`, `finalizing`, `error_finalizing`.',
+				},
+				sign_files: {
+					type: 'object',
+					description:
+						'List of files that will be signed, which are copies of the original source files. A new version of these files are created as signers sign and can be downloaded at any point in the signing process.',
+					properties: {
+						files: {
+							type: 'array',
+							description: 'The files.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						is_ready_for_download: {
+							type: 'boolean',
+							description:
+								'Indicates whether the `sign_files` documents are processing and the PDFs may be out of date. A change to any document requires processing on all `sign_files`. We recommended waiting until processing is finished (and this value is true) before downloading the PDFs.',
+						},
+					},
+					required: [],
+				},
+				auto_expire_at: {
+					type: 'string',
+					description:
+						'Uses `days_valid` to calculate the date and time, in GMT, the sign request will expire if unsigned.',
+				},
+				parent_folder: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				collaborator_level: {
+					type: 'string',
+					description:
+						'The collaborator level of the user to the sign request. Values can include "owner", "editor", and "viewer".',
+				},
+				short_id: { type: 'string', description: 'Short identifier for the sign request.' },
+				created_at: {
+					type: 'string',
+					description: 'Timestamp marking when the sign request was created.',
+				},
+				finished_at: {
+					type: 'string',
+					description: 'Timestamp indicating when all signing actions completed.',
+				},
+				error_code: {
+					type: 'string',
+					description:
+						'When the sign request is in an error state, identifies the specific reason. Null when no error code applies.',
+				},
+				sender_email: {
+					type: 'string',
+					description: 'The email address of the sender of the sign request.',
+				},
+				sender_id: {
+					type: 'number',
+					description: 'The user ID of the sender of the sign request.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'deleteFile',
+		label: 'Delete a file',
+		description:
+			'Deletes a file, either permanently or by moving it to the trash, depending on the enterprise settings.',
+		context:
+			"---\nname: deleteFile\ndescription: Deletes a file, either permanently or by moving it to the trash, depending on the enterprise settings.\n---\n\nDeletes a file, either permanently or by moving it to the trash. The enterprise settings determine whether the item will be permanently deleted from Box or moved to the trash.\n\nThis Endpoint wraps `DELETE /files/{file_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Returns an empty response on success. Whether the file is moved to the trash or deleted permanently depends on the enterprise retention settings.\n\nReference: [Delete file](https://developer.box.com/reference/delete-files-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: true,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				file_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represents a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				if_match: {
+					type: 'string',
+					description:
+						"Sent as the `If-Match` header. Ensures this item hasn't recently changed before making changes. Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.",
+				},
+			},
+			required: ['file_id'],
+		},
+		outputSchema: { type: 'object', properties: {}, required: [] },
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'deleteFolder',
+		label: 'Delete a folder',
+		description:
+			'Deletes a folder, either permanently or by moving it to the trash, depending on the enterprise settings.',
+		context:
+			"---\nname: deleteFolder\ndescription: Deletes a folder, either permanently or by moving it to the trash, depending on the enterprise settings.\n---\n\nDeletes a folder, either permanently or by moving it to the trash.\n\nThis Endpoint wraps `DELETE /folders/{folder_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Returns an empty response on success. A non-empty folder can only be deleted with `recursive` set to `true`; otherwise Box returns a `400 folder_not_empty` error. The root folder (`0`) cannot be deleted.\n\nReference: [Delete folder](https://developer.box.com/reference/delete-folders-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: true,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				if_match: {
+					type: 'string',
+					description:
+						"Sent as the `If-Match` header. Ensures this item hasn't recently changed before making changes. Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.",
+				},
+				recursive: {
+					type: 'boolean',
+					description:
+						'Delete a folder that is not empty by recursively deleting the folder and all of its content.',
+				},
+			},
+			required: ['folder_id'],
+		},
+		outputSchema: { type: 'object', properties: {}, required: [] },
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getBySharedLink',
+		label: 'Get an item by shared link',
+		description: 'Returns the file, folder or web link that a shared link points to.',
+		context:
+			"---\nname: getBySharedLink\ndescription: Returns the file, folder or web link that a shared link points to.\n---\n\nReturns the file represented by a shared link. A shared file can be represented by a shared link, which can originate within the current enterprise or within another. This endpoint allows an application to retrieve information about a shared file when only given a shared link. The `shared_link_permission_options` array field can be returned by requesting it in the `fields` query parameter.\n\nThis Endpoint wraps `GET /shared_items` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Pass the shared link in the `boxapi` header input using the format `shared_link=https://app.box.com/s/abc123` or, when the link is password-protected, `shared_link=https://app.box.com/s/abc123&shared_link_password=secret`.\n- The response is a full file resource when the link points to a file. When it points to a folder or a web link the shape follows the folder or web link resource instead; the `type` field tells them apart.\n\nReference: [Find file for shared link](https://developer.box.com/reference/get-shared-items/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				boxapi: {
+					type: 'string',
+					description:
+						'Sent as the `boxapi` header. A header containing the shared link and optional password for the shared link. The format for this header is as follows: `shared_link=[link]&shared_link_password=[password]`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+			},
+			required: ['boxapi'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `file`. One of `file`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the file.' },
+				sha1: {
+					type: 'string',
+					description:
+						'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+				},
+				file_version: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested within another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description: 'The unique identifier that represent a file version.',
+						},
+						type: {
+							type: 'string',
+							description:
+								'The value will always be `file_version`. One of `file_version`.',
+						},
+						sha1: {
+							type: 'string',
+							description: 'The SHA1 hash of this version of the file.',
+						},
+					},
+					required: [],
+				},
+				description: {
+					type: 'string',
+					description:
+						'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_at: {
+					type: 'string',
+					description: 'The date and time when the file was created on Box.',
+				},
+				modified_at: {
+					type: 'string',
+					description: 'The date and time when the file was last updated on Box.',
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this file was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this file is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				version_number: { type: 'string', description: 'The version number of this file.' },
+				comment_count: {
+					type: 'number',
+					description: 'The number of comments on this file.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a file.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_annotate: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can place annotations on this file.',
+						},
+						can_comment: {
+							type: 'boolean',
+							description: 'Specifies if the user can place comments on this file.',
+						},
+						can_preview: {
+							type: 'boolean',
+							description: 'Specifies if the user can preview this file.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can upload a new version of this file.',
+						},
+						can_view_annotations_all: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view all annotations placed on this file.',
+						},
+						can_view_annotations_self: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view annotations placed by themselves on this file.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this file.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				lock: {
+					type: 'object',
+					description:
+						'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this lock.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `lock`. One of `lock`.',
+						},
+						created_by: {
+							type: 'object',
+							description:
+								'A mini representation of a user, as can be returned when nested within other resources.',
+							properties: {
+								id: {
+									type: 'string',
+									description: 'The unique identifier for this user.',
+								},
+								type: {
+									type: 'string',
+									description: 'The value will always be `user`. One of `user`.',
+								},
+								name: {
+									type: 'string',
+									description: 'The display name of this user.',
+								},
+								login: {
+									type: 'string',
+									description: 'The primary email address of this user.',
+								},
+							},
+							required: [],
+						},
+						created_at: {
+							type: 'string',
+							description: 'The time this lock was created at.',
+						},
+						expired_at: {
+							type: 'string',
+							description:
+								'The time this lock is to expire at, which might be in the past.',
+						},
+						is_download_prevented: {
+							type: 'boolean',
+							description: 'Whether or not the file can be downloaded while locked.',
+						},
+						app_type: {
+							type: 'string',
+							description:
+								'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+						},
+					},
+					required: [],
+				},
+				extension: {
+					type: 'string',
+					description:
+						'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+				},
+				is_package: {
+					type: 'boolean',
+					description:
+						'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+				},
+				expiring_embed_link: {
+					type: 'object',
+					description: 'An expiring Box Embed Link.',
+					properties: {
+						access_token: {
+							type: 'string',
+							description: 'The requested access token.',
+						},
+						expires_in: {
+							type: 'number',
+							description: 'The time in seconds by which this token will expire.',
+						},
+						token_type: {
+							type: 'string',
+							description: 'The type of access token returned. One of `bearer`.',
+						},
+						restricted_to: {
+							type: 'array',
+							description:
+								'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+							items: {
+								type: 'object',
+								properties: {
+									scope: {
+										type: 'string',
+										description:
+											'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+									},
+									object: {
+										type: 'object',
+										description: 'The file or folder resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+											},
+											file_version: {
+												type: 'object',
+												description:
+													'A mini representation of a file version, used when nested within another resource.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier that represent a file version.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `file_version`. One of `file_version`.',
+													},
+													sha1: {
+														type: 'string',
+														description:
+															'The SHA1 hash of this version of the file.',
+													},
+												},
+												required: [],
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						url: {
+							type: 'string',
+							description:
+								'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+						},
+					},
+					required: [],
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this file has any other collaborators.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				expires_at: {
+					type: 'string',
+					description: 'When the file will automatically be deleted.',
+				},
+				representations: {
+					type: 'object',
+					description: 'A list of file representations.',
+					properties: {
+						entries: {
+							type: 'array',
+							description: 'A list of files.',
+							items: {
+								type: 'object',
+								properties: {
+									content: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to actually fetch the representation.',
+										properties: {
+											url_template: {
+												type: 'string',
+												description:
+													"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+											},
+										},
+										required: [],
+									},
+									info: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to fetch more info on this representation.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+											},
+										},
+										required: [],
+									},
+									properties: {
+										type: 'object',
+										description:
+											'An object containing the size and type of this presentation.',
+										properties: {
+											dimensions: {
+												type: 'string',
+												description:
+													'The width by height size of this representation in pixels.',
+											},
+											paged: {
+												type: 'string',
+												description:
+													'Indicates if the representation is build up out of multiple pages.',
+											},
+											thumb: {
+												type: 'string',
+												description:
+													'Indicates if the representation can be used as a thumbnail of the file.',
+											},
+										},
+										required: [],
+									},
+									representation: {
+										type: 'string',
+										description:
+											'Indicates the file type of the returned representation.',
+									},
+									status: {
+										type: 'object',
+										description:
+											'An object containing the status of this representation.',
+										properties: {
+											state: {
+												type: 'string',
+												description:
+													'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				uploader_display_name: {
+					type: 'string',
+					description:
+						'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+				},
+				disposition_at: {
+					type: 'string',
+					description: 'The retention expiration timestamp for the given file.',
+				},
+				shared_link_permission_options: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+					},
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+				is_download_available: {
+					type: 'boolean',
+					description:
+						"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+				},
+				download_url: {
+					type: 'string',
+					description:
+						"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+				},
+				authenticated_download_url: {
+					type: 'string',
+					description:
+						'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getEnterpriseMetadataTemplates',
+		label: 'List enterprise metadata templates',
+		description: "Retrieves a page of the metadata templates defined in the user's enterprise.",
+		context:
+			"---\nname: getEnterpriseMetadataTemplates\ndescription: Retrieves a page of the metadata templates defined in the user's enterprise.\n---\n\nUsed to retrieve all metadata templates created to be used specifically within the user's enterprise.\n\nThis Endpoint wraps `GET /metadata_templates/enterprise` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Lists the templates created in the enterprise; their `scope` is `enterprise`. Box-provided templates live in the `global` scope — see the **List global metadata templates** Endpoint.\n- Use `templateKey` (not `displayName`) as the `template_key` and the `fields[].key` values as the metadata keys when calling the **Create file metadata instance**, **Create folder metadata instance**, **Update file metadata**, **Update folder metadata** and **Search for content** (`mdfilters`) Endpoints. Field types are `string`, `float`, `date` (RFC3339 timestamp), `enum`, `multiSelect` and `taxonomy`; for `enum` and `multiSelect` the accepted values are the `fields[].options[].key` values.\n- Templates with `hidden` set to `true` are not shown in the Box web app but can still be applied through the API.\n- This Endpoint returns a single page. Page manually by passing the returned `next_marker` as `marker` on the next call until `next_marker` is `null`.\n\nReference: [List all metadata templates for enterprise](https://developer.box.com/reference/get-metadata-templates-enterprise/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				marker: {
+					type: 'string',
+					description:
+						'The position marker at which to begin returning results, as returned in `next_marker` of the previous page. Leave empty for the first page.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+			},
+			required: [],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+				},
+				next_marker: {
+					type: 'string',
+					description: 'The marker for the start of the next page of results.',
+				},
+				prev_marker: {
+					type: 'string',
+					description: 'The marker for the start of the previous page of results.',
+				},
+				entries: {
+					type: 'array',
+					description: 'A list of metadata templates.',
+					items: {
+						type: 'object',
+						properties: {
+							id: { type: 'string', description: 'The ID of the metadata template.' },
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `metadata_template`. One of `metadata_template`.',
+							},
+							scope: {
+								type: 'string',
+								description:
+									'The scope of the metadata template can either be `global` or `enterprise_*`. The `global` scope is used for templates that are available to any Box enterprise. The `enterprise_*` scope represents templates that have been created within a specific enterprise, where `*` will be the ID of that enterprise.',
+							},
+							templateKey: {
+								type: 'string',
+								description:
+									'A unique identifier for the template. This identifier is unique across the `scope` of the enterprise to which the metadata template is being applied, yet is not necessarily unique across different enterprises.',
+							},
+							displayName: {
+								type: 'string',
+								description:
+									'The display name of the template. This can be seen in the Box web app and mobile apps.',
+							},
+							hidden: {
+								type: 'boolean',
+								description:
+									'Defines if this template is visible in the Box web app UI, or if it is purely intended for usage through the API.',
+							},
+							fields: {
+								type: 'array',
+								description:
+									'An ordered list of template fields which are part of the template. Each field can be a regular text field, date field, number field, as well as a single or multi-select list.',
+								items: {
+									type: 'object',
+									properties: {
+										type: {
+											type: 'string',
+											description:
+												'The type of field. The basic fields are a `string` field for text, a `float` field for numbers, and a `date` fields to present the user with a date-time picker. Additionally, metadata templates support an `enum` field for a basic list of items, and `multiSelect` field for a similar list of items where the user can select more than one value. Metadata taxonomies are also supported as a `taxonomy` field type with a specific set of additional properties, which describe its structure. **Note**: The `integer` value is deprecated. It is still present in the response, but cannot be used in the POST request. One of `string`, `float`, `date`, `enum`, `multiSelect`, `taxonomy`, `integer`.',
+										},
+										key: {
+											type: 'string',
+											description:
+												'A unique identifier for the field. The identifier must be unique within the template to which it belongs.',
+										},
+										displayName: {
+											type: 'string',
+											description:
+												'The display name of the field as it is shown to the user in the web and mobile apps.',
+										},
+										description: {
+											type: 'string',
+											description:
+												'A description of the field. This is not shown to the user.',
+										},
+										hidden: {
+											type: 'boolean',
+											description:
+												'Whether this field is hidden in the UI for the user and can only be set through the API instead.',
+										},
+										options: {
+											type: 'array',
+											description:
+												'A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.',
+											items: {
+												type: 'object',
+												properties: {
+													key: {
+														type: 'string',
+														description:
+															'The text value of the option. This represents both the display name of the option and the internal key used when updating templates.',
+													},
+												},
+												required: [],
+											},
+										},
+										taxonomyKey: {
+											type: 'string',
+											description:
+												'The unique key of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										taxonomyId: {
+											type: 'string',
+											description:
+												'The unique ID of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										namespace: {
+											type: 'string',
+											description:
+												'The namespace of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										optionsRules: {
+											type: 'object',
+											description:
+												'An object defining additional rules for the options of the taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+											properties: {
+												multiSelect: {
+													type: 'boolean',
+													description:
+														'Whether to allow users to select multiple values.',
+												},
+												selectableLevels: {
+													type: 'array',
+													description:
+														'An array of integers defining which levels of the taxonomy are selectable by users.',
+													items: {
+														type: 'number',
+														description: 'The selectable level.',
+													},
+												},
+											},
+											required: [],
+										},
+										id: {
+											type: 'string',
+											description:
+												'The unique ID of the metadata template field.',
+										},
+									},
+									required: [],
+								},
+							},
+							copyInstanceOnItemCopy: {
+								type: 'boolean',
+								description:
+									'Whether or not to include the metadata when a file or folder is copied.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getFile',
+		label: 'Get a file',
+		description: 'Retrieves the details of a file.',
+		context:
+			"---\nname: getFile\ndescription: Retrieves the details of a file.\n---\n\nRetrieves the details about a file.\n\nThis Endpoint wraps `GET /files/{file_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Use `fields` to request attributes that are not part of the standard response (for example `metadata.enterprise_12345.contractTemplate` to read a metadata instance, or `representations` together with the representation hints).\n- Downloading the binary file content (`GET /files/{file_id}/content`) is not available as an Endpoint; this Endpoint returns the file resource only.\n\nReference: [Get file information](https://developer.box.com/reference/get-files-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				file_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represents a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				boxapi: {
+					type: 'string',
+					description:
+						'Sent as the `boxapi` header. The URL, and optional password, for the shared link of this item. This header can be used to access items that have not been explicitly shared with a user. Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`. This header can be used on the file or folder shared, as well as on any files or folders nested within the item.',
+				},
+				x_rep_hints: {
+					type: 'string',
+					description:
+						'Sent as the `x-rep-hints` header. A header required to request specific `representations` of a file. Use this in combination with the `fields` query parameter to request a specific file representation. The general format for these representations is `X-Rep-Hints: [...]` where `[...]` is one or many hints in the format `[fileType?query]`. For example, to request a `png` representation in `32x32` as well as `64x64` pixel dimensions provide the following hints. `x-rep-hints: jpg?dimensions=32x32` Additionally, a `text` representation is available for all document file types in Box using the `[extracted_text]` representation. `x-rep-hints: [extracted_text]`.',
+				},
+			},
+			required: ['file_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `file`. One of `file`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the file.' },
+				sha1: {
+					type: 'string',
+					description:
+						'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+				},
+				file_version: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested within another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description: 'The unique identifier that represent a file version.',
+						},
+						type: {
+							type: 'string',
+							description:
+								'The value will always be `file_version`. One of `file_version`.',
+						},
+						sha1: {
+							type: 'string',
+							description: 'The SHA1 hash of this version of the file.',
+						},
+					},
+					required: [],
+				},
+				description: {
+					type: 'string',
+					description:
+						'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_at: {
+					type: 'string',
+					description: 'The date and time when the file was created on Box.',
+				},
+				modified_at: {
+					type: 'string',
+					description: 'The date and time when the file was last updated on Box.',
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this file was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this file is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				version_number: { type: 'string', description: 'The version number of this file.' },
+				comment_count: {
+					type: 'number',
+					description: 'The number of comments on this file.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a file.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_annotate: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can place annotations on this file.',
+						},
+						can_comment: {
+							type: 'boolean',
+							description: 'Specifies if the user can place comments on this file.',
+						},
+						can_preview: {
+							type: 'boolean',
+							description: 'Specifies if the user can preview this file.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can upload a new version of this file.',
+						},
+						can_view_annotations_all: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view all annotations placed on this file.',
+						},
+						can_view_annotations_self: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view annotations placed by themselves on this file.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this file.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				lock: {
+					type: 'object',
+					description:
+						'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this lock.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `lock`. One of `lock`.',
+						},
+						created_by: {
+							type: 'object',
+							description:
+								'A mini representation of a user, as can be returned when nested within other resources.',
+							properties: {
+								id: {
+									type: 'string',
+									description: 'The unique identifier for this user.',
+								},
+								type: {
+									type: 'string',
+									description: 'The value will always be `user`. One of `user`.',
+								},
+								name: {
+									type: 'string',
+									description: 'The display name of this user.',
+								},
+								login: {
+									type: 'string',
+									description: 'The primary email address of this user.',
+								},
+							},
+							required: [],
+						},
+						created_at: {
+							type: 'string',
+							description: 'The time this lock was created at.',
+						},
+						expired_at: {
+							type: 'string',
+							description:
+								'The time this lock is to expire at, which might be in the past.',
+						},
+						is_download_prevented: {
+							type: 'boolean',
+							description: 'Whether or not the file can be downloaded while locked.',
+						},
+						app_type: {
+							type: 'string',
+							description:
+								'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+						},
+					},
+					required: [],
+				},
+				extension: {
+					type: 'string',
+					description:
+						'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+				},
+				is_package: {
+					type: 'boolean',
+					description:
+						'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+				},
+				expiring_embed_link: {
+					type: 'object',
+					description: 'An expiring Box Embed Link.',
+					properties: {
+						access_token: {
+							type: 'string',
+							description: 'The requested access token.',
+						},
+						expires_in: {
+							type: 'number',
+							description: 'The time in seconds by which this token will expire.',
+						},
+						token_type: {
+							type: 'string',
+							description: 'The type of access token returned. One of `bearer`.',
+						},
+						restricted_to: {
+							type: 'array',
+							description:
+								'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+							items: {
+								type: 'object',
+								properties: {
+									scope: {
+										type: 'string',
+										description:
+											'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+									},
+									object: {
+										type: 'object',
+										description: 'The file or folder resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+											},
+											file_version: {
+												type: 'object',
+												description:
+													'A mini representation of a file version, used when nested within another resource.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier that represent a file version.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `file_version`. One of `file_version`.',
+													},
+													sha1: {
+														type: 'string',
+														description:
+															'The SHA1 hash of this version of the file.',
+													},
+												},
+												required: [],
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						url: {
+							type: 'string',
+							description:
+								'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+						},
+					},
+					required: [],
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this file has any other collaborators.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				expires_at: {
+					type: 'string',
+					description: 'When the file will automatically be deleted.',
+				},
+				representations: {
+					type: 'object',
+					description: 'A list of file representations.',
+					properties: {
+						entries: {
+							type: 'array',
+							description: 'A list of files.',
+							items: {
+								type: 'object',
+								properties: {
+									content: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to actually fetch the representation.',
+										properties: {
+											url_template: {
+												type: 'string',
+												description:
+													"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+											},
+										},
+										required: [],
+									},
+									info: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to fetch more info on this representation.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+											},
+										},
+										required: [],
+									},
+									properties: {
+										type: 'object',
+										description:
+											'An object containing the size and type of this presentation.',
+										properties: {
+											dimensions: {
+												type: 'string',
+												description:
+													'The width by height size of this representation in pixels.',
+											},
+											paged: {
+												type: 'string',
+												description:
+													'Indicates if the representation is build up out of multiple pages.',
+											},
+											thumb: {
+												type: 'string',
+												description:
+													'Indicates if the representation can be used as a thumbnail of the file.',
+											},
+										},
+										required: [],
+									},
+									representation: {
+										type: 'string',
+										description:
+											'Indicates the file type of the returned representation.',
+									},
+									status: {
+										type: 'object',
+										description:
+											'An object containing the status of this representation.',
+										properties: {
+											state: {
+												type: 'string',
+												description:
+													'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				uploader_display_name: {
+					type: 'string',
+					description:
+						'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+				},
+				disposition_at: {
+					type: 'string',
+					description: 'The retention expiration timestamp for the given file.',
+				},
+				shared_link_permission_options: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+					},
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+				is_download_available: {
+					type: 'boolean',
+					description:
+						"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+				},
+				download_url: {
+					type: 'string',
+					description:
+						"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+				},
+				authenticated_download_url: {
+					type: 'string',
+					description:
+						'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getFolder',
+		label: 'Get a folder',
+		description:
+			'Retrieves the details of a folder, including the first page of items in the folder.',
+		context:
+			"---\nname: getFolder\ndescription: Retrieves the details of a folder, including the first page of items in the folder.\n---\n\nRetrieves details for a folder, including the first 100 entries in the folder. Passing `sort`, `direction`, `offset`, and `limit` parameters in query allows you to manage the list of returned [folder items](https://developer.box.com/reference/resources/folder--full#param-item-collection). To fetch more items within the folder, use the [Get items in a folder](https://developer.box.com/reference/get-folders-id-items) endpoint.\n\nThis Endpoint wraps `GET /folders/{folder_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- The root folder of a Box account always has the ID `0`.\n- The `sort`, `direction`, `offset` and `limit` inputs only affect the embedded `item_collection`. To page through all items of a folder use the **List folder items** Endpoint instead.\n\nReference: [Get folder information](https://developer.box.com/reference/get-folders-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				boxapi: {
+					type: 'string',
+					description:
+						'Sent as the `boxapi` header. The URL, and optional password, for the shared link of this item. This header can be used to access items that have not been explicitly shared with a user. Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`. This header can be used on the file or folder shared, as well as on any files or folders nested within the item.',
+				},
+				sort: {
+					type: 'string',
+					description:
+						'Defines the **second** attribute by which items are sorted. The folder type affects the way the items are sorted: * **Standard folder**: Items are always sorted by their `type` first, with folders listed before files, and files listed before web links. * **Root folder**: This parameter is not supported for marker-based pagination on the root folder (the folder with an `id` of `0`). * **Shared folder with parent path to the associated folder visible to the collaborator**: Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.',
+					default: '',
+					enum: ['', 'id', 'name', 'date', 'size'],
+				},
+				direction: {
+					type: 'string',
+					description:
+						'The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.',
+					default: '',
+					enum: ['', 'ASC', 'DESC'],
+				},
+				offset: {
+					type: 'number',
+					description:
+						'The offset of the item at which to begin the response. Offset-based pagination is not guaranteed to work reliably for high offset values and may fail for large datasets. In those cases, reduce the number of items in the folder (for example, by restructuring the folder into smaller subfolders) before retrying the request.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+			},
+			required: ['folder_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `folder`. One of `folder`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the folder.' },
+				created_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was created. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				modified_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was last updated. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				description: {
+					type: 'string',
+					description: 'The optional description of this folder.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The folder size in bytes. Be careful parsing this integer as its value can get very large.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this folder was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this folder is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was originally created.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was last updated.',
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description:
+						'The `folder_upload_email` parameter is not `null` if one of the following options is **true**: * The **Allow uploads to this folder via email** and the **Only allow email uploads from collaborators in this folder** are [enabled for a folder in the Admin Console](https://support.box.com/hc/en-us/articles/360043697534-Upload-to-Box-Through-Email), and the user has at least **Upload** permissions granted. * The **Allow uploads to this folder via email** setting is enabled for a folder in the Admin Console, and the **Only allow email uploads from collaborators in this folder** setting is deactivated (unchecked). If the conditions are not met, the parameter will have the following value: `folder_upload_email: null`.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address. One of `open`, `collaborators`.',
+						},
+						email: {
+							type: 'string',
+							description: 'The optional upload email address for this folder.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				item_collection: {
+					type: 'object',
+					description:
+						'A list of files, folders, and web links in their mini representation.',
+					properties: {
+						limit: {
+							type: 'number',
+							description:
+								'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+						},
+						next_marker: {
+							type: 'string',
+							description: 'The marker for the start of the next page of results.',
+						},
+						prev_marker: {
+							type: 'string',
+							description:
+								'The marker for the start of the previous page of results.',
+						},
+						total_count: {
+							type: 'number',
+							description:
+								'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						offset: {
+							type: 'number',
+							description:
+								'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						order: {
+							type: 'array',
+							description:
+								'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+							items: {
+								type: 'object',
+								properties: {
+									by: { type: 'string', description: 'The field to order by.' },
+									direction: {
+										type: 'string',
+										description:
+											'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+									},
+								},
+								required: [],
+							},
+						},
+						entries: {
+							type: 'array',
+							description: 'The items in this collection.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+									description: {
+										type: 'string',
+										description:
+											'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+									},
+									size: {
+										type: 'number',
+										description:
+											'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+									},
+									path_collection: {
+										type: 'object',
+										description: 'A list of parent folders for an item.',
+										properties: {
+											total_count: {
+												type: 'number',
+												description: 'The number of folders in this list.',
+											},
+											entries: {
+												type: 'array',
+												description: 'The parent folders for this item.',
+												items: {
+													type: 'object',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was created on Box.',
+									},
+									modified_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was last updated on Box.',
+									},
+									trashed_at: {
+										type: 'string',
+										description:
+											'The time at which this file was put in the trash.',
+									},
+									purged_at: {
+										type: 'string',
+										description:
+											'The time at which this file is expected to be purged from the trash.',
+									},
+									content_created_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+									},
+									content_modified_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									modified_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									owned_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									shared_link: {
+										type: 'object',
+										description:
+											'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+											},
+											download_url: {
+												type: 'string',
+												description:
+													'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+											},
+											vanity_url: {
+												type: 'string',
+												description:
+													'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+											},
+											vanity_name: {
+												type: 'string',
+												description:
+													'The custom name of a shared link, as used in the `vanity_url` field.',
+											},
+											access: {
+												type: 'string',
+												description:
+													'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+											},
+											effective_access: {
+												type: 'string',
+												description:
+													'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+											},
+											effective_permission: {
+												type: 'string',
+												description:
+													'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+											},
+											unshared_at: {
+												type: 'string',
+												description:
+													'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+											},
+											is_password_enabled: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link requires a password to access the item.',
+											},
+											permissions: {
+												type: 'object',
+												description:
+													'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+												properties: {
+													can_download: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+													},
+													can_preview: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+													},
+													can_edit: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+													},
+												},
+												required: [],
+											},
+											download_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been downloaded.',
+											},
+											preview_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been previewed.',
+											},
+										},
+										required: [],
+									},
+									parent: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested under another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+										},
+										required: [],
+									},
+									item_status: {
+										type: 'string',
+										description:
+											'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+									},
+									version_number: {
+										type: 'string',
+										description: 'The version number of this file.',
+									},
+									comment_count: {
+										type: 'number',
+										description: 'The number of comments on this file.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'The permissions that the authenticated user has for a file.',
+										properties: {
+											can_delete: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can delete this item.',
+											},
+											can_download: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can download this item.',
+											},
+											can_invite_collaborator: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+											},
+											can_rename: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can rename this item.',
+											},
+											can_set_share_access: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can change the access level of an existing shared link on this item.',
+											},
+											can_share: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can create a shared link for this item.',
+											},
+											can_annotate: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place annotations on this file.',
+											},
+											can_comment: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place comments on this file.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can preview this file.',
+											},
+											can_upload: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can upload a new version of this file.',
+											},
+											can_view_annotations_all: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view all annotations placed on this file.',
+											},
+											can_view_annotations_self: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view annotations placed by themselves on this file.',
+											},
+											can_apply_watermark: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can apply a watermark to this file.',
+											},
+										},
+										required: [],
+									},
+									tags: {
+										type: 'array',
+										description:
+											"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+										items: { type: 'string', description: 'The tag.' },
+									},
+									lock: {
+										type: 'object',
+										description:
+											'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this lock.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `lock`. One of `lock`.',
+											},
+											created_by: {
+												type: 'object',
+												description:
+													'A mini representation of a user, as can be returned when nested within other resources.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier for this user.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `user`. One of `user`.',
+													},
+													name: {
+														type: 'string',
+														description:
+															'The display name of this user.',
+													},
+													login: {
+														type: 'string',
+														description:
+															'The primary email address of this user.',
+													},
+												},
+												required: [],
+											},
+											created_at: {
+												type: 'string',
+												description: 'The time this lock was created at.',
+											},
+											expired_at: {
+												type: 'string',
+												description:
+													'The time this lock is to expire at, which might be in the past.',
+											},
+											is_download_prevented: {
+												type: 'boolean',
+												description:
+													'Whether or not the file can be downloaded while locked.',
+											},
+											app_type: {
+												type: 'string',
+												description:
+													'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+											},
+										},
+										required: [],
+									},
+									extension: {
+										type: 'string',
+										description:
+											'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+									},
+									is_package: {
+										type: 'boolean',
+										description:
+											'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+									},
+									expiring_embed_link: {
+										type: 'object',
+										description: 'An expiring Box Embed Link.',
+										properties: {
+											access_token: {
+												type: 'string',
+												description: 'The requested access token.',
+											},
+											expires_in: {
+												type: 'number',
+												description:
+													'The time in seconds by which this token will expire.',
+											},
+											token_type: {
+												type: 'string',
+												description:
+													'The type of access token returned. One of `bearer`.',
+											},
+											restricted_to: {
+												type: 'array',
+												description:
+													'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+												items: {
+													type: 'object',
+													properties: {
+														scope: {
+															type: 'string',
+															description:
+																'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+														},
+														object: {
+															type: 'object',
+															description:
+																'The file or folder resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																},
+																etag: {
+																	type: 'string',
+																	description:
+																		'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `folder`. One of `folder`.',
+																},
+																sequence_id: {
+																	type: 'string',
+																	description:
+																		'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																},
+																name: {
+																	type: 'string',
+																	description:
+																		'The name of the folder.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+																},
+																file_version: {
+																	type: 'object',
+																	description:
+																		'A mini representation of a file version, used when nested within another resource.',
+																	properties: {
+																		id: {
+																			type: 'string',
+																			description:
+																				'The unique identifier that represent a file version.',
+																		},
+																		type: {
+																			type: 'string',
+																			description:
+																				'The value will always be `file_version`. One of `file_version`.',
+																		},
+																		sha1: {
+																			type: 'string',
+																			description:
+																				'The SHA1 hash of this version of the file.',
+																		},
+																	},
+																	required: [],
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											url: {
+												type: 'string',
+												description:
+													'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+											},
+										},
+										required: [],
+									},
+									watermark_info: {
+										type: 'object',
+										description:
+											'Details about the watermark applied to this item.',
+										properties: {
+											is_watermarked: {
+												type: 'boolean',
+												description:
+													'Specifies if this item has a watermark applied.',
+											},
+											is_watermark_inherited: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+											},
+											is_watermarked_by_access_policy: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is enforced by an access policy.',
+											},
+										},
+										required: [],
+									},
+									is_accessible_via_shared_link: {
+										type: 'boolean',
+										description:
+											'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+									},
+									allowed_invitee_roles: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+										},
+									},
+									is_externally_owned: {
+										type: 'boolean',
+										description:
+											'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+									},
+									has_collaborations: {
+										type: 'boolean',
+										description:
+											'Specifies if this file has any other collaborators.',
+									},
+									metadata: {
+										type: 'object',
+										description:
+											'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+										properties: {},
+										required: [],
+										additionalProperties: true,
+									},
+									expires_at: {
+										type: 'string',
+										description: 'When the file will automatically be deleted.',
+									},
+									representations: {
+										type: 'object',
+										description: 'A list of file representations.',
+										properties: {
+											entries: {
+												type: 'array',
+												description: 'A list of files.',
+												items: {
+													type: 'object',
+													properties: {
+														content: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to actually fetch the representation.',
+															properties: {
+																url_template: {
+																	type: 'string',
+																	description:
+																		"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+																},
+															},
+															required: [],
+														},
+														info: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to fetch more info on this representation.',
+															properties: {
+																url: {
+																	type: 'string',
+																	description:
+																		'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+																},
+															},
+															required: [],
+														},
+														properties: {
+															type: 'object',
+															description:
+																'An object containing the size and type of this presentation.',
+															properties: {
+																dimensions: {
+																	type: 'string',
+																	description:
+																		'The width by height size of this representation in pixels.',
+																},
+																paged: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation is build up out of multiple pages.',
+																},
+																thumb: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation can be used as a thumbnail of the file.',
+																},
+															},
+															required: [],
+														},
+														representation: {
+															type: 'string',
+															description:
+																'Indicates the file type of the returned representation.',
+														},
+														status: {
+															type: 'object',
+															description:
+																'An object containing the status of this representation.',
+															properties: {
+																state: {
+																	type: 'string',
+																	description:
+																		'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									classification: {
+										type: 'object',
+										description: 'The classification applied to an item.',
+										properties: {
+											name: {
+												type: 'string',
+												description: 'The name of the classification.',
+											},
+											definition: {
+												type: 'string',
+												description:
+													'An explanation of the meaning of this classification.',
+											},
+											color: {
+												type: 'string',
+												description:
+													'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+											},
+										},
+										required: [],
+									},
+									uploader_display_name: {
+										type: 'string',
+										description:
+											'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+									},
+									disposition_at: {
+										type: 'string',
+										description:
+											'The retention expiration timestamp for the given file.',
+									},
+									shared_link_permission_options: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+										},
+									},
+									is_associated_with_app_item: {
+										type: 'boolean',
+										description:
+											'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+									},
+									collections: {
+										type: 'array',
+										description:
+											'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier for this collection.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `collection`. One of `collection`.',
+												},
+												name: {
+													type: 'string',
+													description:
+														'The name of the collection. One of `Favorites`.',
+												},
+												collection_type: {
+													type: 'string',
+													description:
+														'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+												},
+											},
+											required: [],
+										},
+									},
+									is_download_available: {
+										type: 'boolean',
+										description:
+											"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+									},
+									authenticated_download_url: {
+										type: 'string',
+										description:
+											'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+									},
+									allowed_shared_link_access_levels: {
+										type: 'array',
+										description:
+											'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+										items: {
+											type: 'string',
+											description:
+												'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+										},
+									},
+									url: {
+										type: 'string',
+										description: 'The URL this web link points to.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive. One of `synced`, `not_synced`, `partially_synced`.",
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this folder has any other collaborators.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a folder.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description: 'Specifies if the user can upload into this folder.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this folder and its contents.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				can_non_owners_invite: {
+					type: 'boolean',
+					description:
+						'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this folder is owned by a user outside of the authenticated enterprise.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				is_collaboration_restricted_to_enterprise: {
+					type: 'boolean',
+					description:
+						'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this folder. The list depends on item policy and user authorization. For some folders, like the root folder, this is always empty as sharing is not allowed at that level.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this folder.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the folder can be accessed with the direct shared link or a shared link to a parent folder.',
+				},
+				can_non_owners_view_collaborators: {
+					type: 'boolean',
+					description:
+						'Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators.',
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the folder or any ancestor of the folder is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the folder.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this folder belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getFolderItems',
+		label: 'List folder items',
+		description: 'Retrieves a page of files, folders and web links contained in a folder.',
+		context:
+			"---\nname: getFolderItems\ndescription: Retrieves a page of files, folders and web links contained in a folder.\n---\n\nRetrieves a page of items in a folder. These items can be files, folders, and web links. To request more information about the folder itself, like its size, use the [Get a folder](https://developer.box.com/reference/get-folders-id) endpoint instead.\n\nThis Endpoint wraps `GET /folders/{folder_id}/items` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- This Endpoint returns a single page. Paging is manual: either use offset-based paging (`offset` + `limit`, with `total_count` in the response) or marker-based paging (set `usemarker` to `true`, then pass the returned `next_marker` as `marker` on the next call). Marker-based paging is recommended for large folders. The root folder (`0`) does not support `sort` with marker-based paging.\n- Entries are returned in their mini representation (`id`, `type`, `name`, `etag`, `sequence_id`, plus `sha1` / `file_version` for files). Use `fields` to request additional attributes such as `size`, `modified_at` or `created_by` for every entry.\n\nReference: [List items in folder](https://developer.box.com/reference/get-folders-id-items/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				usemarker: {
+					type: 'boolean',
+					description:
+						'Specifies whether to use marker-based pagination instead of offset-based pagination. Only one pagination method can be used at a time. By setting this value to true, the API will return a `marker` field that can be passed as a parameter to this endpoint to get the next page of the response.',
+				},
+				marker: {
+					type: 'string',
+					description:
+						'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination. This requires `usemarker` to be set to `true`.',
+				},
+				offset: {
+					type: 'number',
+					description:
+						'The offset of the item at which to begin the response. Offset-based pagination is not guaranteed to work reliably for high offset values and may fail for large datasets. In those cases, use marker-based pagination by setting `usemarker` to `true`.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+				boxapi: {
+					type: 'string',
+					description:
+						'Sent as the `boxapi` header. The URL, and optional password, for the shared link of this item. This header can be used to access items that have not been explicitly shared with a user. Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`. This header can be used on the file or folder shared, as well as on any files or folders nested within the item.',
+				},
+				sort: {
+					type: 'string',
+					description:
+						'Defines the **second** attribute by which items are sorted. The folder type affects the way the items are sorted: * **Standard folder**: Items are always sorted by their `type` first, with folders listed before files, and files listed before web links. * **Root folder**: This parameter is not supported for marker-based pagination on the root folder (the folder with an `id` of `0`). * **Shared folder with parent path to the associated folder visible to the collaborator**: Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.',
+					default: '',
+					enum: ['', 'id', 'name', 'date', 'size'],
+				},
+				direction: {
+					type: 'string',
+					description:
+						'The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.',
+					default: '',
+					enum: ['', 'ASC', 'DESC'],
+				},
+			},
+			required: ['folder_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+				},
+				next_marker: {
+					type: 'string',
+					description: 'The marker for the start of the next page of results.',
+				},
+				prev_marker: {
+					type: 'string',
+					description: 'The marker for the start of the previous page of results.',
+				},
+				total_count: {
+					type: 'number',
+					description:
+						'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+				},
+				offset: {
+					type: 'number',
+					description:
+						'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+				},
+				order: {
+					type: 'array',
+					description:
+						'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+					items: {
+						type: 'object',
+						properties: {
+							by: { type: 'string', description: 'The field to order by.' },
+							direction: {
+								type: 'string',
+								description:
+									'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+							},
+						},
+						required: [],
+					},
+				},
+				entries: {
+					type: 'array',
+					description: 'The items in this collection.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description: 'The value will always be `file`. One of `file`.',
+							},
+							sequence_id: {
+								type: 'string',
+								description:
+									'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+							},
+							name: { type: 'string', description: 'The name of the file.' },
+							sha1: {
+								type: 'string',
+								description:
+									'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+							},
+							file_version: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested within another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file version.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file_version`. One of `file_version`.',
+									},
+									sha1: {
+										type: 'string',
+										description: 'The SHA1 hash of this version of the file.',
+									},
+								},
+								required: [],
+							},
+							description: {
+								type: 'string',
+								description:
+									'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+							},
+							size: {
+								type: 'number',
+								description:
+									'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+							},
+							path_collection: {
+								type: 'object',
+								description: 'A list of parent folders for an item.',
+								properties: {
+									total_count: {
+										type: 'number',
+										description: 'The number of folders in this list.',
+									},
+									entries: {
+										type: 'array',
+										description: 'The parent folders for this item.',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+												},
+												etag: {
+													type: 'string',
+													description:
+														'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `folder`. One of `folder`.',
+												},
+												sequence_id: {
+													type: 'string',
+													description:
+														'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+												},
+												name: {
+													type: 'string',
+													description: 'The name of the folder.',
+												},
+											},
+											required: [],
+										},
+									},
+								},
+								required: [],
+							},
+							created_at: {
+								type: 'string',
+								description: 'The date and time when the file was created on Box.',
+							},
+							modified_at: {
+								type: 'string',
+								description:
+									'The date and time when the file was last updated on Box.',
+							},
+							trashed_at: {
+								type: 'string',
+								description: 'The time at which this file was put in the trash.',
+							},
+							purged_at: {
+								type: 'string',
+								description:
+									'The time at which this file is expected to be purged from the trash.',
+							},
+							content_created_at: {
+								type: 'string',
+								description:
+									'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+							},
+							content_modified_at: {
+								type: 'string',
+								description:
+									'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+							},
+							created_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							modified_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							owned_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							shared_link: {
+								type: 'object',
+								description:
+									'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+								properties: {
+									url: {
+										type: 'string',
+										description:
+											"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+									},
+									vanity_url: {
+										type: 'string',
+										description:
+											'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+									},
+									vanity_name: {
+										type: 'string',
+										description:
+											'The custom name of a shared link, as used in the `vanity_url` field.',
+									},
+									access: {
+										type: 'string',
+										description:
+											'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+									},
+									effective_access: {
+										type: 'string',
+										description:
+											'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+									},
+									effective_permission: {
+										type: 'string',
+										description:
+											'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+									},
+									unshared_at: {
+										type: 'string',
+										description:
+											'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+									},
+									is_password_enabled: {
+										type: 'boolean',
+										description:
+											'Defines if the shared link requires a password to access the item.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+										properties: {
+											can_download: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+											},
+											can_edit: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+											},
+										},
+										required: [],
+									},
+									download_count: {
+										type: 'number',
+										description:
+											'The number of times this item has been downloaded.',
+									},
+									preview_count: {
+										type: 'number',
+										description:
+											'The number of times this item has been previewed.',
+									},
+								},
+								required: [],
+							},
+							parent: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested under another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+							item_status: {
+								type: 'string',
+								description:
+									'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+							},
+							version_number: {
+								type: 'string',
+								description: 'The version number of this file.',
+							},
+							comment_count: {
+								type: 'number',
+								description: 'The number of comments on this file.',
+							},
+							permissions: {
+								type: 'object',
+								description:
+									'The permissions that the authenticated user has for a file.',
+								properties: {
+									can_delete: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can delete this item.',
+									},
+									can_download: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can download this item.',
+									},
+									can_invite_collaborator: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+									},
+									can_rename: {
+										type: 'boolean',
+										description: 'Specifies if the user can rename this item.',
+									},
+									can_set_share_access: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can change the access level of an existing shared link on this item.',
+									},
+									can_share: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can create a shared link for this item.',
+									},
+									can_annotate: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can place annotations on this file.',
+									},
+									can_comment: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can place comments on this file.',
+									},
+									can_preview: {
+										type: 'boolean',
+										description: 'Specifies if the user can preview this file.',
+									},
+									can_upload: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can upload a new version of this file.',
+									},
+									can_view_annotations_all: {
+										type: 'boolean',
+										description:
+											'Specifies if the user view all annotations placed on this file.',
+									},
+									can_view_annotations_self: {
+										type: 'boolean',
+										description:
+											'Specifies if the user view annotations placed by themselves on this file.',
+									},
+									can_apply_watermark: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can apply a watermark to this file.',
+									},
+								},
+								required: [],
+							},
+							tags: {
+								type: 'array',
+								description:
+									"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+								items: { type: 'string', description: 'The tag.' },
+							},
+							lock: {
+								type: 'object',
+								description:
+									'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this lock.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `lock`. One of `lock`.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description: 'The time this lock was created at.',
+									},
+									expired_at: {
+										type: 'string',
+										description:
+											'The time this lock is to expire at, which might be in the past.',
+									},
+									is_download_prevented: {
+										type: 'boolean',
+										description:
+											'Whether or not the file can be downloaded while locked.',
+									},
+									app_type: {
+										type: 'string',
+										description:
+											'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+									},
+								},
+								required: [],
+							},
+							extension: {
+								type: 'string',
+								description:
+									'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+							},
+							is_package: {
+								type: 'boolean',
+								description:
+									'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+							},
+							expiring_embed_link: {
+								type: 'object',
+								description: 'An expiring Box Embed Link.',
+								properties: {
+									access_token: {
+										type: 'string',
+										description: 'The requested access token.',
+									},
+									expires_in: {
+										type: 'number',
+										description:
+											'The time in seconds by which this token will expire.',
+									},
+									token_type: {
+										type: 'string',
+										description:
+											'The type of access token returned. One of `bearer`.',
+									},
+									restricted_to: {
+										type: 'array',
+										description:
+											'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+										items: {
+											type: 'object',
+											properties: {
+												scope: {
+													type: 'string',
+													description:
+														'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+												},
+												object: {
+													type: 'object',
+													description: 'The file or folder resource.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+														sha1: {
+															type: 'string',
+															description:
+																'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+														},
+														file_version: {
+															type: 'object',
+															description:
+																'A mini representation of a file version, used when nested within another resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a file version.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `file_version`. One of `file_version`.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of this version of the file.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											required: [],
+										},
+									},
+									url: {
+										type: 'string',
+										description:
+											'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+									},
+								},
+								required: [],
+							},
+							watermark_info: {
+								type: 'object',
+								description: 'Details about the watermark applied to this item.',
+								properties: {
+									is_watermarked: {
+										type: 'boolean',
+										description:
+											'Specifies if this item has a watermark applied.',
+									},
+									is_watermark_inherited: {
+										type: 'boolean',
+										description:
+											'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+									},
+									is_watermarked_by_access_policy: {
+										type: 'boolean',
+										description:
+											'Specifies if the watermark is enforced by an access policy.',
+									},
+								},
+								required: [],
+							},
+							is_accessible_via_shared_link: {
+								type: 'boolean',
+								description:
+									'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+							},
+							allowed_invitee_roles: {
+								type: 'array',
+								description:
+									'A list of the types of roles that user can be invited at when sharing this file.',
+								items: {
+									type: 'string',
+									description:
+										'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+								},
+							},
+							is_externally_owned: {
+								type: 'boolean',
+								description:
+									'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+							},
+							has_collaborations: {
+								type: 'boolean',
+								description: 'Specifies if this file has any other collaborators.',
+							},
+							metadata: {
+								type: 'object',
+								description:
+									'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+								properties: {},
+								required: [],
+								additionalProperties: true,
+							},
+							expires_at: {
+								type: 'string',
+								description: 'When the file will automatically be deleted.',
+							},
+							representations: {
+								type: 'object',
+								description: 'A list of file representations.',
+								properties: {
+									entries: {
+										type: 'array',
+										description: 'A list of files.',
+										items: {
+											type: 'object',
+											properties: {
+												content: {
+													type: 'object',
+													description:
+														'An object containing the URL that can be used to actually fetch the representation.',
+													properties: {
+														url_template: {
+															type: 'string',
+															description:
+																"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+														},
+													},
+													required: [],
+												},
+												info: {
+													type: 'object',
+													description:
+														'An object containing the URL that can be used to fetch more info on this representation.',
+													properties: {
+														url: {
+															type: 'string',
+															description:
+																'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+														},
+													},
+													required: [],
+												},
+												properties: {
+													type: 'object',
+													description:
+														'An object containing the size and type of this presentation.',
+													properties: {
+														dimensions: {
+															type: 'string',
+															description:
+																'The width by height size of this representation in pixels.',
+														},
+														paged: {
+															type: 'string',
+															description:
+																'Indicates if the representation is build up out of multiple pages.',
+														},
+														thumb: {
+															type: 'string',
+															description:
+																'Indicates if the representation can be used as a thumbnail of the file.',
+														},
+													},
+													required: [],
+												},
+												representation: {
+													type: 'string',
+													description:
+														'Indicates the file type of the returned representation.',
+												},
+												status: {
+													type: 'object',
+													description:
+														'An object containing the status of this representation.',
+													properties: {
+														state: {
+															type: 'string',
+															description:
+																'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+														},
+													},
+													required: [],
+												},
+											},
+											required: [],
+										},
+									},
+								},
+								required: [],
+							},
+							classification: {
+								type: 'object',
+								description: 'The classification applied to an item.',
+								properties: {
+									name: {
+										type: 'string',
+										description: 'The name of the classification.',
+									},
+									definition: {
+										type: 'string',
+										description:
+											'An explanation of the meaning of this classification.',
+									},
+									color: {
+										type: 'string',
+										description:
+											'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+									},
+								},
+								required: [],
+							},
+							uploader_display_name: {
+								type: 'string',
+								description:
+									'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+							},
+							disposition_at: {
+								type: 'string',
+								description:
+									'The retention expiration timestamp for the given file.',
+							},
+							shared_link_permission_options: {
+								type: 'array',
+								description:
+									'A list of the types of roles that user can be invited at when sharing this file.',
+								items: {
+									type: 'string',
+									description:
+										'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+								},
+							},
+							is_associated_with_app_item: {
+								type: 'boolean',
+								description:
+									'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+							},
+							collections: {
+								type: 'array',
+								description:
+									'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description:
+												'The unique identifier for this collection.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'The value will always be `collection`. One of `collection`.',
+										},
+										name: {
+											type: 'string',
+											description:
+												'The name of the collection. One of `Favorites`.',
+										},
+										collection_type: {
+											type: 'string',
+											description:
+												'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+										},
+									},
+									required: [],
+								},
+							},
+							is_download_available: {
+								type: 'boolean',
+								description:
+									"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+							},
+							download_url: {
+								type: 'string',
+								description:
+									"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+							},
+							authenticated_download_url: {
+								type: 'string',
+								description:
+									'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+							},
+							allowed_shared_link_access_levels: {
+								type: 'array',
+								description:
+									'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+								items: {
+									type: 'string',
+									description:
+										'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+								},
+							},
+							url: {
+								type: 'string',
+								description: 'The URL this web link points to.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getGlobalMetadataTemplates',
+		label: 'List global metadata templates',
+		description:
+			'Retrieves a page of the generic metadata templates Box provides to all enterprises.',
+		context:
+			"---\nname: getGlobalMetadataTemplates\ndescription: Retrieves a page of the generic metadata templates Box provides to all enterprises.\n---\n\nUsed to retrieve all generic, global metadata templates available to all enterprises using Box.\n\nThis Endpoint wraps `GET /metadata_templates/global` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Global templates are provided by Box (for example Box Sign, malware scan or Box Skills templates); their `scope` is `global` and many are `hidden`. Templates created by users are in the `enterprise` scope — see the **List enterprise metadata templates** Endpoint.\n- The free-form `properties` template (`scope` `global`, `template_key` `properties`), which accepts arbitrary key-value pairs, is not included in this list.\n- Use `templateKey` (not `displayName`) as the `template_key` and the `fields[].key` values as the metadata keys when calling the **Create file metadata instance**, **Create folder metadata instance**, **Update file metadata**, **Update folder metadata** and **Search for content** (`mdfilters`) Endpoints. Field types are `string`, `float`, `date` (RFC3339 timestamp), `enum`, `multiSelect` and `taxonomy`; for `enum` and `multiSelect` the accepted values are the `fields[].options[].key` values.\n- This Endpoint returns a single page. Page manually by passing the returned `next_marker` as `marker` on the next call until `next_marker` is `null`.\n\nReference: [List all global metadata templates](https://developer.box.com/reference/get-metadata-templates-global/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				marker: {
+					type: 'string',
+					description:
+						'The position marker at which to begin returning results, as returned in `next_marker` of the previous page. Leave empty for the first page.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+			},
+			required: [],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+				},
+				next_marker: {
+					type: 'string',
+					description: 'The marker for the start of the next page of results.',
+				},
+				prev_marker: {
+					type: 'string',
+					description: 'The marker for the start of the previous page of results.',
+				},
+				entries: {
+					type: 'array',
+					description: 'A list of metadata templates.',
+					items: {
+						type: 'object',
+						properties: {
+							id: { type: 'string', description: 'The ID of the metadata template.' },
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `metadata_template`. One of `metadata_template`.',
+							},
+							scope: {
+								type: 'string',
+								description:
+									'The scope of the metadata template can either be `global` or `enterprise_*`. The `global` scope is used for templates that are available to any Box enterprise. The `enterprise_*` scope represents templates that have been created within a specific enterprise, where `*` will be the ID of that enterprise.',
+							},
+							templateKey: {
+								type: 'string',
+								description:
+									'A unique identifier for the template. This identifier is unique across the `scope` of the enterprise to which the metadata template is being applied, yet is not necessarily unique across different enterprises.',
+							},
+							displayName: {
+								type: 'string',
+								description:
+									'The display name of the template. This can be seen in the Box web app and mobile apps.',
+							},
+							hidden: {
+								type: 'boolean',
+								description:
+									'Defines if this template is visible in the Box web app UI, or if it is purely intended for usage through the API.',
+							},
+							fields: {
+								type: 'array',
+								description:
+									'An ordered list of template fields which are part of the template. Each field can be a regular text field, date field, number field, as well as a single or multi-select list.',
+								items: {
+									type: 'object',
+									properties: {
+										type: {
+											type: 'string',
+											description:
+												'The type of field. The basic fields are a `string` field for text, a `float` field for numbers, and a `date` fields to present the user with a date-time picker. Additionally, metadata templates support an `enum` field for a basic list of items, and `multiSelect` field for a similar list of items where the user can select more than one value. Metadata taxonomies are also supported as a `taxonomy` field type with a specific set of additional properties, which describe its structure. **Note**: The `integer` value is deprecated. It is still present in the response, but cannot be used in the POST request. One of `string`, `float`, `date`, `enum`, `multiSelect`, `taxonomy`, `integer`.',
+										},
+										key: {
+											type: 'string',
+											description:
+												'A unique identifier for the field. The identifier must be unique within the template to which it belongs.',
+										},
+										displayName: {
+											type: 'string',
+											description:
+												'The display name of the field as it is shown to the user in the web and mobile apps.',
+										},
+										description: {
+											type: 'string',
+											description:
+												'A description of the field. This is not shown to the user.',
+										},
+										hidden: {
+											type: 'boolean',
+											description:
+												'Whether this field is hidden in the UI for the user and can only be set through the API instead.',
+										},
+										options: {
+											type: 'array',
+											description:
+												'A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.',
+											items: {
+												type: 'object',
+												properties: {
+													key: {
+														type: 'string',
+														description:
+															'The text value of the option. This represents both the display name of the option and the internal key used when updating templates.',
+													},
+												},
+												required: [],
+											},
+										},
+										taxonomyKey: {
+											type: 'string',
+											description:
+												'The unique key of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										taxonomyId: {
+											type: 'string',
+											description:
+												'The unique ID of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										namespace: {
+											type: 'string',
+											description:
+												'The namespace of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+										},
+										optionsRules: {
+											type: 'object',
+											description:
+												'An object defining additional rules for the options of the taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+											properties: {
+												multiSelect: {
+													type: 'boolean',
+													description:
+														'Whether to allow users to select multiple values.',
+												},
+												selectableLevels: {
+													type: 'array',
+													description:
+														'An array of integers defining which levels of the taxonomy are selectable by users.',
+													items: {
+														type: 'number',
+														description: 'The selectable level.',
+													},
+												},
+											},
+											required: [],
+										},
+										id: {
+											type: 'string',
+											description:
+												'The unique ID of the metadata template field.',
+										},
+									},
+									required: [],
+								},
+							},
+							copyInstanceOnItemCopy: {
+								type: 'boolean',
+								description:
+									'Whether or not to include the metadata when a file or folder is copied.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getMetadataTemplateSchema',
+		label: 'Get a metadata template',
+		description:
+			'Retrieves a metadata template, including its field definitions, by scope and template key.',
+		context:
+			"---\nname: getMetadataTemplateSchema\ndescription: Retrieves a metadata template, including its field definitions, by scope and template key.\n---\n\nRetrieves a metadata template by its `scope` and `templateKey` values. To find the `scope` and `templateKey` for a template, list the enterprise or global templates, or read them from a metadata instance already applied to a file or folder.\n\nThis Endpoint wraps `GET /metadata_templates/{scope}/{template_key}/schema` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- `scope` is `enterprise` for templates created in the enterprise and `global` for Box-provided templates; `template_key` is the template's `templateKey`, not its display name. Find both with the **List enterprise metadata templates** / **List global metadata templates** Endpoints, or read them from the `$scope` / `$template` system fields of a metadata instance. The free-form `global.properties` template has no schema; Box returns `404 not_found` for it.\n- Use `templateKey` (not `displayName`) as the `template_key` and the `fields[].key` values as the metadata keys when calling the **Create file metadata instance**, **Create folder metadata instance**, **Update file metadata**, **Update folder metadata** and **Search for content** (`mdfilters`) Endpoints. Field types are `string`, `float`, `date` (RFC3339 timestamp), `enum`, `multiSelect` and `taxonomy`; for `enum` and `multiSelect` the accepted values are the `fields[].options[].key` values.\n\nReference: [Get metadata template by name](https://developer.box.com/reference/get-metadata-templates-id-id-schema/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				scope: {
+					type: 'string',
+					description: 'The scope of the metadata template.',
+					enum: ['global', 'enterprise'],
+				},
+				template_key: { type: 'string', description: 'The name of the metadata template.' },
+			},
+			required: ['scope', 'template_key'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: { type: 'string', description: 'The ID of the metadata template.' },
+				type: {
+					type: 'string',
+					description:
+						'The value will always be `metadata_template`. One of `metadata_template`.',
+				},
+				scope: {
+					type: 'string',
+					description:
+						'The scope of the metadata template can either be `global` or `enterprise_*`. The `global` scope is used for templates that are available to any Box enterprise. The `enterprise_*` scope represents templates that have been created within a specific enterprise, where `*` will be the ID of that enterprise.',
+				},
+				templateKey: {
+					type: 'string',
+					description:
+						'A unique identifier for the template. This identifier is unique across the `scope` of the enterprise to which the metadata template is being applied, yet is not necessarily unique across different enterprises.',
+				},
+				displayName: {
+					type: 'string',
+					description:
+						'The display name of the template. This can be seen in the Box web app and mobile apps.',
+				},
+				hidden: {
+					type: 'boolean',
+					description:
+						'Defines if this template is visible in the Box web app UI, or if it is purely intended for usage through the API.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'An ordered list of template fields which are part of the template. Each field can be a regular text field, date field, number field, as well as a single or multi-select list.',
+					items: {
+						type: 'object',
+						properties: {
+							type: {
+								type: 'string',
+								description:
+									'The type of field. The basic fields are a `string` field for text, a `float` field for numbers, and a `date` fields to present the user with a date-time picker. Additionally, metadata templates support an `enum` field for a basic list of items, and `multiSelect` field for a similar list of items where the user can select more than one value. Metadata taxonomies are also supported as a `taxonomy` field type with a specific set of additional properties, which describe its structure. **Note**: The `integer` value is deprecated. It is still present in the response, but cannot be used in the POST request. One of `string`, `float`, `date`, `enum`, `multiSelect`, `taxonomy`, `integer`.',
+							},
+							key: {
+								type: 'string',
+								description:
+									'A unique identifier for the field. The identifier must be unique within the template to which it belongs.',
+							},
+							displayName: {
+								type: 'string',
+								description:
+									'The display name of the field as it is shown to the user in the web and mobile apps.',
+							},
+							description: {
+								type: 'string',
+								description:
+									'A description of the field. This is not shown to the user.',
+							},
+							hidden: {
+								type: 'boolean',
+								description:
+									'Whether this field is hidden in the UI for the user and can only be set through the API instead.',
+							},
+							options: {
+								type: 'array',
+								description:
+									'A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.',
+								items: {
+									type: 'object',
+									properties: {
+										key: {
+											type: 'string',
+											description:
+												'The text value of the option. This represents both the display name of the option and the internal key used when updating templates.',
+										},
+									},
+									required: [],
+								},
+							},
+							taxonomyKey: {
+								type: 'string',
+								description:
+									'The unique key of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+							},
+							taxonomyId: {
+								type: 'string',
+								description:
+									'The unique ID of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+							},
+							namespace: {
+								type: 'string',
+								description:
+									'The namespace of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+							},
+							optionsRules: {
+								type: 'object',
+								description:
+									'An object defining additional rules for the options of the taxonomy field. This property is required when the field `type` is set to `taxonomy`.',
+								properties: {
+									multiSelect: {
+										type: 'boolean',
+										description:
+											'Whether to allow users to select multiple values.',
+									},
+									selectableLevels: {
+										type: 'array',
+										description:
+											'An array of integers defining which levels of the taxonomy are selectable by users.',
+										items: {
+											type: 'number',
+											description: 'The selectable level.',
+										},
+									},
+								},
+								required: [],
+							},
+							id: {
+								type: 'string',
+								description: 'The unique ID of the metadata template field.',
+							},
+						},
+						required: [],
+					},
+				},
+				copyInstanceOnItemCopy: {
+					type: 'boolean',
+					description:
+						'Whether or not to include the metadata when a file or folder is copied.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getSignRequest',
+		label: 'Get a sign request',
+		description: 'Retrieves the details of a Box Sign request.',
+		context:
+			"---\nname: getSignRequest\ndescription: Retrieves the details of a Box Sign request.\n---\n\nGets a sign request by ID.\n\nThis Endpoint wraps `GET /sign_requests/{sign_request_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- The `status` field reports the progress of the request (`converting`, `created`, `sent`, `viewed`, `signed`, `cancelled`, `declined`, `error_converting`, `error_sending`, `expired`, `finalizing`, `error_finalizing`).\n\nReference: [Get Box Sign request by ID](https://developer.box.com/reference/get-sign-requests-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				sign_request_id: {
+					type: 'string',
+					description: 'The ID of the signature request.',
+				},
+			},
+			required: ['sign_request_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				is_document_preparation_needed: {
+					type: 'boolean',
+					description:
+						'Indicates if the sender should receive a `prepare_url` in the response to complete document preparation using the UI.',
+				},
+				redirect_url: {
+					type: 'string',
+					description:
+						'When specified, the signature request will be redirected to this url when a document is signed.',
+				},
+				declined_redirect_url: {
+					type: 'string',
+					description:
+						'The uri that a signer will be redirected to after declining to sign a document.',
+				},
+				are_text_signatures_enabled: {
+					type: 'boolean',
+					description: 'Disables the usage of signatures generated by typing (text).',
+				},
+				email_subject: {
+					type: 'string',
+					description:
+						'Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+				},
+				email_message: {
+					type: 'string',
+					description:
+						'Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+				},
+				are_reminders_enabled: {
+					type: 'boolean',
+					description:
+						'Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.',
+				},
+				name: { type: 'string', description: 'Name of the signature request.' },
+				prefill_tags: {
+					type: 'array',
+					description:
+						"When a document contains sign-related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.",
+					items: {
+						type: 'object',
+						properties: {
+							document_tag_id: {
+								type: 'string',
+								description:
+									'This references the ID of a specific tag contained in a file of the signature request.',
+							},
+							text_value: { type: 'string', description: 'Text prefill value.' },
+							checkbox_value: {
+								type: 'boolean',
+								description: 'Checkbox prefill value.',
+							},
+							date_value: { type: 'string', description: 'Date prefill value.' },
+						},
+						required: [],
+					},
+				},
+				days_valid: {
+					type: 'number',
+					description:
+						'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+				},
+				external_id: {
+					type: 'string',
+					description:
+						'This can be used to reference an ID in an external system that the sign request is related to.',
+				},
+				template_id: {
+					type: 'string',
+					description:
+						'When a signature request is created from a template this field will indicate the id of that template.',
+				},
+				external_system_name: {
+					type: 'string',
+					description:
+						'Used as an optional system name to appear in the signature log next to the signers who have been assigned the `embed_url_external_id`.',
+				},
+				request_flow: {
+					type: 'string',
+					description:
+						'The flow type of the sign request. Values can include `standard` or `cfr11`. When not specified during creation, a default is chosen based on admin settings.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `sign-request`. One of `sign-request`.',
+				},
+				source_files: {
+					type: 'array',
+					description:
+						'List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description: 'The value will always be `file`. One of `file`.',
+							},
+						},
+						required: [],
+					},
+				},
+				signers: {
+					type: 'array',
+					description: 'Array of signers for the signature request.',
+					items: {
+						type: 'object',
+						properties: {
+							email: {
+								type: 'string',
+								description:
+									'Email address of the signer. The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.',
+							},
+							role: {
+								type: 'string',
+								description:
+									'Defines the role of the signer in the signature request. A `signer` must sign the document and an `approver` must approve the document. A `final_copy_reader` only receives the final signed document and signing log. One of `signer`, `approver`, `final_copy_reader`.',
+							},
+							is_in_person: {
+								type: 'boolean',
+								description:
+									'Used in combination with an embed URL for a sender. After the sender signs, they are redirected to the next `in_person` signer.',
+							},
+							order: { type: 'number', description: 'Order of the signer.' },
+							embed_url_external_user_id: {
+								type: 'string',
+								description:
+									'User ID for the signer in an external application responsible for authentication when accessing the embed URL.',
+							},
+							redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirected to after signing a document. Defining this URL overrides default or global redirect URL settings for a specific signer. If no declined redirect URL is specified, this URL will be used for decline actions as well.',
+							},
+							declined_redirect_url: {
+								type: 'string',
+								description:
+									'The URL that a signer will be redirect to after declining to sign a document. Defining this URL overrides default or global declined redirect URL settings for a specific signer.',
+							},
+							login_required: {
+								type: 'boolean',
+								description:
+									'If set to true, the signer will need to log in to a Box account before signing the request. If the signer does not have an existing account, they will have the option to create a free Box account.',
+							},
+							verification_phone_number: {
+								type: 'string',
+								description:
+									'If set, this phone number will be used to verify the signer via two-factor authentication before they are able to sign the document. Cannot be selected in combination with `login_required`.',
+							},
+							signer_group_id: {
+								type: 'string',
+								description:
+									'If set, signers who have the same value will be assigned to the same input and to the same signer group. A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be used/accessed within this Sign Request. A signer group is expected to have more than one signer. If the provided value is only used for one signer, this value will be ignored and request will be handled as it was intended for an individual signer. The value provided can be any string and only used to determine which signers belongs to same group. A successful response will provide a generated UUID value instead for signers in the same signer group.',
+							},
+							suppress_notifications: {
+								type: 'boolean',
+								description:
+									'If true, no emails about the sign request will be sent.',
+							},
+							language: {
+								type: 'string',
+								description:
+									'The language of the user, formatted in modified version of the [ISO 639-1](https://developer.box.com/guides/api-calls/language-codes) format.',
+							},
+							has_viewed_document: {
+								type: 'boolean',
+								description: 'Set to `true` if the signer views the document.',
+							},
+							signer_decision: {
+								type: 'object',
+								description: 'Final decision made by the signer.',
+								properties: {
+									type: {
+										type: 'string',
+										description:
+											'Type of decision made by the signer. One of `signed`, `declined`.',
+									},
+									finalized_at: {
+										type: 'string',
+										description: 'Date and Time that the decision was made.',
+									},
+									additional_info: {
+										type: 'string',
+										description:
+											'Additional info about the decision, such as the decline reason from the signer.',
+									},
+								},
+								required: [],
+							},
+							inputs: {
+								type: 'array',
+								description: 'The inputs.',
+								items: {
+									type: 'object',
+									properties: {
+										document_tag_id: {
+											type: 'string',
+											description:
+												'This references the ID of a specific tag contained in a file of the signature request.',
+										},
+										text_value: {
+											type: 'string',
+											description: 'Text prefill value.',
+										},
+										checkbox_value: {
+											type: 'boolean',
+											description: 'Checkbox prefill value.',
+										},
+										date_value: {
+											type: 'string',
+											description: 'Date prefill value.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'Type of input. One of `signature`, `date`, `text`, `checkbox`, `radio`, `dropdown`.',
+										},
+										content_type: {
+											type: 'string',
+											description:
+												'Content type of input. One of `signature`, `initial`, `stamp`, `date`, `checkbox`, `text`, `full_name`, `first_name`, `last_name`, `company`, `title`, `email`, `attachment`, `radio`, `dropdown`.',
+										},
+										page_index: {
+											type: 'number',
+											description: 'Index of page that the input is on.',
+										},
+										read_only: {
+											type: 'boolean',
+											description:
+												'Indicates whether this input is read-only (cannot be modified by signers).',
+										},
+										validation: {
+											type: 'object',
+											description:
+												'Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.',
+											properties: {
+												validation_type: {
+													type: 'string',
+													description:
+														'Validates that the text input is an email address. One of `email`.',
+												},
+												custom_regex: {
+													type: 'string',
+													description:
+														'Regular expression used for validation.',
+												},
+												custom_error_message: {
+													type: 'string',
+													description:
+														'Error message shown if input fails custom regular expression validation.',
+												},
+											},
+											required: [],
+										},
+										reason: {
+											type: 'string',
+											description:
+												"The reason for the signer's input, applicable to signature or initial content types in a `cfr11` request flow. The value is `null` when not applicable.",
+										},
+										is_validated: {
+											type: 'boolean',
+											description:
+												"Indicates whether the signer's input has been validated through re-authentication. Applicable only for signature or initial content types in a `cfr11` request flow. The value is `null` for standard request flows or non-applicable input types.",
+										},
+									},
+									required: [],
+								},
+							},
+							embed_url: {
+								type: 'string',
+								description: 'URL to direct a signer to for signing.',
+							},
+							iframeable_embed_url: {
+								type: 'string',
+								description:
+									'This URL is specifically designed for signing documents within an HTML `iframe` tag. It will be returned in the response only if the `embed_url_external_user_id` parameter was passed in the `create Box Sign request` call.',
+							},
+							attachments: {
+								type: 'array',
+								description: 'Attachments that the signer uploaded.',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description: 'Identifier of the attachment file.',
+										},
+										name: {
+											type: 'string',
+											description: 'Display name of the attachment file.',
+										},
+									},
+									required: [],
+								},
+							},
+						},
+						required: [],
+					},
+				},
+				signature_color: {
+					type: 'string',
+					description: 'Force a specific color for the signature (blue, black, or red).',
+				},
+				id: { type: 'string', description: 'Box Sign request ID.' },
+				prepare_url: {
+					type: 'string',
+					description:
+						'This URL is returned if `is_document_preparation_needed` is set to `true` in the request. The parameter is used to prepare the signature request using the UI. The signature request is not sent until the preparation phase is complete.',
+				},
+				signing_log: {
+					type: 'object',
+					description:
+						'A mini representation of a file, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `file`. One of `file`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the file.' },
+						sha1: {
+							type: 'string',
+							description:
+								'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+						},
+						file_version: {
+							type: 'object',
+							description:
+								'A mini representation of a file version, used when nested within another resource.',
+							properties: {
+								id: {
+									type: 'string',
+									description:
+										'The unique identifier that represent a file version.',
+								},
+								type: {
+									type: 'string',
+									description:
+										'The value will always be `file_version`. One of `file_version`.',
+								},
+								sha1: {
+									type: 'string',
+									description: 'The SHA1 hash of this version of the file.',
+								},
+							},
+							required: [],
+						},
+					},
+					required: [],
+				},
+				status: {
+					type: 'string',
+					description:
+						'Describes the status of the signature request. One of `converting`, `created`, `sent`, `viewed`, `signed`, `cancelled`, `declined`, `error`, `error_converting`, `error_sending`, `expired`, `finalizing`, `error_finalizing`.',
+				},
+				sign_files: {
+					type: 'object',
+					description:
+						'List of files that will be signed, which are copies of the original source files. A new version of these files are created as signers sign and can be downloaded at any point in the signing process.',
+					properties: {
+						files: {
+							type: 'array',
+							description: 'The files.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						is_ready_for_download: {
+							type: 'boolean',
+							description:
+								'Indicates whether the `sign_files` documents are processing and the PDFs may be out of date. A change to any document requires processing on all `sign_files`. We recommended waiting until processing is finished (and this value is true) before downloading the PDFs.',
+						},
+					},
+					required: [],
+				},
+				auto_expire_at: {
+					type: 'string',
+					description:
+						'Uses `days_valid` to calculate the date and time, in GMT, the sign request will expire if unsigned.',
+				},
+				parent_folder: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				collaborator_level: {
+					type: 'string',
+					description:
+						'The collaborator level of the user to the sign request. Values can include "owner", "editor", and "viewer".',
+				},
+				short_id: { type: 'string', description: 'Short identifier for the sign request.' },
+				created_at: {
+					type: 'string',
+					description: 'Timestamp marking when the sign request was created.',
+				},
+				finished_at: {
+					type: 'string',
+					description: 'Timestamp indicating when all signing actions completed.',
+				},
+				error_code: {
+					type: 'string',
+					description:
+						'When the sign request is in an error state, identifies the specific reason. Null when no error code applies.',
+				},
+				sender_email: {
+					type: 'string',
+					description: 'The email address of the sender of the sign request.',
+				},
+				sender_id: {
+					type: 'number',
+					description: 'The user ID of the sender of the sign request.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getSignRequests',
+		label: 'List sign requests',
+		description: 'Retrieves a page of Box Sign requests created by the user.',
+		context:
+			"---\nname: getSignRequests\ndescription: Retrieves a page of Box Sign requests created by the user.\n---\n\nGets signature requests created by a user. If the `sign_files` and/or `parent_folder` are deleted, the signature request will not return in the list.\n\nThis Endpoint wraps `GET /sign_requests` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- This Endpoint returns a single page. Page manually by passing the returned `next_marker` as `marker` on the next call until `next_marker` is `null`.\n\nReference: [List Box Sign requests](https://developer.box.com/reference/get-sign-requests/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				marker: {
+					type: 'string',
+					description:
+						'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination. This requires `usemarker` to be set to `true`.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+				senders: {
+					type: 'array',
+					description:
+						'A list of sender emails to filter the signature requests by sender. If provided, `shared_requests` must be set to `true`.',
+					items: { type: 'string', description: 'E-mail address of a sender.' },
+				},
+				shared_requests: {
+					type: 'boolean',
+					description:
+						'If set to `true`, only includes requests that user is not an owner, but user is a collaborator. Collaborator access is determined by the user access level of the sign files of the request. Default is `false`. Must be set to `true` if `senders` are provided.',
+				},
+			},
+			required: [],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+				},
+				next_marker: {
+					type: 'string',
+					description: 'The marker for the start of the next page of results.',
+				},
+				entries: {
+					type: 'array',
+					description: 'A list of Box Sign requests.',
+					items: {
+						type: 'object',
+						properties: {
+							is_document_preparation_needed: {
+								type: 'boolean',
+								description:
+									'Indicates if the sender should receive a `prepare_url` in the response to complete document preparation using the UI.',
+							},
+							redirect_url: {
+								type: 'string',
+								description:
+									'When specified, the signature request will be redirected to this url when a document is signed.',
+							},
+							declined_redirect_url: {
+								type: 'string',
+								description:
+									'The uri that a signer will be redirected to after declining to sign a document.',
+							},
+							are_text_signatures_enabled: {
+								type: 'boolean',
+								description:
+									'Disables the usage of signatures generated by typing (text).',
+							},
+							email_subject: {
+								type: 'string',
+								description:
+									'Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+							},
+							email_message: {
+								type: 'string',
+								description:
+									'Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+							},
+							are_reminders_enabled: {
+								type: 'boolean',
+								description:
+									'Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.',
+							},
+							name: { type: 'string', description: 'Name of the signature request.' },
+							prefill_tags: {
+								type: 'array',
+								description:
+									"When a document contains sign-related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.",
+								items: {
+									type: 'object',
+									properties: {
+										document_tag_id: {
+											type: 'string',
+											description:
+												'This references the ID of a specific tag contained in a file of the signature request.',
+										},
+										text_value: {
+											type: 'string',
+											description: 'Text prefill value.',
+										},
+										checkbox_value: {
+											type: 'boolean',
+											description: 'Checkbox prefill value.',
+										},
+										date_value: {
+											type: 'string',
+											description: 'Date prefill value.',
+										},
+									},
+									required: [],
+								},
+							},
+							days_valid: {
+								type: 'number',
+								description:
+									'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+							},
+							external_id: {
+								type: 'string',
+								description:
+									'This can be used to reference an ID in an external system that the sign request is related to.',
+							},
+							template_id: {
+								type: 'string',
+								description:
+									'When a signature request is created from a template this field will indicate the id of that template.',
+							},
+							external_system_name: {
+								type: 'string',
+								description:
+									'Used as an optional system name to appear in the signature log next to the signers who have been assigned the `embed_url_external_id`.',
+							},
+							request_flow: {
+								type: 'string',
+								description:
+									'The flow type of the sign request. Values can include `standard` or `cfr11`. When not specified during creation, a default is chosen based on admin settings.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `sign-request`. One of `sign-request`.',
+							},
+							source_files: {
+								type: 'array',
+								description:
+									'List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description:
+												'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+										},
+										etag: {
+											type: 'string',
+											description:
+												'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'The value will always be `file`. One of `file`.',
+										},
+									},
+									required: [],
+								},
+							},
+							signers: {
+								type: 'array',
+								description: 'Array of signers for the signature request.',
+								items: {
+									type: 'object',
+									properties: {
+										email: {
+											type: 'string',
+											description:
+												'Email address of the signer. The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.',
+										},
+										role: {
+											type: 'string',
+											description:
+												'Defines the role of the signer in the signature request. A `signer` must sign the document and an `approver` must approve the document. A `final_copy_reader` only receives the final signed document and signing log. One of `signer`, `approver`, `final_copy_reader`.',
+										},
+										is_in_person: {
+											type: 'boolean',
+											description:
+												'Used in combination with an embed URL for a sender. After the sender signs, they are redirected to the next `in_person` signer.',
+										},
+										order: {
+											type: 'number',
+											description: 'Order of the signer.',
+										},
+										embed_url_external_user_id: {
+											type: 'string',
+											description:
+												'User ID for the signer in an external application responsible for authentication when accessing the embed URL.',
+										},
+										redirect_url: {
+											type: 'string',
+											description:
+												'The URL that a signer will be redirected to after signing a document. Defining this URL overrides default or global redirect URL settings for a specific signer. If no declined redirect URL is specified, this URL will be used for decline actions as well.',
+										},
+										declined_redirect_url: {
+											type: 'string',
+											description:
+												'The URL that a signer will be redirect to after declining to sign a document. Defining this URL overrides default or global declined redirect URL settings for a specific signer.',
+										},
+										login_required: {
+											type: 'boolean',
+											description:
+												'If set to true, the signer will need to log in to a Box account before signing the request. If the signer does not have an existing account, they will have the option to create a free Box account.',
+										},
+										verification_phone_number: {
+											type: 'string',
+											description:
+												'If set, this phone number will be used to verify the signer via two-factor authentication before they are able to sign the document. Cannot be selected in combination with `login_required`.',
+										},
+										signer_group_id: {
+											type: 'string',
+											description:
+												'If set, signers who have the same value will be assigned to the same input and to the same signer group. A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be used/accessed within this Sign Request. A signer group is expected to have more than one signer. If the provided value is only used for one signer, this value will be ignored and request will be handled as it was intended for an individual signer. The value provided can be any string and only used to determine which signers belongs to same group. A successful response will provide a generated UUID value instead for signers in the same signer group.',
+										},
+										suppress_notifications: {
+											type: 'boolean',
+											description:
+												'If true, no emails about the sign request will be sent.',
+										},
+										language: {
+											type: 'string',
+											description:
+												'The language of the user, formatted in modified version of the [ISO 639-1](https://developer.box.com/guides/api-calls/language-codes) format.',
+										},
+										has_viewed_document: {
+											type: 'boolean',
+											description:
+												'Set to `true` if the signer views the document.',
+										},
+										signer_decision: {
+											type: 'object',
+											description: 'Final decision made by the signer.',
+											properties: {
+												type: {
+													type: 'string',
+													description:
+														'Type of decision made by the signer. One of `signed`, `declined`.',
+												},
+												finalized_at: {
+													type: 'string',
+													description:
+														'Date and Time that the decision was made.',
+												},
+												additional_info: {
+													type: 'string',
+													description:
+														'Additional info about the decision, such as the decline reason from the signer.',
+												},
+											},
+											required: [],
+										},
+										inputs: {
+											type: 'array',
+											description: 'The inputs.',
+											items: {
+												type: 'object',
+												properties: {
+													document_tag_id: {
+														type: 'string',
+														description:
+															'This references the ID of a specific tag contained in a file of the signature request.',
+													},
+													text_value: {
+														type: 'string',
+														description: 'Text prefill value.',
+													},
+													checkbox_value: {
+														type: 'boolean',
+														description: 'Checkbox prefill value.',
+													},
+													date_value: {
+														type: 'string',
+														description: 'Date prefill value.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'Type of input. One of `signature`, `date`, `text`, `checkbox`, `radio`, `dropdown`.',
+													},
+													content_type: {
+														type: 'string',
+														description:
+															'Content type of input. One of `signature`, `initial`, `stamp`, `date`, `checkbox`, `text`, `full_name`, `first_name`, `last_name`, `company`, `title`, `email`, `attachment`, `radio`, `dropdown`.',
+													},
+													page_index: {
+														type: 'number',
+														description:
+															'Index of page that the input is on.',
+													},
+													read_only: {
+														type: 'boolean',
+														description:
+															'Indicates whether this input is read-only (cannot be modified by signers).',
+													},
+													validation: {
+														type: 'object',
+														description:
+															'Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.',
+														properties: {
+															validation_type: {
+																type: 'string',
+																description:
+																	'Validates that the text input is an email address. One of `email`.',
+															},
+															custom_regex: {
+																type: 'string',
+																description:
+																	'Regular expression used for validation.',
+															},
+															custom_error_message: {
+																type: 'string',
+																description:
+																	'Error message shown if input fails custom regular expression validation.',
+															},
+														},
+														required: [],
+													},
+													reason: {
+														type: 'string',
+														description:
+															"The reason for the signer's input, applicable to signature or initial content types in a `cfr11` request flow. The value is `null` when not applicable.",
+													},
+													is_validated: {
+														type: 'boolean',
+														description:
+															"Indicates whether the signer's input has been validated through re-authentication. Applicable only for signature or initial content types in a `cfr11` request flow. The value is `null` for standard request flows or non-applicable input types.",
+													},
+												},
+												required: [],
+											},
+										},
+										embed_url: {
+											type: 'string',
+											description: 'URL to direct a signer to for signing.',
+										},
+										iframeable_embed_url: {
+											type: 'string',
+											description:
+												'This URL is specifically designed for signing documents within an HTML `iframe` tag. It will be returned in the response only if the `embed_url_external_user_id` parameter was passed in the `create Box Sign request` call.',
+										},
+										attachments: {
+											type: 'array',
+											description: 'Attachments that the signer uploaded.',
+											items: {
+												type: 'object',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'Identifier of the attachment file.',
+													},
+													name: {
+														type: 'string',
+														description:
+															'Display name of the attachment file.',
+													},
+												},
+												required: [],
+											},
+										},
+									},
+									required: [],
+								},
+							},
+							signature_color: {
+								type: 'string',
+								description:
+									'Force a specific color for the signature (blue, black, or red).',
+							},
+							id: { type: 'string', description: 'Box Sign request ID.' },
+							prepare_url: {
+								type: 'string',
+								description:
+									'This URL is returned if `is_document_preparation_needed` is set to `true` in the request. The parameter is used to prepare the signature request using the UI. The signature request is not sent until the preparation phase is complete.',
+							},
+							signing_log: {
+								type: 'object',
+								description:
+									'A mini representation of a file, used when nested under another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+							status: {
+								type: 'string',
+								description:
+									'Describes the status of the signature request. One of `converting`, `created`, `sent`, `viewed`, `signed`, `cancelled`, `declined`, `error`, `error_converting`, `error_sending`, `expired`, `finalizing`, `error_finalizing`.',
+							},
+							sign_files: {
+								type: 'object',
+								description:
+									'List of files that will be signed, which are copies of the original source files. A new version of these files are created as signers sign and can be downloaded at any point in the signing process.',
+								properties: {
+									files: {
+										type: 'array',
+										description: 'The files.',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+												},
+												etag: {
+													type: 'string',
+													description:
+														'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `file`. One of `file`.',
+												},
+												sequence_id: {
+													type: 'string',
+													description:
+														'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+												},
+												name: {
+													type: 'string',
+													description: 'The name of the file.',
+												},
+												sha1: {
+													type: 'string',
+													description:
+														'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+												},
+												file_version: {
+													type: 'object',
+													description:
+														'A mini representation of a file version, used when nested within another resource.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a file version.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `file_version`. One of `file_version`.',
+														},
+														sha1: {
+															type: 'string',
+															description:
+																'The SHA1 hash of this version of the file.',
+														},
+													},
+													required: [],
+												},
+											},
+											required: [],
+										},
+									},
+									is_ready_for_download: {
+										type: 'boolean',
+										description:
+											'Indicates whether the `sign_files` documents are processing and the PDFs may be out of date. A change to any document requires processing on all `sign_files`. We recommended waiting until processing is finished (and this value is true) before downloading the PDFs.',
+									},
+								},
+								required: [],
+							},
+							auto_expire_at: {
+								type: 'string',
+								description:
+									'Uses `days_valid` to calculate the date and time, in GMT, the sign request will expire if unsigned.',
+							},
+							parent_folder: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested under another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+							collaborator_level: {
+								type: 'string',
+								description:
+									'The collaborator level of the user to the sign request. Values can include "owner", "editor", and "viewer".',
+							},
+							short_id: {
+								type: 'string',
+								description: 'Short identifier for the sign request.',
+							},
+							created_at: {
+								type: 'string',
+								description: 'Timestamp marking when the sign request was created.',
+							},
+							finished_at: {
+								type: 'string',
+								description:
+									'Timestamp indicating when all signing actions completed.',
+							},
+							error_code: {
+								type: 'string',
+								description:
+									'When the sign request is in an error state, identifies the specific reason. Null when no error code applies.',
+							},
+							sender_email: {
+								type: 'string',
+								description: 'The email address of the sender of the sign request.',
+							},
+							sender_id: {
+								type: 'number',
+								description: 'The user ID of the sender of the sign request.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'getSignTemplates',
+		label: 'List sign templates',
+		description: 'Retrieves a page of the Box Sign templates available to the user.',
+		context:
+			"---\nname: getSignTemplates\ndescription: Retrieves a page of the Box Sign templates available to the user.\n---\n\nGets Box Sign templates created by a user.\n\nThis Endpoint wraps `GET /sign_templates` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- Use a template's `id` as `template_id` in the **Create a sign request** Endpoint. The template's `signers[].inputs[].document_tag_id` values are the tag IDs to reference in `prefill_tags[].document_tag_id`; `are_fields_locked`, `are_recipients_locked`, `are_files_locked` and `are_email_settings_locked` tell you which parts of the request the template fixes.\n- This Endpoint returns a single page. Page manually by passing the returned `next_marker` as `marker` on the next call until `next_marker` is `null`.\n\nReference: [List Box Sign templates](https://developer.box.com/reference/get-sign-templates/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				marker: {
+					type: 'string',
+					description:
+						'The position marker at which to begin returning results, as returned in `next_marker` of the previous page. Leave empty for the first page.',
+				},
+				limit: {
+					type: 'number',
+					description: 'The maximum number of items to return per page.',
+					maximum: 1000,
+				},
+			},
+			required: [],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+				},
+				next_marker: {
+					type: 'string',
+					description: 'The marker for the start of the next page of results.',
+				},
+				prev_marker: {
+					type: 'string',
+					description: 'The marker for the start of the previous page of results.',
+				},
+				entries: {
+					type: 'array',
+					description: 'A list of templates.',
+					items: {
+						type: 'object',
+						properties: {
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `sign-template`. One of `sign-template`.',
+							},
+							id: { type: 'string', description: 'Template identifier.' },
+							name: { type: 'string', description: 'The name of the template.' },
+							email_subject: {
+								type: 'string',
+								description:
+									'Subject of signature request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.',
+							},
+							email_message: {
+								type: 'string',
+								description:
+									'Message to include in signature request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.',
+							},
+							days_valid: {
+								type: 'number',
+								description:
+									'Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.',
+							},
+							parent_folder: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested under another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+							source_files: {
+								type: 'array',
+								description:
+									'List of files to create a signing document from. Only the ID and type fields are required for each file.',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description:
+												'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+										},
+										etag: {
+											type: 'string',
+											description:
+												'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'The value will always be `file`. One of `file`.',
+										},
+										sequence_id: {
+											type: 'string',
+											description:
+												'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+										},
+										name: {
+											type: 'string',
+											description: 'The name of the file.',
+										},
+										sha1: {
+											type: 'string',
+											description:
+												'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+										},
+										file_version: {
+											type: 'object',
+											description:
+												'A mini representation of a file version, used when nested within another resource.',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier that represent a file version.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `file_version`. One of `file_version`.',
+												},
+												sha1: {
+													type: 'string',
+													description:
+														'The SHA1 hash of this version of the file.',
+												},
+											},
+											required: [],
+										},
+									},
+									required: [],
+								},
+							},
+							are_fields_locked: {
+								type: 'boolean',
+								description:
+									'Indicates if the template input fields are editable or not.',
+							},
+							are_options_locked: {
+								type: 'boolean',
+								description:
+									'Indicates if the template document options are editable or not, for example renaming the document.',
+							},
+							are_recipients_locked: {
+								type: 'boolean',
+								description:
+									'Indicates if the template signers are editable or not.',
+							},
+							are_email_settings_locked: {
+								type: 'boolean',
+								description:
+									'Indicates if the template email settings are editable or not.',
+							},
+							are_files_locked: {
+								type: 'boolean',
+								description:
+									'Indicates if the template files are editable or not. This includes deleting or renaming template files.',
+							},
+							signers: {
+								type: 'array',
+								description:
+									'Array of signers for the template. **Note**: It may happen that some signers specified in the template belong to conflicting [segments](https://developer.box.com/reference/resources/shield-information-barrier-segment-member) (user groups). This means that due to the security policies, users are assigned to segments to prevent exchanges or communication that could lead to ethical conflicts. In such a case, an attempt to send a sign request based on a template that lists signers in conflicting segments will result in an error. Read more about [segments and ethical walls](https://support.box.com/hc/en-us/articles/9920431507603-Understanding-Information-Barriers#h_01GFVJEHQA06N7XEZ4GCZ9GFAQ).',
+								items: {
+									type: 'object',
+									properties: {
+										inputs: {
+											type: 'array',
+											description: 'The inputs.',
+											items: {
+												type: 'object',
+												properties: {
+													document_tag_id: {
+														type: 'string',
+														description:
+															'This references the ID of a specific tag contained in a file of the signature request.',
+													},
+													text_value: {
+														type: 'string',
+														description: 'Text prefill value.',
+													},
+													checkbox_value: {
+														type: 'boolean',
+														description: 'Checkbox prefill value.',
+													},
+													date_value: {
+														type: 'string',
+														description: 'Date prefill value.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'Type of input. One of `signature`, `date`, `text`, `checkbox`, `attachment`, `radio`, `dropdown`.',
+													},
+													content_type: {
+														type: 'string',
+														description:
+															'Content type of input. One of `signature`, `initial`, `stamp`, `date`, `checkbox`, `text`, `full_name`, `first_name`, `last_name`, `company`, `title`, `email`, `attachment`, `radio`, `dropdown`.',
+													},
+													is_required: {
+														type: 'boolean',
+														description:
+															'Whether or not the input is required.',
+													},
+													page_index: {
+														type: 'number',
+														description:
+															'Index of page that the input is on.',
+													},
+													document_id: {
+														type: 'string',
+														description: 'Document identifier.',
+													},
+													dropdown_choices: {
+														type: 'array',
+														description:
+															'When the input is of the type `dropdown` this values will be filled with all the dropdown options.',
+														items: {
+															type: 'string',
+															description: 'The dropdown choice.',
+														},
+													},
+													group_id: {
+														type: 'string',
+														description:
+															'When the input is of type `radio` they can be grouped to gather with this identifier.',
+													},
+													coordinates: {
+														type: 'object',
+														description:
+															'Where the input is located on a page.',
+														properties: {
+															x: {
+																type: 'number',
+																description:
+																	'Relative x coordinate to the page the input is on, ranging from 0 to 1.',
+															},
+															y: {
+																type: 'number',
+																description:
+																	'Relative y coordinate to the page the input is on, ranging from 0 to 1.',
+															},
+														},
+														required: [],
+													},
+													dimensions: {
+														type: 'object',
+														description: 'The size of the input.',
+														properties: {
+															width: {
+																type: 'number',
+																description:
+																	'Relative width to the page the input is on, ranging from 0 to 1.',
+															},
+															height: {
+																type: 'number',
+																description:
+																	'Relative height to the page the input is on, ranging from 0 to 1.',
+															},
+														},
+														required: [],
+													},
+													label: {
+														type: 'string',
+														description:
+															'The label field is used especially for text, attachment, radio, and checkbox type inputs.',
+													},
+													read_only: {
+														type: 'boolean',
+														description:
+															'Indicates whether this input is read-only (cannot be modified by signers).',
+													},
+													validation: {
+														type: 'object',
+														description:
+															'Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.',
+														properties: {
+															validation_type: {
+																type: 'string',
+																description:
+																	'Validates that the text input is an email address. One of `email`.',
+															},
+															custom_regex: {
+																type: 'string',
+																description:
+																	'Regular expression used for validation.',
+															},
+															custom_error_message: {
+																type: 'string',
+																description:
+																	'Error message shown if input fails custom regular expression validation.',
+															},
+														},
+														required: [],
+													},
+												},
+												required: [],
+											},
+										},
+										email: {
+											type: 'string',
+											description: 'Email address of the signer.',
+										},
+										role: {
+											type: 'string',
+											description:
+												'Defines the role of the signer in the signature request. A role of `signer` needs to sign the document, a role `approver` approves the document and a `final_copy_reader` role only receives the final signed document and signing log. One of `signer`, `approver`, `final_copy_reader`.',
+										},
+										is_in_person: {
+											type: 'boolean',
+											description:
+												'Used in combination with an embed URL for a sender. After the sender signs, they will be redirected to the next `in_person` signer.',
+										},
+										order: {
+											type: 'number',
+											description: 'Order of the signer.',
+										},
+										signer_group_id: {
+											type: 'string',
+											description:
+												'If provided, this value points signers that are assigned the same inputs and belongs to same signer group. A signer group is not a Box Group. It is an entity that belongs to the template itself and can only be used within Box Sign requests created from it.',
+										},
+										label: {
+											type: 'string',
+											description:
+												'A placeholder label for the signer set by the template creator to differentiate between signers.',
+										},
+										public_id: {
+											type: 'string',
+											description:
+												'An identifier for the signer. This can be used to identify a signer within the template.',
+										},
+										is_password_required: {
+											type: 'boolean',
+											description:
+												'If true for signers with a defined email, the password provided when the template was created is used by default. If true for signers without a specified / defined email, the creator needs to provide a password when using the template.',
+										},
+										is_phone_number_required: {
+											type: 'boolean',
+											description:
+												'If true for signers with a defined email, the phone number provided when the template was created is used by default. If true for signers without a specified / defined email, the template creator needs to provide a phone number when creating a request.',
+										},
+										login_required: {
+											type: 'boolean',
+											description:
+												'If true, the signer is required to login to access the document.',
+										},
+									},
+									required: [],
+								},
+							},
+							additional_info: {
+								type: 'object',
+								description:
+									'Additional information on which fields are required and which fields are not editable.',
+								properties: {
+									non_editable: {
+										type: 'array',
+										description: 'Non editable fields.',
+										items: {
+											type: 'string',
+											description:
+												'The non editable. One of `email_subject`, `email_message`, `name`, `days_valid`, `signers`, `source_files`.',
+										},
+									},
+									required: {
+										type: 'object',
+										description: 'Required fields.',
+										properties: {
+											signers: {
+												type: 'array',
+												description: 'Required signer fields.',
+												items: {
+													type: 'array',
+													description: 'The signer.',
+													items: {
+														type: 'string',
+														description: 'The signer. One of `email`.',
+													},
+												},
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+							ready_sign_link: {
+								type: 'object',
+								description:
+									"Box's ready-sign link feature enables you to create a link to a signature request that you've created from a template. Use this link when you want to post a signature request on a public form — such as an email, social media post, or web page — without knowing who the signers will be. Note: The ready-sign link feature is limited to Enterprise Plus customers and not available to Box Verified Enterprises.",
+								properties: {
+									url: {
+										type: 'string',
+										description: 'The URL that can be sent to signers.',
+									},
+									name: { type: 'string', description: 'Request name.' },
+									instructions: {
+										type: 'string',
+										description: 'Extra instructions for all signers.',
+									},
+									folder_id: {
+										type: 'string',
+										description:
+											'The destination folder to place final, signed document and signing log. Only `ID` and `type` fields are required. The root folder, folder ID `0`, cannot be used.',
+									},
+									is_notification_disabled: {
+										type: 'boolean',
+										description:
+											'Whether to disable notifications when a signer has signed.',
+									},
+									is_active: {
+										type: 'boolean',
+										description:
+											'Whether the ready sign link is enabled or not.',
+									},
+								},
+								required: [],
+							},
+							custom_branding: {
+								type: 'object',
+								description:
+									'Custom branding applied to notifications and signature requests.',
+								properties: {
+									company_name: {
+										type: 'string',
+										description: 'Name of the company.',
+									},
+									logo_uri: {
+										type: 'string',
+										description:
+											'Custom branding logo URI in the form of a base64 image.',
+									},
+									branding_color: {
+										type: 'string',
+										description: 'Custom branding color in hex.',
+									},
+									email_footer_text: {
+										type: 'string',
+										description: 'Content of the email footer.',
+									},
+								},
+								required: [],
+							},
+							request_flow: {
+								type: 'string',
+								description:
+									'The sign flow of sign requests created from the template. Values can include `standard` or `cfr11`.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'searchForContent',
+		label: 'Search for content',
+		description:
+			'Searches for files, folders and web links that are available to the user or to the entire enterprise.',
+		context:
+			'---\nname: searchForContent\ndescription: Searches for files, folders and web links that are available to the user or to the entire enterprise.\n---\n\nSearches for files, folders, web links, and shared files across the users content or across the entire enterprise.\n\nThis Endpoint wraps `GET /search` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app\'s connection.\n\n- Either `query` or `mdfilters` must be provided. Query syntax: wrap a phrase in double quotes for an exact match; combine terms with `AND`, `OR` and `NOT`.\n- Date ranges (`created_at_range`, `updated_at_range`, `deleted_at_range`) take two RFC3339 timestamps `[start, end]`; pass an empty string for an open bound (for example `["", "2024-05-17T13:35:01-07:00"]`). `size_range` takes `[min_bytes, max_bytes]` in the same way. List inputs are sent to Box as comma-separated values.\n- `mdfilters` filters by exactly one metadata template; `filters` is a free-form object whose keys are the template field keys (for example `{"category": "online", "contractValue": {"gt": 1000}}`). It is sent as a JSON string in the query. The free-form `global.properties` template cannot be used in `mdfilters` (Box returns `404 not_found`); only templates listed by the **List enterprise metadata templates** / **List global metadata templates** Endpoints are searchable, and newly written metadata can take a short while to become searchable.\n- This Endpoint returns a single page (`limit` up to 200). Page manually with `offset`; `total_count` in the response tells you how many results exist. Set `include_recent_shared_links` to `true` to also return recently used shared links; the response then uses the `search_results_with_shared_links` shape where each entry is wrapped in `{ item, accessible_via_shared_link }`.\n\nReference: [Search for content](https://developer.box.com/reference/get-search/)\n',
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: true,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				query: {
+					type: 'string',
+					description:
+						'The string to search for. This query is matched against item names, descriptions, text content of files, and various other fields of the different item types. This parameter supports a variety of operators to further refine the results returns. * `""` - by wrapping a query in double quotes only exact matches are returned by the API. Exact searches do not return search matches based on specific character sequences. Instead, they return matches based on phrases, that is, word sequences. For example: A search for `"Blue-Box"` may return search results including the sequence `"blue.box"`, `"Blue Box"`, and `"Blue-Box"`; any item containing the words `Blue` and `Box` consecutively, in the order specified. * `AND` - returns items that contain both the search terms. For example, a search for `marketing AND BoxWorks` returns items that have both `marketing` and `BoxWorks` within its text in any order. It does not return a result that only has `BoxWorks` in its text. * `OR` - returns items that contain either of the search terms. For example, a search for `marketing OR BoxWorks` returns a result that has either `marketing` or `BoxWorks` within its text. Using this operator is not necessary as we implicitly interpret multi-word queries as `OR` unless another supported boolean term is used. * `NOT` - returns items that do not contain the search term provided. For example, a search for `marketing AND NOT BoxWorks` returns a result that has only `marketing` within its text. Results containing `BoxWorks` are omitted. We do not support lower case (that is, `and`, `or`, and `not`) or mixed case (that is, `And`, `Or`, and `Not`) operators. This field is required unless the `mdfilters` parameter is defined.',
+				},
+				scope: {
+					type: 'string',
+					description:
+						'Limits the search results to either the files that the user has access to, or to files available to the entire enterprise. The scope defaults to `user_content`, which limits the search results to content that is available to the currently authenticated user. The `enterprise_content` can be requested by an admin through our support channels. Once this scope has been enabled for a user, it will allow that use to query for content across the entire enterprise and not only the content that they have access to.',
+					default: '',
+					enum: ['', 'user_content', 'enterprise_content'],
+				},
+				file_extensions: {
+					type: 'array',
+					description:
+						'Limits the search results to any files that match any of the provided file extensions. This list is a comma-separated list of file extensions without the dots.',
+					items: { type: 'string', description: 'The file extension.' },
+				},
+				created_at_range: {
+					type: 'array',
+					description:
+						'Limits the search results to any items created within a given date range. Date ranges are defined as comma separated RFC3339 timestamps. If the start date is omitted (`,2014-05-17T13:35:01-07:00`) anything created before the end date will be returned. If the end date is omitted (`2014-05-15T13:35:01-07:00,`) the current date will be used as the end date instead.',
+					items: {
+						type: 'string',
+						description:
+							'An RFC3339 timestamp, for example `2024-05-15T13:35:01-07:00`. Pass an empty string to leave this bound open.',
+					},
+				},
+				updated_at_range: {
+					type: 'array',
+					description:
+						'Limits the search results to any items updated within a given date range. Date ranges are defined as comma separated RFC3339 timestamps. If the start date is omitted (`,2014-05-17T13:35:01-07:00`) anything updated before the end date will be returned. If the end date is omitted (`2014-05-15T13:35:01-07:00,`) the current date will be used as the end date instead.',
+					items: {
+						type: 'string',
+						description:
+							'An RFC3339 timestamp, for example `2024-05-15T13:35:01-07:00`. Pass an empty string to leave this bound open.',
+					},
+				},
+				size_range: {
+					type: 'array',
+					description:
+						'Limits the search results to any items with a size within a given file size range. This applied to files and folders. Size ranges are defined as list of a lower and upper byte size limit (inclusive). The upper and lower bound can be omitted to create open ranges.',
+					items: {
+						type: 'number',
+						description:
+							'A file size in bytes. Pass the lower bound first and the upper bound second.',
+					},
+				},
+				owner_user_ids: {
+					type: 'array',
+					description:
+						'Limits the search results to any items that are owned by the given list of owners, defined as a list of comma separated user IDs. The items still need to be owned or shared with the currently authenticated user for them to show up in the search results. If the user does not have access to any files owned by any of the users an empty result set will be returned. To search across an entire enterprise, we recommend using the `enterprise_content` scope parameter which can be requested with our support team.',
+					items: { type: 'string', description: 'The owner user id.' },
+				},
+				recent_updater_user_ids: {
+					type: 'array',
+					description:
+						'Limits the search results to any items that have been updated by the given list of users, defined as a list of comma separated user IDs. The items still need to be owned or shared with the currently authenticated user for them to show up in the search results. If the user does not have access to any files owned by any of the users an empty result set will be returned. This feature only searches back to the last 10 versions of an item.',
+					items: { type: 'string', description: 'The recent updater user id.' },
+				},
+				ancestor_folder_ids: {
+					type: 'array',
+					description:
+						'Limits the search results to items within the given list of folders, defined as a comma separated lists of folder IDs. Search results will also include items within any subfolders of those ancestor folders. The folders still need to be owned or shared with the currently authenticated user. If the folder is not accessible by this user, or it does not exist, a `HTTP 404` error code will be returned instead. To search across an entire enterprise, we recommend using the `enterprise_content` scope parameter which can be requested with our support team.',
+					items: { type: 'string', description: 'The ancestor folder id.' },
+				},
+				content_types: {
+					type: 'string',
+					description:
+						'Limits the search results to any items that match the search query for a specific part of the file, for example the file description. Content types are defined as a comma separated lists of Box recognized content types. The allowed content types are as follows. * `name` - The name of the item, as defined by its `name` field. * `description` - The description of the item, as defined by its `description` field. * `file_content` - The actual content of the file. * `comments` - The content of any of the comments on a file or folder. * `tags` - Any tags that are applied to an item, as defined by its `tags` field.',
+					default: '',
+					enum: ['', 'name', 'description', 'file_content', 'comments', 'tags'],
+				},
+				type: {
+					type: 'string',
+					description:
+						'Limits the search results to any items of this type. This parameter only takes one value. By default the API returns items that match any of these types. * `file` - Limits the search results to files, * `folder` - Limits the search results to folders, * `web_link` - Limits the search results to web links, also known as bookmarks.',
+					default: '',
+					enum: ['', 'file', 'folder', 'web_link'],
+				},
+				trash_content: {
+					type: 'string',
+					description:
+						'Determines if the search should look in the trash for items. By default, this API only returns search results for items not currently in the trash (`non_trashed_only`). * `trashed_only` - Only searches for items currently in the trash * `non_trashed_only` - Only searches for items currently not in the trash * `all_items` - Searches for both trashed and non-trashed items.',
+					default: '',
+					enum: ['', 'non_trashed_only', 'trashed_only', 'all_items'],
+				},
+				mdfilters: {
+					type: 'array',
+					description:
+						'Limits the search results to any items for which the metadata matches the provided filter. This parameter is a list that specifies exactly **one** metadata template used to filter the search results. The parameter is required unless the `query` parameter is provided.',
+					items: {
+						type: 'object',
+						properties: {
+							scope: {
+								type: 'string',
+								description:
+									'The scope of the metadata template to filter by: `enterprise` for templates defined in your own enterprise, `global` for Box-wide templates.',
+								default: '',
+								enum: ['', 'enterprise', 'global'],
+							},
+							templateKey: {
+								type: 'string',
+								description:
+									"The key of the template used to filter search results. In many cases the template key is automatically derived of its display name, for example `Contract Template` would become `contractTemplate`. In some cases the creator of the template will have provided its own template key. Use the **List enterprise metadata templates** Endpoint (or **Get a metadata template**) to look up a template's key and its field keys. Note that Box uses the camelCase key `templateKey` inside this filter object.",
+							},
+							filters: {
+								description:
+									'Specifies which fields on the template to filter the search results by. When more than one field is specified, the query performs a logical `AND` to ensure that the instance of the template matches each of the fields specified. A JSON object keyed by template field key, for example `{"category": "online"}` or `{"contractValue": {"gt": 1000, "lt": 5000}}`.',
+							},
+						},
+						required: [],
+					},
+					maxItems: 1,
+				},
+				include_recent_shared_links: {
+					type: 'boolean',
+					description:
+						'Defines whether the search results should include any items that the user recently accessed through a shared link. When this parameter has been set to true, the format of the response of this API changes to return a list of [Search Results with Shared Links](https://developer.box.com/reference/resources/search-results-with-shared-links).',
+				},
+				deleted_user_ids: {
+					type: 'array',
+					description:
+						'Limits the search results to items that were deleted by the given list of users, defined as a list of comma separated user IDs. The `trash_content` parameter needs to be set to `trashed_only`. If searching in trash is not performed, an empty result set is returned. The items need to be owned or shared with the currently authenticated user for them to show up in the search results. If the user does not have access to any files owned by any of the users, an empty result set is returned. Data available from 2023-02-01 onwards.',
+					items: { type: 'string', description: 'The deleted user id.' },
+				},
+				deleted_at_range: {
+					type: 'array',
+					description:
+						'Limits the search results to any items deleted within a given date range. Date ranges are defined as comma separated RFC3339 timestamps. If the start date is omitted (`2014-05-17T13:35:01-07:00`), anything deleted before the end date will be returned. If the end date is omitted (`2014-05-15T13:35:01-07:00`), the current date will be used as the end date instead. The `trash_content` parameter needs to be set to `trashed_only`. If searching in trash is not performed, then an empty result is returned. Data available from 2023-02-01 onwards.',
+					items: {
+						type: 'string',
+						description:
+							'An RFC3339 timestamp, for example `2024-05-15T13:35:01-07:00`. Pass an empty string to leave this bound open.',
+					},
+				},
+				sort: {
+					type: 'string',
+					description:
+						'Defines the order in which search results are returned. This API defaults to returning items by relevance unless this parameter is explicitly specified. * `relevance` (default) returns the results sorted by relevance to the query search term. The relevance is based on the occurrence of the search term in the items name, description, content, and additional properties. * `modified_at` returns the results ordered in descending order by date at which the item was last modified.',
+					default: '',
+					enum: ['', 'modified_at', 'relevance'],
+				},
+				direction: {
+					type: 'string',
+					description:
+						'Defines the direction in which search results are ordered. This API defaults to returning items in descending (`DESC`) order unless this parameter is explicitly specified. When results are sorted by `relevance` the ordering is locked to returning items in descending order of relevance, and this parameter is ignored.',
+					default: '',
+					enum: ['', 'DESC', 'ASC'],
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				limit: {
+					type: 'number',
+					description:
+						'Defines the maximum number of items to return as part of a page of results.',
+					maximum: 200,
+				},
+				offset: {
+					type: 'number',
+					description:
+						'The offset of the item at which to begin the response. Queries with offset parameter value exceeding 10000 will be rejected with a 400 response.',
+				},
+			},
+			required: [],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				total_count: {
+					type: 'number',
+					description:
+						'One greater than the offset of the last entry in the search results. The total number of entries in the collection may be less than `total_count`.',
+				},
+				limit: {
+					type: 'number',
+					description:
+						'The limit that was used for this search. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed.',
+				},
+				offset: {
+					type: 'number',
+					description:
+						'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter used.',
+				},
+				type: {
+					type: 'string',
+					description:
+						'Specifies the shape of the response. `search_results_items` when `include_recent_shared_links` is not set (each entry is a file, folder or web link resource), `search_results_with_shared_links` when it is set to `true` (each entry is wrapped as `{ item, accessible_via_shared_link }`).',
+				},
+				entries: {
+					type: 'array',
+					description:
+						'The search results for the query provided. Each entry is a file, folder or web link resource; when `include_recent_shared_links` is `true` each entry is instead an object with `item` (the resource) and `accessible_via_shared_link` (the shared link URL it was found through).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description:
+									'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+							},
+							etag: {
+								type: 'string',
+								description:
+									'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+							},
+							type: {
+								type: 'string',
+								description: 'The value will always be `file`. One of `file`.',
+							},
+							sequence_id: {
+								type: 'string',
+								description:
+									'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+							},
+							name: { type: 'string', description: 'The name of the file.' },
+							sha1: {
+								type: 'string',
+								description:
+									'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+							},
+							file_version: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested within another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file version.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file_version`. One of `file_version`.',
+									},
+									sha1: {
+										type: 'string',
+										description: 'The SHA1 hash of this version of the file.',
+									},
+								},
+								required: [],
+							},
+							description: {
+								type: 'string',
+								description:
+									'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+							},
+							size: {
+								type: 'number',
+								description:
+									'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+							},
+							path_collection: {
+								type: 'object',
+								description: 'A list of parent folders for an item.',
+								properties: {
+									total_count: {
+										type: 'number',
+										description: 'The number of folders in this list.',
+									},
+									entries: {
+										type: 'array',
+										description: 'The parent folders for this item.',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+												},
+												etag: {
+													type: 'string',
+													description:
+														'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `folder`. One of `folder`.',
+												},
+												sequence_id: {
+													type: 'string',
+													description:
+														'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+												},
+												name: {
+													type: 'string',
+													description: 'The name of the folder.',
+												},
+											},
+											required: [],
+										},
+									},
+								},
+								required: [],
+							},
+							created_at: {
+								type: 'string',
+								description: 'The date and time when the file was created on Box.',
+							},
+							modified_at: {
+								type: 'string',
+								description:
+									'The date and time when the file was last updated on Box.',
+							},
+							trashed_at: {
+								type: 'string',
+								description: 'The time at which this file was put in the trash.',
+							},
+							purged_at: {
+								type: 'string',
+								description:
+									'The time at which this file is expected to be purged from the trash.',
+							},
+							content_created_at: {
+								type: 'string',
+								description:
+									'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+							},
+							content_modified_at: {
+								type: 'string',
+								description:
+									'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+							},
+							created_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							modified_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							owned_by: {
+								type: 'object',
+								description:
+									'A mini representation of a user, as can be returned when nested within other resources.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this user.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `user`. One of `user`.',
+									},
+									name: {
+										type: 'string',
+										description: 'The display name of this user.',
+									},
+									login: {
+										type: 'string',
+										description: 'The primary email address of this user.',
+									},
+								},
+								required: [],
+							},
+							shared_link: {
+								type: 'object',
+								description:
+									'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+								properties: {
+									url: {
+										type: 'string',
+										description:
+											"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+									},
+									vanity_url: {
+										type: 'string',
+										description:
+											'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+									},
+									vanity_name: {
+										type: 'string',
+										description:
+											'The custom name of a shared link, as used in the `vanity_url` field.',
+									},
+									access: {
+										type: 'string',
+										description:
+											'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+									},
+									effective_access: {
+										type: 'string',
+										description:
+											'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+									},
+									effective_permission: {
+										type: 'string',
+										description:
+											'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+									},
+									unshared_at: {
+										type: 'string',
+										description:
+											'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+									},
+									is_password_enabled: {
+										type: 'boolean',
+										description:
+											'Defines if the shared link requires a password to access the item.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+										properties: {
+											can_download: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+											},
+											can_edit: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+											},
+										},
+										required: [],
+									},
+									download_count: {
+										type: 'number',
+										description:
+											'The number of times this item has been downloaded.',
+									},
+									preview_count: {
+										type: 'number',
+										description:
+											'The number of times this item has been previewed.',
+									},
+								},
+								required: [],
+							},
+							parent: {
+								type: 'object',
+								description:
+									'A mini representation of a file version, used when nested under another resource.',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+							item_status: {
+								type: 'string',
+								description:
+									'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+							},
+							version_number: {
+								type: 'string',
+								description: 'The version number of this file.',
+							},
+							comment_count: {
+								type: 'number',
+								description: 'The number of comments on this file.',
+							},
+							permissions: {
+								type: 'object',
+								description:
+									'The permissions that the authenticated user has for a file.',
+								properties: {
+									can_delete: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can delete this item.',
+									},
+									can_download: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can download this item.',
+									},
+									can_invite_collaborator: {
+										type: 'boolean',
+										description:
+											'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+									},
+									can_rename: {
+										type: 'boolean',
+										description: 'Specifies if the user can rename this item.',
+									},
+									can_set_share_access: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can change the access level of an existing shared link on this item.',
+									},
+									can_share: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can create a shared link for this item.',
+									},
+									can_annotate: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can place annotations on this file.',
+									},
+									can_comment: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can place comments on this file.',
+									},
+									can_preview: {
+										type: 'boolean',
+										description: 'Specifies if the user can preview this file.',
+									},
+									can_upload: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can upload a new version of this file.',
+									},
+									can_view_annotations_all: {
+										type: 'boolean',
+										description:
+											'Specifies if the user view all annotations placed on this file.',
+									},
+									can_view_annotations_self: {
+										type: 'boolean',
+										description:
+											'Specifies if the user view annotations placed by themselves on this file.',
+									},
+									can_apply_watermark: {
+										type: 'boolean',
+										description:
+											'Specifies if the user can apply a watermark to this file.',
+									},
+								},
+								required: [],
+							},
+							tags: {
+								type: 'array',
+								description:
+									"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+								items: { type: 'string', description: 'The tag.' },
+							},
+							lock: {
+								type: 'object',
+								description:
+									'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+								properties: {
+									id: {
+										type: 'string',
+										description: 'The unique identifier for this lock.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `lock`. One of `lock`.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description: 'The time this lock was created at.',
+									},
+									expired_at: {
+										type: 'string',
+										description:
+											'The time this lock is to expire at, which might be in the past.',
+									},
+									is_download_prevented: {
+										type: 'boolean',
+										description:
+											'Whether or not the file can be downloaded while locked.',
+									},
+									app_type: {
+										type: 'string',
+										description:
+											'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+									},
+								},
+								required: [],
+							},
+							extension: {
+								type: 'string',
+								description:
+									'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+							},
+							is_package: {
+								type: 'boolean',
+								description:
+									'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+							},
+							expiring_embed_link: {
+								type: 'object',
+								description: 'An expiring Box Embed Link.',
+								properties: {
+									access_token: {
+										type: 'string',
+										description: 'The requested access token.',
+									},
+									expires_in: {
+										type: 'number',
+										description:
+											'The time in seconds by which this token will expire.',
+									},
+									token_type: {
+										type: 'string',
+										description:
+											'The type of access token returned. One of `bearer`.',
+									},
+									restricted_to: {
+										type: 'array',
+										description:
+											'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+										items: {
+											type: 'object',
+											properties: {
+												scope: {
+													type: 'string',
+													description:
+														'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+												},
+												object: {
+													type: 'object',
+													description: 'The file or folder resource.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+														sha1: {
+															type: 'string',
+															description:
+																'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+														},
+														file_version: {
+															type: 'object',
+															description:
+																'A mini representation of a file version, used when nested within another resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a file version.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `file_version`. One of `file_version`.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of this version of the file.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											required: [],
+										},
+									},
+									url: {
+										type: 'string',
+										description:
+											'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+									},
+								},
+								required: [],
+							},
+							watermark_info: {
+								type: 'object',
+								description: 'Details about the watermark applied to this item.',
+								properties: {
+									is_watermarked: {
+										type: 'boolean',
+										description:
+											'Specifies if this item has a watermark applied.',
+									},
+									is_watermark_inherited: {
+										type: 'boolean',
+										description:
+											'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+									},
+									is_watermarked_by_access_policy: {
+										type: 'boolean',
+										description:
+											'Specifies if the watermark is enforced by an access policy.',
+									},
+								},
+								required: [],
+							},
+							is_accessible_via_shared_link: {
+								type: 'boolean',
+								description:
+									'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+							},
+							allowed_invitee_roles: {
+								type: 'array',
+								description:
+									'A list of the types of roles that user can be invited at when sharing this file.',
+								items: {
+									type: 'string',
+									description:
+										'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+								},
+							},
+							is_externally_owned: {
+								type: 'boolean',
+								description:
+									'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+							},
+							has_collaborations: {
+								type: 'boolean',
+								description: 'Specifies if this file has any other collaborators.',
+							},
+							metadata: {
+								type: 'object',
+								description:
+									'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+								properties: {},
+								required: [],
+								additionalProperties: true,
+							},
+							expires_at: {
+								type: 'string',
+								description: 'When the file will automatically be deleted.',
+							},
+							representations: {
+								type: 'object',
+								description: 'A list of file representations.',
+								properties: {
+									entries: {
+										type: 'array',
+										description: 'A list of files.',
+										items: {
+											type: 'object',
+											properties: {
+												content: {
+													type: 'object',
+													description:
+														'An object containing the URL that can be used to actually fetch the representation.',
+													properties: {
+														url_template: {
+															type: 'string',
+															description:
+																"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+														},
+													},
+													required: [],
+												},
+												info: {
+													type: 'object',
+													description:
+														'An object containing the URL that can be used to fetch more info on this representation.',
+													properties: {
+														url: {
+															type: 'string',
+															description:
+																'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+														},
+													},
+													required: [],
+												},
+												properties: {
+													type: 'object',
+													description:
+														'An object containing the size and type of this presentation.',
+													properties: {
+														dimensions: {
+															type: 'string',
+															description:
+																'The width by height size of this representation in pixels.',
+														},
+														paged: {
+															type: 'string',
+															description:
+																'Indicates if the representation is build up out of multiple pages.',
+														},
+														thumb: {
+															type: 'string',
+															description:
+																'Indicates if the representation can be used as a thumbnail of the file.',
+														},
+													},
+													required: [],
+												},
+												representation: {
+													type: 'string',
+													description:
+														'Indicates the file type of the returned representation.',
+												},
+												status: {
+													type: 'object',
+													description:
+														'An object containing the status of this representation.',
+													properties: {
+														state: {
+															type: 'string',
+															description:
+																'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+														},
+													},
+													required: [],
+												},
+											},
+											required: [],
+										},
+									},
+								},
+								required: [],
+							},
+							classification: {
+								type: 'object',
+								description: 'The classification applied to an item.',
+								properties: {
+									name: {
+										type: 'string',
+										description: 'The name of the classification.',
+									},
+									definition: {
+										type: 'string',
+										description:
+											'An explanation of the meaning of this classification.',
+									},
+									color: {
+										type: 'string',
+										description:
+											'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+									},
+								},
+								required: [],
+							},
+							uploader_display_name: {
+								type: 'string',
+								description:
+									'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+							},
+							disposition_at: {
+								type: 'string',
+								description:
+									'The retention expiration timestamp for the given file.',
+							},
+							shared_link_permission_options: {
+								type: 'array',
+								description:
+									'A list of the types of roles that user can be invited at when sharing this file.',
+								items: {
+									type: 'string',
+									description:
+										'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+								},
+							},
+							is_associated_with_app_item: {
+								type: 'boolean',
+								description:
+									'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+							},
+							collections: {
+								type: 'array',
+								description:
+									'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+								items: {
+									type: 'object',
+									properties: {
+										id: {
+											type: 'string',
+											description:
+												'The unique identifier for this collection.',
+										},
+										type: {
+											type: 'string',
+											description:
+												'The value will always be `collection`. One of `collection`.',
+										},
+										name: {
+											type: 'string',
+											description:
+												'The name of the collection. One of `Favorites`.',
+										},
+										collection_type: {
+											type: 'string',
+											description:
+												'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+										},
+									},
+									required: [],
+								},
+							},
+							is_download_available: {
+								type: 'boolean',
+								description:
+									"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+							},
+							download_url: {
+								type: 'string',
+								description:
+									"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+							},
+							authenticated_download_url: {
+								type: 'string',
+								description:
+									'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+							},
+							allowed_shared_link_access_levels: {
+								type: 'array',
+								description:
+									'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+								items: {
+									type: 'string',
+									description:
+										'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+								},
+							},
+							folder_upload_email: {
+								type: 'object',
+								description:
+									'The `folder_upload_email` parameter is not `null` if one of the following options is **true**: * The **Allow uploads to this folder via email** and the **Only allow email uploads from collaborators in this folder** are [enabled for a folder in the Admin Console](https://support.box.com/hc/en-us/articles/360043697534-Upload-to-Box-Through-Email), and the user has at least **Upload** permissions granted. * The **Allow uploads to this folder via email** setting is enabled for a folder in the Admin Console, and the **Only allow email uploads from collaborators in this folder** setting is deactivated (unchecked). If the conditions are not met, the parameter will have the following value: `folder_upload_email: null`.',
+								properties: {
+									access: {
+										type: 'string',
+										description:
+											'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address. One of `open`, `collaborators`.',
+									},
+									email: {
+										type: 'string',
+										description:
+											'The optional upload email address for this folder.',
+									},
+								},
+								required: [],
+							},
+							item_collection: {
+								type: 'object',
+								description:
+									'A list of files, folders, and web links in their mini representation.',
+								properties: {
+									limit: {
+										type: 'number',
+										description:
+											'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+									},
+									next_marker: {
+										type: 'string',
+										description:
+											'The marker for the start of the next page of results.',
+									},
+									prev_marker: {
+										type: 'string',
+										description:
+											'The marker for the start of the previous page of results.',
+									},
+									total_count: {
+										type: 'number',
+										description:
+											'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+									},
+									offset: {
+										type: 'number',
+										description:
+											'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+									},
+									order: {
+										type: 'array',
+										description:
+											'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+										items: {
+											type: 'object',
+											properties: {
+												by: {
+													type: 'string',
+													description: 'The field to order by.',
+												},
+												direction: {
+													type: 'string',
+													description:
+														'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+												},
+											},
+											required: [],
+										},
+									},
+									entries: {
+										type: 'array',
+										description: 'The items in this collection.',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+												},
+												etag: {
+													type: 'string',
+													description:
+														'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `file`. One of `file`.',
+												},
+												sequence_id: {
+													type: 'string',
+													description:
+														'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+												},
+												name: {
+													type: 'string',
+													description: 'The name of the file.',
+												},
+												sha1: {
+													type: 'string',
+													description:
+														'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+												},
+												file_version: {
+													type: 'object',
+													description:
+														'A mini representation of a file version, used when nested within another resource.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a file version.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `file_version`. One of `file_version`.',
+														},
+														sha1: {
+															type: 'string',
+															description:
+																'The SHA1 hash of this version of the file.',
+														},
+													},
+													required: [],
+												},
+												description: {
+													type: 'string',
+													description:
+														'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+												},
+												size: {
+													type: 'number',
+													description:
+														'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+												},
+												path_collection: {
+													type: 'object',
+													description:
+														'A list of parent folders for an item.',
+													properties: {
+														total_count: {
+															type: 'number',
+															description:
+																'The number of folders in this list.',
+														},
+														entries: {
+															type: 'array',
+															description:
+																'The parent folders for this item.',
+															items: {
+																type: 'object',
+																properties: {
+																	id: {
+																		type: 'string',
+																		description:
+																			'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																	},
+																	etag: {
+																		type: 'string',
+																		description:
+																			'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																	},
+																	type: {
+																		type: 'string',
+																		description:
+																			'The value will always be `folder`. One of `folder`.',
+																	},
+																	sequence_id: {
+																		type: 'string',
+																		description:
+																			'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																	},
+																	name: {
+																		type: 'string',
+																		description:
+																			'The name of the folder.',
+																	},
+																},
+																required: [],
+															},
+														},
+													},
+													required: [],
+												},
+												created_at: {
+													type: 'string',
+													description:
+														'The date and time when the file was created on Box.',
+												},
+												modified_at: {
+													type: 'string',
+													description:
+														'The date and time when the file was last updated on Box.',
+												},
+												trashed_at: {
+													type: 'string',
+													description:
+														'The time at which this file was put in the trash.',
+												},
+												purged_at: {
+													type: 'string',
+													description:
+														'The time at which this file is expected to be purged from the trash.',
+												},
+												content_created_at: {
+													type: 'string',
+													description:
+														'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+												},
+												content_modified_at: {
+													type: 'string',
+													description:
+														'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+												},
+												created_by: {
+													type: 'object',
+													description:
+														'A mini representation of a user, as can be returned when nested within other resources.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier for this user.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `user`. One of `user`.',
+														},
+														name: {
+															type: 'string',
+															description:
+																'The display name of this user.',
+														},
+														login: {
+															type: 'string',
+															description:
+																'The primary email address of this user.',
+														},
+													},
+													required: [],
+												},
+												modified_by: {
+													type: 'object',
+													description:
+														'A mini representation of a user, as can be returned when nested within other resources.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier for this user.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `user`. One of `user`.',
+														},
+														name: {
+															type: 'string',
+															description:
+																'The display name of this user.',
+														},
+														login: {
+															type: 'string',
+															description:
+																'The primary email address of this user.',
+														},
+													},
+													required: [],
+												},
+												owned_by: {
+													type: 'object',
+													description:
+														'A mini representation of a user, as can be returned when nested within other resources.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier for this user.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `user`. One of `user`.',
+														},
+														name: {
+															type: 'string',
+															description:
+																'The display name of this user.',
+														},
+														login: {
+															type: 'string',
+															description:
+																'The primary email address of this user.',
+														},
+													},
+													required: [],
+												},
+												shared_link: {
+													type: 'object',
+													description:
+														'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+													properties: {
+														url: {
+															type: 'string',
+															description:
+																"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+														},
+														download_url: {
+															type: 'string',
+															description:
+																'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+														},
+														vanity_url: {
+															type: 'string',
+															description:
+																'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+														},
+														vanity_name: {
+															type: 'string',
+															description:
+																'The custom name of a shared link, as used in the `vanity_url` field.',
+														},
+														access: {
+															type: 'string',
+															description:
+																'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+														},
+														effective_access: {
+															type: 'string',
+															description:
+																'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+														},
+														effective_permission: {
+															type: 'string',
+															description:
+																'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+														},
+														unshared_at: {
+															type: 'string',
+															description:
+																'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+														},
+														is_password_enabled: {
+															type: 'boolean',
+															description:
+																'Defines if the shared link requires a password to access the item.',
+														},
+														permissions: {
+															type: 'object',
+															description:
+																'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+															properties: {
+																can_download: {
+																	type: 'boolean',
+																	description:
+																		'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+																},
+																can_preview: {
+																	type: 'boolean',
+																	description:
+																		'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+																},
+																can_edit: {
+																	type: 'boolean',
+																	description:
+																		'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+																},
+															},
+															required: [],
+														},
+														download_count: {
+															type: 'number',
+															description:
+																'The number of times this item has been downloaded.',
+														},
+														preview_count: {
+															type: 'number',
+															description:
+																'The number of times this item has been previewed.',
+														},
+													},
+													required: [],
+												},
+												parent: {
+													type: 'object',
+													description:
+														'A mini representation of a file version, used when nested under another resource.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+													},
+													required: [],
+												},
+												item_status: {
+													type: 'string',
+													description:
+														'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+												},
+												version_number: {
+													type: 'string',
+													description: 'The version number of this file.',
+												},
+												comment_count: {
+													type: 'number',
+													description:
+														'The number of comments on this file.',
+												},
+												permissions: {
+													type: 'object',
+													description:
+														'The permissions that the authenticated user has for a file.',
+													properties: {
+														can_delete: {
+															type: 'boolean',
+															description:
+																'Specifies if the current user can delete this item.',
+														},
+														can_download: {
+															type: 'boolean',
+															description:
+																'Specifies if the current user can download this item.',
+														},
+														can_invite_collaborator: {
+															type: 'boolean',
+															description:
+																'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+														},
+														can_rename: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can rename this item.',
+														},
+														can_set_share_access: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can change the access level of an existing shared link on this item.',
+														},
+														can_share: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can create a shared link for this item.',
+														},
+														can_annotate: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can place annotations on this file.',
+														},
+														can_comment: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can place comments on this file.',
+														},
+														can_preview: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can preview this file.',
+														},
+														can_upload: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can upload a new version of this file.',
+														},
+														can_view_annotations_all: {
+															type: 'boolean',
+															description:
+																'Specifies if the user view all annotations placed on this file.',
+														},
+														can_view_annotations_self: {
+															type: 'boolean',
+															description:
+																'Specifies if the user view annotations placed by themselves on this file.',
+														},
+														can_apply_watermark: {
+															type: 'boolean',
+															description:
+																'Specifies if the user can apply a watermark to this file.',
+														},
+													},
+													required: [],
+												},
+												tags: {
+													type: 'array',
+													description:
+														"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+													items: {
+														type: 'string',
+														description: 'The tag.',
+													},
+												},
+												lock: {
+													type: 'object',
+													description:
+														'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier for this lock.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `lock`. One of `lock`.',
+														},
+														created_by: {
+															type: 'object',
+															description:
+																'A mini representation of a user, as can be returned when nested within other resources.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier for this user.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `user`. One of `user`.',
+																},
+																name: {
+																	type: 'string',
+																	description:
+																		'The display name of this user.',
+																},
+																login: {
+																	type: 'string',
+																	description:
+																		'The primary email address of this user.',
+																},
+															},
+															required: [],
+														},
+														created_at: {
+															type: 'string',
+															description:
+																'The time this lock was created at.',
+														},
+														expired_at: {
+															type: 'string',
+															description:
+																'The time this lock is to expire at, which might be in the past.',
+														},
+														is_download_prevented: {
+															type: 'boolean',
+															description:
+																'Whether or not the file can be downloaded while locked.',
+														},
+														app_type: {
+															type: 'string',
+															description:
+																'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+														},
+													},
+													required: [],
+												},
+												extension: {
+													type: 'string',
+													description:
+														'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+												},
+												is_package: {
+													type: 'boolean',
+													description:
+														'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+												},
+												expiring_embed_link: {
+													type: 'object',
+													description: 'An expiring Box Embed Link.',
+													properties: {
+														access_token: {
+															type: 'string',
+															description:
+																'The requested access token.',
+														},
+														expires_in: {
+															type: 'number',
+															description:
+																'The time in seconds by which this token will expire.',
+														},
+														token_type: {
+															type: 'string',
+															description:
+																'The type of access token returned. One of `bearer`.',
+														},
+														restricted_to: {
+															type: 'array',
+															description:
+																'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+															items: {
+																type: 'object',
+																properties: {
+																	scope: {
+																		type: 'string',
+																		description:
+																			'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+																	},
+																	object: {
+																		type: 'object',
+																		description:
+																			'The file or folder resource.',
+																		properties: {
+																			id: {
+																				type: 'string',
+																				description:
+																					'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																			},
+																			etag: {
+																				type: 'string',
+																				description:
+																					'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																			},
+																			type: {
+																				type: 'string',
+																				description:
+																					'The value will always be `folder`. One of `folder`.',
+																			},
+																			sequence_id: {
+																				type: 'string',
+																				description:
+																					'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																			},
+																			name: {
+																				type: 'string',
+																				description:
+																					'The name of the folder.',
+																			},
+																			sha1: {
+																				type: 'string',
+																				description:
+																					'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+																			},
+																			file_version: {
+																				type: 'object',
+																				description:
+																					'A mini representation of a file version, used when nested within another resource.',
+																				properties: {
+																					id: {
+																						type: 'string',
+																						description:
+																							'The unique identifier that represent a file version.',
+																					},
+																					type: {
+																						type: 'string',
+																						description:
+																							'The value will always be `file_version`. One of `file_version`.',
+																					},
+																					sha1: {
+																						type: 'string',
+																						description:
+																							'The SHA1 hash of this version of the file.',
+																					},
+																				},
+																				required: [],
+																			},
+																		},
+																		required: [],
+																	},
+																},
+																required: [],
+															},
+														},
+														url: {
+															type: 'string',
+															description:
+																'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+														},
+													},
+													required: [],
+												},
+												watermark_info: {
+													type: 'object',
+													description:
+														'Details about the watermark applied to this item.',
+													properties: {
+														is_watermarked: {
+															type: 'boolean',
+															description:
+																'Specifies if this item has a watermark applied.',
+														},
+														is_watermark_inherited: {
+															type: 'boolean',
+															description:
+																'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+														},
+														is_watermarked_by_access_policy: {
+															type: 'boolean',
+															description:
+																'Specifies if the watermark is enforced by an access policy.',
+														},
+													},
+													required: [],
+												},
+												is_accessible_via_shared_link: {
+													type: 'boolean',
+													description:
+														'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+												},
+												allowed_invitee_roles: {
+													type: 'array',
+													description:
+														'A list of the types of roles that user can be invited at when sharing this file.',
+													items: {
+														type: 'string',
+														description:
+															'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+													},
+												},
+												is_externally_owned: {
+													type: 'boolean',
+													description:
+														'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+												},
+												has_collaborations: {
+													type: 'boolean',
+													description:
+														'Specifies if this file has any other collaborators.',
+												},
+												metadata: {
+													type: 'object',
+													description:
+														'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+													properties: {},
+													required: [],
+													additionalProperties: true,
+												},
+												expires_at: {
+													type: 'string',
+													description:
+														'When the file will automatically be deleted.',
+												},
+												representations: {
+													type: 'object',
+													description: 'A list of file representations.',
+													properties: {
+														entries: {
+															type: 'array',
+															description: 'A list of files.',
+															items: {
+																type: 'object',
+																properties: {
+																	content: {
+																		type: 'object',
+																		description:
+																			'An object containing the URL that can be used to actually fetch the representation.',
+																		properties: {
+																			url_template: {
+																				type: 'string',
+																				description:
+																					"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+																			},
+																		},
+																		required: [],
+																	},
+																	info: {
+																		type: 'object',
+																		description:
+																			'An object containing the URL that can be used to fetch more info on this representation.',
+																		properties: {
+																			url: {
+																				type: 'string',
+																				description:
+																					'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+																			},
+																		},
+																		required: [],
+																	},
+																	properties: {
+																		type: 'object',
+																		description:
+																			'An object containing the size and type of this presentation.',
+																		properties: {
+																			dimensions: {
+																				type: 'string',
+																				description:
+																					'The width by height size of this representation in pixels.',
+																			},
+																			paged: {
+																				type: 'string',
+																				description:
+																					'Indicates if the representation is build up out of multiple pages.',
+																			},
+																			thumb: {
+																				type: 'string',
+																				description:
+																					'Indicates if the representation can be used as a thumbnail of the file.',
+																			},
+																		},
+																		required: [],
+																	},
+																	representation: {
+																		type: 'string',
+																		description:
+																			'Indicates the file type of the returned representation.',
+																	},
+																	status: {
+																		type: 'object',
+																		description:
+																			'An object containing the status of this representation.',
+																		properties: {
+																			state: {
+																				type: 'string',
+																				description:
+																					'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+																			},
+																		},
+																		required: [],
+																	},
+																},
+																required: [],
+															},
+														},
+													},
+													required: [],
+												},
+												classification: {
+													type: 'object',
+													description:
+														'The classification applied to an item.',
+													properties: {
+														name: {
+															type: 'string',
+															description:
+																'The name of the classification.',
+														},
+														definition: {
+															type: 'string',
+															description:
+																'An explanation of the meaning of this classification.',
+														},
+														color: {
+															type: 'string',
+															description:
+																'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+														},
+													},
+													required: [],
+												},
+												uploader_display_name: {
+													type: 'string',
+													description:
+														'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+												},
+												disposition_at: {
+													type: 'string',
+													description:
+														'The retention expiration timestamp for the given file.',
+												},
+												shared_link_permission_options: {
+													type: 'array',
+													description:
+														'A list of the types of roles that user can be invited at when sharing this file.',
+													items: {
+														type: 'string',
+														description:
+															'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+													},
+												},
+												is_associated_with_app_item: {
+													type: 'boolean',
+													description:
+														'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+												},
+												collections: {
+													type: 'array',
+													description:
+														'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+													items: {
+														type: 'object',
+														properties: {
+															id: {
+																type: 'string',
+																description:
+																	'The unique identifier for this collection.',
+															},
+															type: {
+																type: 'string',
+																description:
+																	'The value will always be `collection`. One of `collection`.',
+															},
+															name: {
+																type: 'string',
+																description:
+																	'The name of the collection. One of `Favorites`.',
+															},
+															collection_type: {
+																type: 'string',
+																description:
+																	'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+															},
+														},
+														required: [],
+													},
+												},
+												is_download_available: {
+													type: 'boolean',
+													description:
+														"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+												},
+												download_url: {
+													type: 'string',
+													description:
+														"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+												},
+												authenticated_download_url: {
+													type: 'string',
+													description:
+														'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+												},
+												allowed_shared_link_access_levels: {
+													type: 'array',
+													description:
+														'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+													items: {
+														type: 'string',
+														description:
+															'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+													},
+												},
+												url: {
+													type: 'string',
+													description: 'The URL this web link points to.',
+												},
+											},
+											required: [],
+										},
+									},
+								},
+								required: [],
+							},
+							sync_state: {
+								type: 'string',
+								description:
+									"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive. One of `synced`, `not_synced`, `partially_synced`.",
+							},
+							can_non_owners_invite: {
+								type: 'boolean',
+								description:
+									'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+							},
+							is_collaboration_restricted_to_enterprise: {
+								type: 'boolean',
+								description:
+									'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+							},
+							can_non_owners_view_collaborators: {
+								type: 'boolean',
+								description:
+									'Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators.',
+							},
+							url: {
+								type: 'string',
+								description: 'The URL this web link points to.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'updateFile',
+		label: 'Update a file',
+		description:
+			"Updates a file's attributes, such as its name, description, parent folder, shared link, lock, tags or collections.",
+		context:
+			"---\nname: updateFile\ndescription: Updates a file's attributes, such as its name, description, parent folder, shared link, lock, tags or collections.\n---\n\nUpdates a file. This can be used to rename or move a file, create a shared link, or lock a file.\n\nThis Endpoint wraps `PUT /files/{file_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- This is an update call: Box only changes the attributes you send. Fields that are omitted or left empty are not sent and keep their current value, so call the matching **get** Endpoint first if you need the current state. Clearing a value by sending `null` (for example removing a shared link or lock) is not possible through this Endpoint; use the **Arbitrary call** Endpoint for that.\n- To move a file, set `parent.id` to the destination folder ID (`0` is the root folder). To rename it, set `name`. To create a shared link, send `shared_link` (an empty object is not sent, so pass at least `access`). `collections` currently supports only the `favorites` collection ID.\n\nReference: [Update file](https://developer.box.com/reference/put-files-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				file_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represents a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				if_match: {
+					type: 'string',
+					description:
+						"Sent as the `If-Match` header. Ensures this item hasn't recently changed before making changes. Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.",
+				},
+				name: {
+					type: 'string',
+					description:
+						'An optional different name for the file. This can be used to rename the file. File names must be unique within their parent folder. The name check is case-insensitive, so a file named `New File` cannot be created in a parent folder that already contains a folder named `new file`.',
+				},
+				description: {
+					type: 'string',
+					description:
+						'The description for a file. This can be seen in the right-hand sidebar panel when viewing a file in the Box web app. Additionally, this index is used in the search index of the file, allowing users to find the file by the content in the description.',
+					maximum: 256,
+				},
+				parent: {
+					type: 'object',
+					description: 'The parent for this item.',
+					properties: {
+						id: { type: 'string', description: 'The ID of parent item.' },
+						user_id: {
+							type: 'string',
+							description:
+								'The input for `user_id` is optional. Moving to non-root folder is not allowed when `user_id` is present. Parent folder id should be zero when `user_id` is provided.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Defines a shared link for an item. Set this to `null` to remove the shared link.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`). If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`. The `company` access level is only available to paid accounts.',
+							default: '',
+							enum: ['', 'open', 'company', 'collaborators'],
+						},
+						password: {
+							type: 'string',
+							description:
+								'The password required to access the shared link. Set the password to `null` to remove it. Passwords must now be at least eight characters long and include a number, upper case letter, or a non-numeric or non-alphabetic character. A password can only be set when `access` is set to `open`.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`. Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The timestamp at which this shared link will expire. This field can only be set by users with paid accounts.',
+						},
+						permissions: {
+							type: 'object',
+							description: 'The permissions.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'If the shared link allows for downloading of files. This can only be set when `access` is set to `open` or `company`.',
+								},
+							},
+							required: [],
+						},
+					},
+					required: [],
+				},
+				lock: {
+					type: 'object',
+					description:
+						'Defines a lock on an item. This prevents the item from being moved, renamed, or otherwise changed by anyone other than the user who created the lock. Set this to `null` to remove the lock.',
+					properties: {
+						access: {
+							type: 'string',
+							description: 'The type of this object.',
+							default: '',
+							enum: ['', 'lock'],
+						},
+						expires_at: {
+							type: 'string',
+							description: 'Defines the time at which the lock expires.',
+						},
+						is_download_prevented: {
+							type: 'boolean',
+							description:
+								'Defines if the file can be downloaded while it is locked.',
+						},
+					},
+					required: [],
+				},
+				disposition_at: {
+					type: 'string',
+					description:
+						'The retention expiration timestamp for the given file. This date cannot be shortened once set on a file.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'Defines who can download a file.',
+					properties: {
+						can_download: {
+							type: 'string',
+							description:
+								"Defines who is allowed to download this file. The possible values are either `open` for everyone or `company` for the other members of the user's enterprise. This setting overrides the download permissions that are normally part of the `role` of a collaboration. When set to `company`, this essentially removes the download option for external users with `viewer` or `editor` a roles.",
+							default: '',
+							enum: ['', 'open', 'company'],
+						},
+					},
+					required: [],
+				},
+				collections: {
+					type: 'array',
+					description:
+						'A list of collections to make this file a member of. Box currently supports only the `favorites` collection; find its ID with the **Arbitrary call** Endpoint (`GET` `/2.0/collections`). An empty list is not sent by this Endpoint — to remove the file from all collections, call **Arbitrary call** with `PUT` `/2.0/files/{id}` and body `{"collections": []}`.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this object.',
+							},
+							type: { type: 'string', description: 'The type for this object.' },
+						},
+						required: [],
+					},
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+					maxItems: 100,
+				},
+			},
+			required: ['file_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `file`. One of `file`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the file.' },
+				sha1: {
+					type: 'string',
+					description:
+						'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+				},
+				file_version: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested within another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description: 'The unique identifier that represent a file version.',
+						},
+						type: {
+							type: 'string',
+							description:
+								'The value will always be `file_version`. One of `file_version`.',
+						},
+						sha1: {
+							type: 'string',
+							description: 'The SHA1 hash of this version of the file.',
+						},
+					},
+					required: [],
+				},
+				description: {
+					type: 'string',
+					description:
+						'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_at: {
+					type: 'string',
+					description: 'The date and time when the file was created on Box.',
+				},
+				modified_at: {
+					type: 'string',
+					description: 'The date and time when the file was last updated on Box.',
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this file was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this file is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description:
+						'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				version_number: { type: 'string', description: 'The version number of this file.' },
+				comment_count: {
+					type: 'number',
+					description: 'The number of comments on this file.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a file.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_annotate: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can place annotations on this file.',
+						},
+						can_comment: {
+							type: 'boolean',
+							description: 'Specifies if the user can place comments on this file.',
+						},
+						can_preview: {
+							type: 'boolean',
+							description: 'Specifies if the user can preview this file.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can upload a new version of this file.',
+						},
+						can_view_annotations_all: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view all annotations placed on this file.',
+						},
+						can_view_annotations_self: {
+							type: 'boolean',
+							description:
+								'Specifies if the user view annotations placed by themselves on this file.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this file.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				lock: {
+					type: 'object',
+					description:
+						'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this lock.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `lock`. One of `lock`.',
+						},
+						created_by: {
+							type: 'object',
+							description:
+								'A mini representation of a user, as can be returned when nested within other resources.',
+							properties: {
+								id: {
+									type: 'string',
+									description: 'The unique identifier for this user.',
+								},
+								type: {
+									type: 'string',
+									description: 'The value will always be `user`. One of `user`.',
+								},
+								name: {
+									type: 'string',
+									description: 'The display name of this user.',
+								},
+								login: {
+									type: 'string',
+									description: 'The primary email address of this user.',
+								},
+							},
+							required: [],
+						},
+						created_at: {
+							type: 'string',
+							description: 'The time this lock was created at.',
+						},
+						expired_at: {
+							type: 'string',
+							description:
+								'The time this lock is to expire at, which might be in the past.',
+						},
+						is_download_prevented: {
+							type: 'boolean',
+							description: 'Whether or not the file can be downloaded while locked.',
+						},
+						app_type: {
+							type: 'string',
+							description:
+								'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+						},
+					},
+					required: [],
+				},
+				extension: {
+					type: 'string',
+					description:
+						'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+				},
+				is_package: {
+					type: 'boolean',
+					description:
+						'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+				},
+				expiring_embed_link: {
+					type: 'object',
+					description: 'An expiring Box Embed Link.',
+					properties: {
+						access_token: {
+							type: 'string',
+							description: 'The requested access token.',
+						},
+						expires_in: {
+							type: 'number',
+							description: 'The time in seconds by which this token will expire.',
+						},
+						token_type: {
+							type: 'string',
+							description: 'The type of access token returned. One of `bearer`.',
+						},
+						restricted_to: {
+							type: 'array',
+							description:
+								'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+							items: {
+								type: 'object',
+								properties: {
+									scope: {
+										type: 'string',
+										description:
+											'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+									},
+									object: {
+										type: 'object',
+										description: 'The file or folder resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+											},
+											file_version: {
+												type: 'object',
+												description:
+													'A mini representation of a file version, used when nested within another resource.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier that represent a file version.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `file_version`. One of `file_version`.',
+													},
+													sha1: {
+														type: 'string',
+														description:
+															'The SHA1 hash of this version of the file.',
+													},
+												},
+												required: [],
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+						url: {
+							type: 'string',
+							description:
+								'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+						},
+					},
+					required: [],
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this file has any other collaborators.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				expires_at: {
+					type: 'string',
+					description: 'When the file will automatically be deleted.',
+				},
+				representations: {
+					type: 'object',
+					description: 'A list of file representations.',
+					properties: {
+						entries: {
+							type: 'array',
+							description: 'A list of files.',
+							items: {
+								type: 'object',
+								properties: {
+									content: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to actually fetch the representation.',
+										properties: {
+											url_template: {
+												type: 'string',
+												description:
+													"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+											},
+										},
+										required: [],
+									},
+									info: {
+										type: 'object',
+										description:
+											'An object containing the URL that can be used to fetch more info on this representation.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+											},
+										},
+										required: [],
+									},
+									properties: {
+										type: 'object',
+										description:
+											'An object containing the size and type of this presentation.',
+										properties: {
+											dimensions: {
+												type: 'string',
+												description:
+													'The width by height size of this representation in pixels.',
+											},
+											paged: {
+												type: 'string',
+												description:
+													'Indicates if the representation is build up out of multiple pages.',
+											},
+											thumb: {
+												type: 'string',
+												description:
+													'Indicates if the representation can be used as a thumbnail of the file.',
+											},
+										},
+										required: [],
+									},
+									representation: {
+										type: 'string',
+										description:
+											'Indicates the file type of the returned representation.',
+									},
+									status: {
+										type: 'object',
+										description:
+											'An object containing the status of this representation.',
+										properties: {
+											state: {
+												type: 'string',
+												description:
+													'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+											},
+										},
+										required: [],
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				uploader_display_name: {
+					type: 'string',
+					description:
+						'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+				},
+				disposition_at: {
+					type: 'string',
+					description: 'The retention expiration timestamp for the given file.',
+				},
+				shared_link_permission_options: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this file.',
+					items: {
+						type: 'string',
+						description:
+							'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+					},
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+				is_download_available: {
+					type: 'boolean',
+					description:
+						"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+				},
+				download_url: {
+					type: 'string',
+					description:
+						"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+				},
+				authenticated_download_url: {
+					type: 'string',
+					description:
+						'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'updateFileMetadata',
+		label: 'Update file metadata',
+		description: 'Updates a metadata template instance on a file using JSON Patch operations.',
+		context:
+			'---\nname: updateFileMetadata\ndescription: Updates a metadata template instance on a file using JSON Patch operations.\n---\n\nUpdates a piece of metadata on a file. The metadata instance can only be updated if the template has already been applied to the file before. When editing metadata, only values that match the metadata template schema will be accepted. The update is applied atomically. If any errors occur during the application of the operations, the metadata instance will not be changed.\n\nThis Endpoint wraps `PUT /files/{file_id}/metadata/{scope}/{template_key}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app\'s connection.\n\n- The body is a [JSON Patch](https://tools.ietf.org/html/rfc6902) array sent with `Content-Type: application/json-patch+json`. Each operation has an `op` (`add`, `replace`, `remove`, `test`, `move`, `copy`), a `path` that points at a template field (for example `/category`), and for `add`/`replace`/`test` a `value`. `add` on an existing field overwrites it.\n- To find a template\'s `template_key` and the keys, types and allowed values of its fields, call **List enterprise metadata templates** (or **List global metadata templates**) and **Get a metadata template**.\n- The template instance must already exist on the file; create it first with **Create a file metadata instance**. Call **Get a file** with `fields` = `metadata.{scope}.{template_key}` to read the current values before patching. The `value` of each operation is sent as given, including `0` and `[]`. An empty input is treated as not provided and is not sent; to set or test an empty string, pass the two-character value `""` (a pair of double quotes). To unset a field entirely, use `remove`.\n- The response contains the updated instance with its system fields (`$id`, `$parent`, `$scope`, `$template`, `$version`, `$type`, `$typeVersion`, `$canEdit`) followed by the template fields.\n\nReference: [Update metadata instance on file](https://developer.box.com/reference/put-files-id-metadata-id-id/)\n',
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				file_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represents a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+				},
+				scope: {
+					type: 'string',
+					description: 'The scope of the metadata template.',
+					enum: ['global', 'enterprise'],
+				},
+				template_key: { type: 'string', description: 'The name of the metadata template.' },
+				operations: {
+					type: 'array',
+					description:
+						'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the changes to make to the metadata instance. The changes are represented as a JSON array of operation objects.',
+					items: {
+						type: 'object',
+						properties: {
+							op: {
+								type: 'string',
+								description:
+									'The type of change to perform on the template. Some of these are hazardous as they will change existing templates.',
+								default: '',
+								enum: ['', 'add', 'replace', 'remove', 'test', 'move', 'copy'],
+							},
+							path: {
+								type: 'string',
+								description:
+									'The location in the metadata JSON object to apply the changes to, in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901). The path must always be prefixed with a `/` to represent the root of the template. The characters `~` and `/` are reserved characters and must be escaped in the key.',
+							},
+							value: {
+								description:
+									'The value to be set or tested. Required for `add`, `replace`, and `test` operations. For `add`, if the value exists already the previous value will be overwritten by the new value. For `replace`, the value must exist before replacing. For `test`, the existing value at the `path` location must match the specified value. A string, number, or array of strings. To set or test an empty string, pass the two-character value `""` (a pair of double quotes) — an empty input is treated as not provided and is not sent.',
+							},
+							from: {
+								type: 'string',
+								description:
+									'The location in the metadata JSON object to move or copy a value from. Required for `move` or `copy` operations and must be in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901).',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: ['file_id', 'scope', 'template_key', 'operations'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				$parent: {
+					type: 'string',
+					description:
+						'The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.',
+				},
+				$template: { type: 'string', description: 'The name of the template.' },
+				$scope: {
+					type: 'string',
+					description:
+						'An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.',
+				},
+				$version: {
+					type: 'number',
+					description:
+						'The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.',
+				},
+				$canEdit: {
+					type: 'boolean',
+					description: 'Whether the user can edit this metadata instance.',
+				},
+				$id: { type: 'string', description: 'A UUID to identify the metadata instance.' },
+				$type: {
+					type: 'string',
+					description:
+						'A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.',
+				},
+				$typeVersion: {
+					type: 'number',
+					description:
+						'The last-known version of the template of the object. This is an internal system property and should not be used by a client application.',
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'updateFolder',
+		label: 'Update a folder',
+		description:
+			"Updates a folder's attributes, such as its name, description, parent folder, shared link, upload email, tags or collections.",
+		context:
+			"---\nname: updateFolder\ndescription: Updates a folder's attributes, such as its name, description, parent folder, shared link, upload email, tags or collections.\n---\n\nUpdates a folder. This can be also be used to move the folder, create shared links, update collaborations, and more.\n\nThis Endpoint wraps `PUT /folders/{folder_id}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app's connection.\n\n- This is an update call: Box only changes the attributes you send. Fields that are omitted or left empty are not sent and keep their current value, so call the matching **get** Endpoint first if you need the current state. Clearing a value by sending `null` (for example removing a shared link or lock) is not possible through this Endpoint; use the **Arbitrary call** Endpoint for that.\n- To move a folder, set `parent.id` to the destination folder ID. To rename it, set `name`. To create a shared link, send `shared_link` with at least `access`. `collections` currently supports only the `favorites` collection ID. The root folder (`0`) cannot be updated.\n\nReference: [Update folder](https://developer.box.com/reference/put-folders-id/)\n",
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				fields: {
+					type: 'array',
+					description:
+						'A list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response. Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested. Metadata can be requested as well, for example `metadata.enterprise_12345.contractTemplate`. Sent as a comma-separated `fields` query parameter.',
+					items: {
+						type: 'string',
+						description:
+							'The name of an attribute to include in the response, for example `name`, `shared_link` or `metadata.enterprise_12345.contractTemplate`.',
+					},
+				},
+				if_match: {
+					type: 'string',
+					description:
+						"Sent as the `If-Match` header. Ensures this item hasn't recently changed before making changes. Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.",
+				},
+				name: {
+					type: 'string',
+					description:
+						'The optional new name for this folder. The following restrictions to folder names apply: names containing non-printable ASCII characters, forward and backward slashes (`/`, `\\`), names with trailing spaces, and names `.` and `..` are not allowed. Folder names must be unique within their parent folder. The name check is case-insensitive, so a folder named `New Folder` cannot be created in a parent folder that already contains a folder named `new folder`.',
+				},
+				description: {
+					type: 'string',
+					description: 'The optional description of this folder.',
+					maximum: 256,
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.",
+					default: '',
+					enum: ['', 'synced', 'not_synced', 'partially_synced'],
+				},
+				can_non_owners_invite: {
+					type: 'boolean',
+					description:
+						'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+				},
+				parent: {
+					type: 'object',
+					description: 'The parent for this item.',
+					properties: {
+						id: { type: 'string', description: 'The ID of parent item.' },
+						user_id: {
+							type: 'string',
+							description:
+								'The input for `user_id` is optional. Moving to non-root folder is not allowed when `user_id` is present. Parent folder id should be zero when `user_id` is provided.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Defines a shared link for an item. Set this to `null` to remove the shared link.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`). If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`. The `company` access level is only available to paid accounts.',
+							default: '',
+							enum: ['', 'open', 'company', 'collaborators'],
+						},
+						password: {
+							type: 'string',
+							description:
+								'The password required to access the shared link. Set the password to `null` to remove it. Passwords must now be at least eight characters long and include a number, upper case letter, or a non-numeric or non-alphabetic character. A password can only be set when `access` is set to `open`.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`. Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The timestamp at which this shared link will expire. This field can only be set by users with paid accounts.',
+						},
+						permissions: {
+							type: 'object',
+							description: 'The permissions.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'If the shared link allows for downloading of files. This can only be set when `access` is set to `open` or `company`.',
+								},
+							},
+							required: [],
+						},
+					},
+					required: [],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description: 'The Write Folder Upload Email object.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address.',
+							default: '',
+							enum: ['', 'open', 'collaborators'],
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+					maxItems: 100,
+				},
+				is_collaboration_restricted_to_enterprise: {
+					type: 'boolean',
+					description:
+						'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'A list of collections to make this folder a member of. Box currently supports only the `favorites` collection; find its ID with the **Arbitrary call** Endpoint (`GET` `/2.0/collections`). An empty list is not sent by this Endpoint — to remove the folder from all collections, call **Arbitrary call** with `PUT` `/2.0/folders/{id}` and body `{"collections": []}`.',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this object.',
+							},
+							type: { type: 'string', description: 'The type for this object.' },
+						},
+						required: [],
+					},
+				},
+				can_non_owners_view_collaborators: {
+					type: 'boolean',
+					description:
+						'Restricts collaborators who are not the owner of this folder from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators. When setting this field to `false`, it is required to also set `can_non_owners_invite_collaborators` to `false` if it has not already been set.',
+				},
+			},
+			required: ['folder_id'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+				},
+				etag: {
+					type: 'string',
+					description:
+						'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+				},
+				type: {
+					type: 'string',
+					description: 'The value will always be `folder`. One of `folder`.',
+				},
+				sequence_id: {
+					type: 'string',
+					description:
+						'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+				},
+				name: { type: 'string', description: 'The name of the folder.' },
+				created_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was created. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				modified_at: {
+					type: 'string',
+					description:
+						'The date and time when the folder was last updated. This value may be `null` for some folders such as the root folder or the trash folder.',
+				},
+				description: {
+					type: 'string',
+					description: 'The optional description of this folder.',
+				},
+				size: {
+					type: 'number',
+					description:
+						'The folder size in bytes. Be careful parsing this integer as its value can get very large.',
+				},
+				path_collection: {
+					type: 'object',
+					description: 'A list of parent folders for an item.',
+					properties: {
+						total_count: {
+							type: 'number',
+							description: 'The number of folders in this list.',
+						},
+						entries: {
+							type: 'array',
+							description: 'The parent folders for this item.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `folder`. One of `folder`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: {
+										type: 'string',
+										description: 'The name of the folder.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				created_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				modified_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				trashed_at: {
+					type: 'string',
+					description: 'The time at which this folder was put in the trash.',
+				},
+				purged_at: {
+					type: 'string',
+					description:
+						'The time at which this folder is expected to be purged from the trash.',
+				},
+				content_created_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was originally created.',
+				},
+				content_modified_at: {
+					type: 'string',
+					description: 'The date and time at which this folder was last updated.',
+				},
+				owned_by: {
+					type: 'object',
+					description:
+						'A mini representation of a user, as can be returned when nested within other resources.',
+					properties: {
+						id: { type: 'string', description: 'The unique identifier for this user.' },
+						type: {
+							type: 'string',
+							description: 'The value will always be `user`. One of `user`.',
+						},
+						name: { type: 'string', description: 'The display name of this user.' },
+						login: {
+							type: 'string',
+							description: 'The primary email address of this user.',
+						},
+					},
+					required: [],
+				},
+				shared_link: {
+					type: 'object',
+					description:
+						'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+					properties: {
+						url: {
+							type: 'string',
+							description:
+								"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+						},
+						download_url: {
+							type: 'string',
+							description:
+								'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+						},
+						vanity_url: {
+							type: 'string',
+							description:
+								'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+						},
+						vanity_name: {
+							type: 'string',
+							description:
+								'The custom name of a shared link, as used in the `vanity_url` field.',
+						},
+						access: {
+							type: 'string',
+							description:
+								'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+						},
+						effective_access: {
+							type: 'string',
+							description:
+								'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+						},
+						effective_permission: {
+							type: 'string',
+							description:
+								'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+						},
+						unshared_at: {
+							type: 'string',
+							description:
+								'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+						},
+						is_password_enabled: {
+							type: 'boolean',
+							description:
+								'Defines if the shared link requires a password to access the item.',
+						},
+						permissions: {
+							type: 'object',
+							description:
+								'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+							properties: {
+								can_download: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+								},
+								can_preview: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+								},
+								can_edit: {
+									type: 'boolean',
+									description:
+										'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+								},
+							},
+							required: [],
+						},
+						download_count: {
+							type: 'number',
+							description: 'The number of times this item has been downloaded.',
+						},
+						preview_count: {
+							type: 'number',
+							description: 'The number of times this item has been previewed.',
+						},
+					},
+					required: [],
+				},
+				folder_upload_email: {
+					type: 'object',
+					description:
+						'The `folder_upload_email` parameter is not `null` if one of the following options is **true**: * The **Allow uploads to this folder via email** and the **Only allow email uploads from collaborators in this folder** are [enabled for a folder in the Admin Console](https://support.box.com/hc/en-us/articles/360043697534-Upload-to-Box-Through-Email), and the user has at least **Upload** permissions granted. * The **Allow uploads to this folder via email** setting is enabled for a folder in the Admin Console, and the **Only allow email uploads from collaborators in this folder** setting is deactivated (unchecked). If the conditions are not met, the parameter will have the following value: `folder_upload_email: null`.',
+					properties: {
+						access: {
+							type: 'string',
+							description:
+								'When this parameter has been set, users can email files to the email address that has been automatically created for this folder. To create an email address, set this property either when creating or updating the folder. When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered. When set to `open` it will accept emails from any email address. One of `open`, `collaborators`.',
+						},
+						email: {
+							type: 'string',
+							description: 'The optional upload email address for this folder.',
+						},
+					},
+					required: [],
+				},
+				parent: {
+					type: 'object',
+					description:
+						'A mini representation of a file version, used when nested under another resource.',
+					properties: {
+						id: {
+							type: 'string',
+							description:
+								'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+						},
+						etag: {
+							type: 'string',
+							description:
+								'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+						},
+						type: {
+							type: 'string',
+							description: 'The value will always be `folder`. One of `folder`.',
+						},
+						sequence_id: {
+							type: 'string',
+							description:
+								'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+						},
+						name: { type: 'string', description: 'The name of the folder.' },
+					},
+					required: [],
+				},
+				item_status: {
+					type: 'string',
+					description:
+						'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+				},
+				item_collection: {
+					type: 'object',
+					description:
+						'A list of files, folders, and web links in their mini representation.',
+					properties: {
+						limit: {
+							type: 'number',
+							description:
+								'The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.',
+						},
+						next_marker: {
+							type: 'string',
+							description: 'The marker for the start of the next page of results.',
+						},
+						prev_marker: {
+							type: 'string',
+							description:
+								'The marker for the start of the previous page of results.',
+						},
+						total_count: {
+							type: 'number',
+							description:
+								'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						offset: {
+							type: 'number',
+							description:
+								'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+						},
+						order: {
+							type: 'array',
+							description:
+								'The order by which items are returned. This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.',
+							items: {
+								type: 'object',
+								properties: {
+									by: { type: 'string', description: 'The field to order by.' },
+									direction: {
+										type: 'string',
+										description:
+											'The direction to order by, either ascending or descending. One of `ASC`, `DESC`.',
+									},
+								},
+								required: [],
+							},
+						},
+						entries: {
+							type: 'array',
+							description: 'The items in this collection.',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'string',
+										description:
+											'The unique identifier that represent a file. The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.',
+									},
+									etag: {
+										type: 'string',
+										description:
+											'The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.',
+									},
+									type: {
+										type: 'string',
+										description:
+											'The value will always be `file`. One of `file`.',
+									},
+									sequence_id: {
+										type: 'string',
+										description:
+											'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+									},
+									name: { type: 'string', description: 'The name of the file.' },
+									sha1: {
+										type: 'string',
+										description:
+											'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+									},
+									file_version: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested within another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a file version.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `file_version`. One of `file_version`.',
+											},
+											sha1: {
+												type: 'string',
+												description:
+													'The SHA1 hash of this version of the file.',
+											},
+										},
+										required: [],
+									},
+									description: {
+										type: 'string',
+										description:
+											'The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.',
+									},
+									size: {
+										type: 'number',
+										description:
+											'The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.',
+									},
+									path_collection: {
+										type: 'object',
+										description: 'A list of parent folders for an item.',
+										properties: {
+											total_count: {
+												type: 'number',
+												description: 'The number of folders in this list.',
+											},
+											entries: {
+												type: 'array',
+												description: 'The parent folders for this item.',
+												items: {
+													type: 'object',
+													properties: {
+														id: {
+															type: 'string',
+															description:
+																'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+														},
+														etag: {
+															type: 'string',
+															description:
+																'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+														},
+														type: {
+															type: 'string',
+															description:
+																'The value will always be `folder`. One of `folder`.',
+														},
+														sequence_id: {
+															type: 'string',
+															description:
+																'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+														},
+														name: {
+															type: 'string',
+															description: 'The name of the folder.',
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									created_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was created on Box.',
+									},
+									modified_at: {
+										type: 'string',
+										description:
+											'The date and time when the file was last updated on Box.',
+									},
+									trashed_at: {
+										type: 'string',
+										description:
+											'The time at which this file was put in the trash.',
+									},
+									purged_at: {
+										type: 'string',
+										description:
+											'The time at which this file is expected to be purged from the trash.',
+									},
+									content_created_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was originally created, which might be before it was uploaded to Box.',
+									},
+									content_modified_at: {
+										type: 'string',
+										description:
+											'The date and time at which this file was last updated, which might be before it was uploaded to Box.',
+									},
+									created_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									modified_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									owned_by: {
+										type: 'object',
+										description:
+											'A mini representation of a user, as can be returned when nested within other resources.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this user.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `user`. One of `user`.',
+											},
+											name: {
+												type: 'string',
+												description: 'The display name of this user.',
+											},
+											login: {
+												type: 'string',
+												description:
+													'The primary email address of this user.',
+											},
+										},
+										required: [],
+									},
+									shared_link: {
+										type: 'object',
+										description:
+											'Shared links provide direct, read-only access to files or folder on Box. Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.',
+										properties: {
+											url: {
+												type: 'string',
+												description:
+													"The URL that can be used to access the item on Box. This URL will display the item in Box's preview UI where the file can be downloaded if allowed. This URL will continue to work even when a custom `vanity_url` has been set for this shared link.",
+											},
+											download_url: {
+												type: 'string',
+												description:
+													'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type. This property will be `null` for folders.',
+											},
+											vanity_url: {
+												type: 'string',
+												description:
+													'The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.',
+											},
+											vanity_name: {
+												type: 'string',
+												description:
+													'The custom name of a shared link, as used in the `vanity_url` field.',
+											},
+											access: {
+												type: 'string',
+												description:
+													'The access level for this shared link. * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are collaborators on this item If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin. One of `open`, `company`, `collaborators`.',
+											},
+											effective_access: {
+												type: 'string',
+												description:
+													'The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels. One of `open`, `company`, `collaborators`.',
+											},
+											effective_permission: {
+												type: 'string',
+												description:
+													'The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder. One of `can_edit`, `can_download`, `can_preview`, `no_access`.',
+											},
+											unshared_at: {
+												type: 'string',
+												description:
+													'The date and time when this link will be unshared. This field can only be set by users with paid accounts.',
+											},
+											is_password_enabled: {
+												type: 'boolean',
+												description:
+													'Defines if the shared link requires a password to access the item.',
+											},
+											permissions: {
+												type: 'object',
+												description:
+													'Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.',
+												properties: {
+													can_download: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder. This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.',
+													},
+													can_preview: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be previewed. This value is always `true`. For shared links on folders this also applies to any items in the folder.',
+													},
+													can_edit: {
+														type: 'boolean',
+														description:
+															'Defines if the shared link allows for the item to be edited. This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.',
+													},
+												},
+												required: [],
+											},
+											download_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been downloaded.',
+											},
+											preview_count: {
+												type: 'number',
+												description:
+													'The number of times this item has been previewed.',
+											},
+										},
+										required: [],
+									},
+									parent: {
+										type: 'object',
+										description:
+											'A mini representation of a file version, used when nested under another resource.',
+										properties: {
+											id: {
+												type: 'string',
+												description:
+													'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+											},
+											etag: {
+												type: 'string',
+												description:
+													'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `folder`. One of `folder`.',
+											},
+											sequence_id: {
+												type: 'string',
+												description:
+													'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+											},
+											name: {
+												type: 'string',
+												description: 'The name of the folder.',
+											},
+										},
+										required: [],
+									},
+									item_status: {
+										type: 'string',
+										description:
+											'Defines if this item has been deleted or not. * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted. One of `active`, `trashed`, `deleted`.',
+									},
+									version_number: {
+										type: 'string',
+										description: 'The version number of this file.',
+									},
+									comment_count: {
+										type: 'number',
+										description: 'The number of comments on this file.',
+									},
+									permissions: {
+										type: 'object',
+										description:
+											'The permissions that the authenticated user has for a file.',
+										properties: {
+											can_delete: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can delete this item.',
+											},
+											can_download: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can download this item.',
+											},
+											can_invite_collaborator: {
+												type: 'boolean',
+												description:
+													'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+											},
+											can_rename: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can rename this item.',
+											},
+											can_set_share_access: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can change the access level of an existing shared link on this item.',
+											},
+											can_share: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can create a shared link for this item.',
+											},
+											can_annotate: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place annotations on this file.',
+											},
+											can_comment: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can place comments on this file.',
+											},
+											can_preview: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can preview this file.',
+											},
+											can_upload: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can upload a new version of this file.',
+											},
+											can_view_annotations_all: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view all annotations placed on this file.',
+											},
+											can_view_annotations_self: {
+												type: 'boolean',
+												description:
+													'Specifies if the user view annotations placed by themselves on this file.',
+											},
+											can_apply_watermark: {
+												type: 'boolean',
+												description:
+													'Specifies if the user can apply a watermark to this file.',
+											},
+										},
+										required: [],
+									},
+									tags: {
+										type: 'array',
+										description:
+											"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+										items: { type: 'string', description: 'The tag.' },
+									},
+									lock: {
+										type: 'object',
+										description:
+											'The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.',
+										properties: {
+											id: {
+												type: 'string',
+												description: 'The unique identifier for this lock.',
+											},
+											type: {
+												type: 'string',
+												description:
+													'The value will always be `lock`. One of `lock`.',
+											},
+											created_by: {
+												type: 'object',
+												description:
+													'A mini representation of a user, as can be returned when nested within other resources.',
+												properties: {
+													id: {
+														type: 'string',
+														description:
+															'The unique identifier for this user.',
+													},
+													type: {
+														type: 'string',
+														description:
+															'The value will always be `user`. One of `user`.',
+													},
+													name: {
+														type: 'string',
+														description:
+															'The display name of this user.',
+													},
+													login: {
+														type: 'string',
+														description:
+															'The primary email address of this user.',
+													},
+												},
+												required: [],
+											},
+											created_at: {
+												type: 'string',
+												description: 'The time this lock was created at.',
+											},
+											expired_at: {
+												type: 'string',
+												description:
+													'The time this lock is to expire at, which might be in the past.',
+											},
+											is_download_prevented: {
+												type: 'boolean',
+												description:
+													'Whether or not the file can be downloaded while locked.',
+											},
+											app_type: {
+												type: 'string',
+												description:
+													'If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future. One of `gsuite`, `office_wopi`, `office_wopiplus`, `other`.',
+											},
+										},
+										required: [],
+									},
+									extension: {
+										type: 'string',
+										description:
+											'Indicates the (optional) file extension for this file. By default, this is set to an empty string.',
+									},
+									is_package: {
+										type: 'boolean',
+										description:
+											'Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.',
+									},
+									expiring_embed_link: {
+										type: 'object',
+										description: 'An expiring Box Embed Link.',
+										properties: {
+											access_token: {
+												type: 'string',
+												description: 'The requested access token.',
+											},
+											expires_in: {
+												type: 'number',
+												description:
+													'The time in seconds by which this token will expire.',
+											},
+											token_type: {
+												type: 'string',
+												description:
+													'The type of access token returned. One of `bearer`.',
+											},
+											restricted_to: {
+												type: 'array',
+												description:
+													'The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.',
+												items: {
+													type: 'object',
+													properties: {
+														scope: {
+															type: 'string',
+															description:
+																'The scopes for the resource access. One of `annotation_edit`, `annotation_view_all`, `annotation_view_self`, `base_explorer`, `base_picker`, `base_preview`, `base_upload`, `item_delete`, `item_download`, `item_preview`, `item_rename`, `item_share`, `item_upload`, `item_read`.',
+														},
+														object: {
+															type: 'object',
+															description:
+																'The file or folder resource.',
+															properties: {
+																id: {
+																	type: 'string',
+																	description:
+																		'The unique identifier that represent a folder. The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.',
+																},
+																etag: {
+																	type: 'string',
+																	description:
+																		'The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.',
+																},
+																type: {
+																	type: 'string',
+																	description:
+																		'The value will always be `folder`. One of `folder`.',
+																},
+																sequence_id: {
+																	type: 'string',
+																	description:
+																		'A numeric identifier that represents the most recent user event that has been applied to this item. This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read. An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.',
+																},
+																name: {
+																	type: 'string',
+																	description:
+																		'The name of the folder.',
+																},
+																sha1: {
+																	type: 'string',
+																	description:
+																		'The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.',
+																},
+																file_version: {
+																	type: 'object',
+																	description:
+																		'A mini representation of a file version, used when nested within another resource.',
+																	properties: {
+																		id: {
+																			type: 'string',
+																			description:
+																				'The unique identifier that represent a file version.',
+																		},
+																		type: {
+																			type: 'string',
+																			description:
+																				'The value will always be `file_version`. One of `file_version`.',
+																		},
+																		sha1: {
+																			type: 'string',
+																			description:
+																				'The SHA1 hash of this version of the file.',
+																		},
+																	},
+																	required: [],
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+											url: {
+												type: 'string',
+												description:
+													'The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.',
+											},
+										},
+										required: [],
+									},
+									watermark_info: {
+										type: 'object',
+										description:
+											'Details about the watermark applied to this item.',
+										properties: {
+											is_watermarked: {
+												type: 'boolean',
+												description:
+													'Specifies if this item has a watermark applied.',
+											},
+											is_watermark_inherited: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+											},
+											is_watermarked_by_access_policy: {
+												type: 'boolean',
+												description:
+													'Specifies if the watermark is enforced by an access policy.',
+											},
+										},
+										required: [],
+									},
+									is_accessible_via_shared_link: {
+										type: 'boolean',
+										description:
+											'Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.',
+									},
+									allowed_invitee_roles: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+										},
+									},
+									is_externally_owned: {
+										type: 'boolean',
+										description:
+											'Specifies if this file is owned by a user outside of the authenticated enterprise.',
+									},
+									has_collaborations: {
+										type: 'boolean',
+										description:
+											'Specifies if this file has any other collaborators.',
+									},
+									metadata: {
+										type: 'object',
+										description:
+											'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+										properties: {},
+										required: [],
+										additionalProperties: true,
+									},
+									expires_at: {
+										type: 'string',
+										description: 'When the file will automatically be deleted.',
+									},
+									representations: {
+										type: 'object',
+										description: 'A list of file representations.',
+										properties: {
+											entries: {
+												type: 'array',
+												description: 'A list of files.',
+												items: {
+													type: 'object',
+													properties: {
+														content: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to actually fetch the representation.',
+															properties: {
+																url_template: {
+																	type: 'string',
+																	description:
+																		"The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint. This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string. For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`. When requesting the download URL the following additional query params can be passed along. * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response. * `set_content_disposition_filename` - Allows the application to define the representation's file name used in the…",
+																},
+															},
+															required: [],
+														},
+														info: {
+															type: 'object',
+															description:
+																'An object containing the URL that can be used to fetch more info on this representation.',
+															properties: {
+																url: {
+																	type: 'string',
+																	description:
+																		'The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.',
+																},
+															},
+															required: [],
+														},
+														properties: {
+															type: 'object',
+															description:
+																'An object containing the size and type of this presentation.',
+															properties: {
+																dimensions: {
+																	type: 'string',
+																	description:
+																		'The width by height size of this representation in pixels.',
+																},
+																paged: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation is build up out of multiple pages.',
+																},
+																thumb: {
+																	type: 'string',
+																	description:
+																		'Indicates if the representation can be used as a thumbnail of the file.',
+																},
+															},
+															required: [],
+														},
+														representation: {
+															type: 'string',
+															description:
+																'Indicates the file type of the returned representation.',
+														},
+														status: {
+															type: 'object',
+															description:
+																'An object containing the status of this representation.',
+															properties: {
+																state: {
+																	type: 'string',
+																	description:
+																		'The status of the representation. * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry this endpoint to re-check the status. * `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation. One of `success`, `viewable`, `pending`, `none`.',
+																},
+															},
+															required: [],
+														},
+													},
+													required: [],
+												},
+											},
+										},
+										required: [],
+									},
+									classification: {
+										type: 'object',
+										description: 'The classification applied to an item.',
+										properties: {
+											name: {
+												type: 'string',
+												description: 'The name of the classification.',
+											},
+											definition: {
+												type: 'string',
+												description:
+													'An explanation of the meaning of this classification.',
+											},
+											color: {
+												type: 'string',
+												description:
+													'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+											},
+										},
+										required: [],
+									},
+									uploader_display_name: {
+										type: 'string',
+										description:
+											'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload. If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`. In all other anonymous cases where no email was provided this field will default to a value of `Someone`.',
+									},
+									disposition_at: {
+										type: 'string',
+										description:
+											'The retention expiration timestamp for the given file.',
+									},
+									shared_link_permission_options: {
+										type: 'array',
+										description:
+											'A list of the types of roles that user can be invited at when sharing this file.',
+										items: {
+											type: 'string',
+											description:
+												'The shared link permission option. One of `can_preview`, `can_download`, `can_edit`.',
+										},
+									},
+									is_associated_with_app_item: {
+										type: 'boolean',
+										description:
+											'This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.',
+									},
+									collections: {
+										type: 'array',
+										description:
+											'The collections that this file belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+										items: {
+											type: 'object',
+											properties: {
+												id: {
+													type: 'string',
+													description:
+														'The unique identifier for this collection.',
+												},
+												type: {
+													type: 'string',
+													description:
+														'The value will always be `collection`. One of `collection`.',
+												},
+												name: {
+													type: 'string',
+													description:
+														'The name of the collection. One of `Favorites`.',
+												},
+												collection_type: {
+													type: 'string',
+													description:
+														'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+												},
+											},
+											required: [],
+										},
+									},
+									is_download_available: {
+										type: 'boolean',
+										description:
+											"Whether the file's binary content is eligible to be downloaded. This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.",
+									},
+									download_url: {
+										type: 'string',
+										description:
+											"A pre-authorized, expiring URL for directly downloading the file's content. Requires authentication and is valid only for the current session. This field is only returned for files, not folders or web links.",
+									},
+									authenticated_download_url: {
+										type: 'string',
+										description:
+											'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token. This field is only returned for files, not folders or web links.',
+									},
+									allowed_shared_link_access_levels: {
+										type: 'array',
+										description:
+											'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file. The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.',
+										items: {
+											type: 'string',
+											description:
+												'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+										},
+									},
+									url: {
+										type: 'string',
+										description: 'The URL this web link points to.',
+									},
+								},
+								required: [],
+							},
+						},
+					},
+					required: [],
+				},
+				sync_state: {
+					type: 'string',
+					description:
+						"Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive. One of `synced`, `not_synced`, `partially_synced`.",
+				},
+				has_collaborations: {
+					type: 'boolean',
+					description: 'Specifies if this folder has any other collaborators.',
+				},
+				permissions: {
+					type: 'object',
+					description: 'The permissions that the authenticated user has for a folder.',
+					properties: {
+						can_delete: {
+							type: 'boolean',
+							description: 'Specifies if the current user can delete this item.',
+						},
+						can_download: {
+							type: 'boolean',
+							description: 'Specifies if the current user can download this item.',
+						},
+						can_invite_collaborator: {
+							type: 'boolean',
+							description:
+								'Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.',
+						},
+						can_rename: {
+							type: 'boolean',
+							description: 'Specifies if the user can rename this item.',
+						},
+						can_set_share_access: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can change the access level of an existing shared link on this item.',
+						},
+						can_share: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can create a shared link for this item.',
+						},
+						can_upload: {
+							type: 'boolean',
+							description: 'Specifies if the user can upload into this folder.',
+						},
+						can_apply_watermark: {
+							type: 'boolean',
+							description:
+								'Specifies if the user can apply a watermark to this folder and its contents.',
+						},
+					},
+					required: [],
+				},
+				tags: {
+					type: 'array',
+					description:
+						"The tags for this item. These tags are shown in the Box web app and mobile apps next to an item. To add or remove a tag, retrieve the item's current tags, modify them, and then update this field. There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.",
+					items: { type: 'string', description: 'The tag.' },
+				},
+				can_non_owners_invite: {
+					type: 'boolean',
+					description:
+						'Specifies if users who are not the owner of the folder can invite new collaborators to the folder.',
+				},
+				is_externally_owned: {
+					type: 'boolean',
+					description:
+						'Specifies if this folder is owned by a user outside of the authenticated enterprise.',
+				},
+				metadata: {
+					type: 'object',
+					description:
+						'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`. To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise. Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID. To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>` For example, `?fields=metadata.enterprise_27335.marketingCollateral`.',
+					properties: {},
+					required: [],
+					additionalProperties: true,
+				},
+				is_collaboration_restricted_to_enterprise: {
+					type: 'boolean',
+					description:
+						'Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.',
+				},
+				allowed_shared_link_access_levels: {
+					type: 'array',
+					description:
+						'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this folder. The list depends on item policy and user authorization. For some folders, like the root folder, this is always empty as sharing is not allowed at that level.',
+					items: {
+						type: 'string',
+						description:
+							'The access level for a shared link. One of `open`, `company`, `collaborators`.',
+					},
+				},
+				allowed_invitee_roles: {
+					type: 'array',
+					description:
+						'A list of the types of roles that user can be invited at when sharing this folder.',
+					items: {
+						type: 'string',
+						description:
+							'The allowed invitee role. One of `editor`, `viewer`, `previewer`, `uploader`, `previewer uploader`, `viewer uploader`, `co-owner`.',
+					},
+				},
+				watermark_info: {
+					type: 'object',
+					description: 'Details about the watermark applied to this item.',
+					properties: {
+						is_watermarked: {
+							type: 'boolean',
+							description: 'Specifies if this item has a watermark applied.',
+						},
+						is_watermark_inherited: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is inherited from any parent folder in the hierarchy.',
+						},
+						is_watermarked_by_access_policy: {
+							type: 'boolean',
+							description:
+								'Specifies if the watermark is enforced by an access policy.',
+						},
+					},
+					required: [],
+				},
+				is_accessible_via_shared_link: {
+					type: 'boolean',
+					description:
+						'Specifies if the folder can be accessed with the direct shared link or a shared link to a parent folder.',
+				},
+				can_non_owners_view_collaborators: {
+					type: 'boolean',
+					description:
+						'Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder. It also restricts non-owners from inviting new collaborators.',
+				},
+				classification: {
+					type: 'object',
+					description: 'The classification applied to an item.',
+					properties: {
+						name: { type: 'string', description: 'The name of the classification.' },
+						definition: {
+							type: 'string',
+							description: 'An explanation of the meaning of this classification.',
+						},
+						color: {
+							type: 'string',
+							description:
+								'The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.',
+						},
+					},
+					required: [],
+				},
+				is_associated_with_app_item: {
+					type: 'boolean',
+					description:
+						'This field will return true if the folder or any ancestor of the folder is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the folder.',
+				},
+				collections: {
+					type: 'array',
+					description:
+						'The collections that this folder belongs to. For more information, see the [collections guide](https://developer.box.com/guides/collections).',
+					items: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'string',
+								description: 'The unique identifier for this collection.',
+							},
+							type: {
+								type: 'string',
+								description:
+									'The value will always be `collection`. One of `collection`.',
+							},
+							name: {
+								type: 'string',
+								description: 'The name of the collection. One of `Favorites`.',
+							},
+							collection_type: {
+								type: 'string',
+								description:
+									'The type of the collection. This is used to determine the proper visual treatment for collections. One of `favorites`.',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: [],
+		},
+	},
+	{
+		appName: 'box',
+		appVersion: 3,
+		endpointName: 'updateFolderMetadata',
+		label: 'Update folder metadata',
+		description:
+			'Updates a metadata template instance on a folder using JSON Patch operations.',
+		context:
+			'---\nname: updateFolderMetadata\ndescription: Updates a metadata template instance on a folder using JSON Patch operations.\n---\n\nUpdates a piece of metadata on a folder. The metadata instance can only be updated if the template has already been applied to the folder before. When editing metadata, only values that match the metadata template schema will be accepted. The update is applied atomically. If any errors occur during the application of the operations, the metadata instance will not be changed.\n\nThis Endpoint wraps `PUT /folders/{folder_id}/metadata/{scope}/{template_key}` of the Box API (base URL `https://api.box.com/2.0`). Authentication is handled automatically via the app\'s connection.\n\n- The body is a [JSON Patch](https://tools.ietf.org/html/rfc6902) array sent with `Content-Type: application/json-patch+json`. Each operation has an `op` (`add`, `replace`, `remove`, `test`, `move`, `copy`), a `path` that points at a template field (for example `/category`), and for `add`/`replace`/`test` a `value`. `add` on an existing field overwrites it.\n- To find a template\'s `template_key` and the keys, types and allowed values of its fields, call **List enterprise metadata templates** (or **List global metadata templates**) and **Get a metadata template**.\n- The template instance must already exist on the folder; create it first with **Create a folder metadata instance**. Call **Get a folder** with `fields` = `metadata.{scope}.{template_key}` to read the current values before patching. The `value` of each operation is sent as given, including `0` and `[]`. An empty input is treated as not provided and is not sent; to set or test an empty string, pass the two-character value `""` (a pair of double quotes). To unset a field entirely, use `remove`.\n- The response contains the updated instance with its system fields (`$id`, `$parent`, `$scope`, `$template`, `$version`, `$type`, `$typeVersion`, `$canEdit`) followed by the template fields.\n\nReference: [Update metadata instance on folder](https://developer.box.com/reference/put-folders-id-metadata-id-id/)\n',
+		accounts: { box2: { scope: [] } },
+		annotations: {
+			readOnlyHint: false,
+			destructiveHint: false,
+			idempotentHint: true,
+			openWorldHint: false,
+			arbitraryCallHint: false,
+		},
+		inputSchema: {
+			type: 'object',
+			properties: {
+				folder_id: {
+					type: 'string',
+					description:
+						'The unique identifier that represent a folder. The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`. The root folder of a Box account is always represented by the ID `0`.',
+				},
+				scope: {
+					type: 'string',
+					description: 'The scope of the metadata template.',
+					enum: ['global', 'enterprise'],
+				},
+				template_key: { type: 'string', description: 'The name of the metadata template.' },
+				operations: {
+					type: 'array',
+					description:
+						'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the changes to make to the metadata instance. The changes are represented as a JSON array of operation objects.',
+					items: {
+						type: 'object',
+						properties: {
+							op: {
+								type: 'string',
+								description:
+									'The type of change to perform on the template. Some of these are hazardous as they will change existing templates.',
+								default: '',
+								enum: ['', 'add', 'replace', 'remove', 'test', 'move', 'copy'],
+							},
+							path: {
+								type: 'string',
+								description:
+									'The location in the metadata JSON object to apply the changes to, in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901). The path must always be prefixed with a `/` to represent the root of the template. The characters `~` and `/` are reserved characters and must be escaped in the key.',
+							},
+							value: {
+								description:
+									'The value to be set or tested. Required for `add`, `replace`, and `test` operations. For `add`, if the value exists already the previous value will be overwritten by the new value. For `replace`, the value must exist before replacing. For `test`, the existing value at the `path` location must match the specified value. A string, number, or array of strings. To set or test an empty string, pass the two-character value `""` (a pair of double quotes) — an empty input is treated as not provided and is not sent.',
+							},
+							from: {
+								type: 'string',
+								description:
+									'The location in the metadata JSON object to move or copy a value from. Required for `move` or `copy` operations and must be in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901).',
+							},
+						},
+						required: [],
+					},
+				},
+			},
+			required: ['folder_id', 'scope', 'template_key', 'operations'],
+		},
+		outputSchema: {
+			type: 'object',
+			properties: {
+				$parent: {
+					type: 'string',
+					description:
+						'The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.',
+				},
+				$template: { type: 'string', description: 'The name of the template.' },
+				$scope: {
+					type: 'string',
+					description:
+						'An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.',
+				},
+				$version: {
+					type: 'number',
+					description:
+						'The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.',
+				},
+				$canEdit: {
+					type: 'boolean',
+					description: 'Whether the user can edit this metadata instance.',
+				},
+				$id: { type: 'string', description: 'A UUID to identify the metadata instance.' },
+				$type: {
+					type: 'string',
+					description:
+						'A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.',
+				},
+				$typeVersion: {
+					type: 'number',
+					description:
+						'The last-known version of the template of the object. This is an internal system property and should not be used by a client application.',
+				},
+			},
+			required: [],
+		},
+	},
+];
