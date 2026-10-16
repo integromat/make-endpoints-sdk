@@ -119,7 +119,7 @@ const IDEMPOTENCY_KEY_SCHEMA: JSONSchema = {
 	maxLength: 255,
 	pattern: '^[A-Za-z0-9_.:-]+$',
 	description:
-		'Makes the call safe to retry. Pass a unique key (1-255 characters: letters, digits, `_`, `.`, `:`, `-`) per intended call and reuse it when retrying after a timeout or an error that may have hidden a finished run: the endpoint then never runs twice. With a key the result is `{ output, execution }`, and `execution.replayed` is true on a replay. HTTP 409: the first run is still going, retry later. HTTP 422: the key was used for a different request or a confidential run, never retry with it. HTTP 503: the key could not be checked and nothing ran, retry.',
+		'Makes the call safe to retry. Pass a unique key per intended call and reuse it when retrying after a timeout or an error that may have hidden a finished run: the endpoint then never runs twice. With a key the result is `{ output, execution }`, and `execution.replayed` is true on a replay. HTTP 409: the first run is still going, retry later. HTTP 422: the key was used for a different request or a confidential run, never retry with it. HTTP 503: the key could not be checked and nothing ran, retry.',
 };
 
 type CallEndpointParams = {
