@@ -86,6 +86,8 @@ export async function listAclRules(
 	payload: {
 		input: ListAclRulesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListAclRulesOutput> {
 	const response = await this.endpointCaller<ListAclRulesOutput>(

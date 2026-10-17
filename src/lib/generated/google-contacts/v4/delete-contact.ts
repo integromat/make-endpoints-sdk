@@ -19,6 +19,8 @@ export async function deleteContact(
 	payload: {
 		input: DeleteContactInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteContactOutput> {
 	const response = await this.endpointCaller<DeleteContactOutput>(

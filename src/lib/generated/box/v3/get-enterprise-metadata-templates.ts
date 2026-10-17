@@ -134,6 +134,8 @@ export async function getEnterpriseMetadataTemplates(
 	payload: {
 		input: GetEnterpriseMetadataTemplatesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetEnterpriseMetadataTemplatesOutput> {
 	const response = await this.endpointCaller<GetEnterpriseMetadataTemplatesOutput>(

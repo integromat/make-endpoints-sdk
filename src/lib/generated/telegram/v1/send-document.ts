@@ -333,6 +333,8 @@ export async function sendDocument(
 	payload: {
 		input: SendDocumentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendDocumentOutput> {
 	const response = await this.endpointCaller<SendDocumentOutput>(

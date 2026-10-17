@@ -1501,6 +1501,8 @@ export async function getPageMarkdown(
 	payload: {
 		input: GetPageMarkdownInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPageMarkdownOutput> {
 	const response = await this.endpointCaller<GetPageMarkdownOutput>(

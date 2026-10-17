@@ -1397,6 +1397,8 @@ export async function createSignRequest(
 	payload: {
 		input: CreateSignRequestInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateSignRequestOutput> {
 	const response = await this.endpointCaller<CreateSignRequestOutput>(

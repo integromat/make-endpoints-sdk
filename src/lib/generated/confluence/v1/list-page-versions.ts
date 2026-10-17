@@ -72,6 +72,8 @@ export async function listPageVersions(
 	payload: {
 		input: ListPageVersionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListPageVersionsOutput> {
 	const response = await this.endpointCaller<ListPageVersionsOutput>(

@@ -450,6 +450,8 @@ export async function listOtherContacts(
 	payload: {
 		input: ListOtherContactsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListOtherContactsOutput> {
 	const response = await this.endpointCaller<ListOtherContactsOutput>(

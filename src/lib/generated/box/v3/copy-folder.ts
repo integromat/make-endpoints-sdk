@@ -1134,6 +1134,8 @@ export async function copyFolder(
 	payload: {
 		input: CopyFolderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CopyFolderOutput> {
 	const response = await this.endpointCaller<CopyFolderOutput>(

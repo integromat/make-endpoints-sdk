@@ -704,6 +704,8 @@ export async function importTasksFromTemplate(
 	payload: {
 		input: ImportTasksFromTemplateInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ImportTasksFromTemplateOutput> {
 	const response = await this.endpointCaller<ImportTasksFromTemplateOutput>(

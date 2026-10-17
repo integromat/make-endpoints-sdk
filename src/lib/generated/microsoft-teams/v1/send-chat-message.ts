@@ -458,6 +458,8 @@ export async function sendChatMessage(
 	payload: {
 		input: SendChatMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendChatMessageOutput> {
 	const response = await this.endpointCaller<SendChatMessageOutput>(

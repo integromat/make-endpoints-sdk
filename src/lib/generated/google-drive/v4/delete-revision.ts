@@ -23,6 +23,8 @@ export async function deleteRevision(
 	payload: {
 		input: DeleteRevisionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteRevisionOutput> {
 	const response = await this.endpointCaller<DeleteRevisionOutput>(

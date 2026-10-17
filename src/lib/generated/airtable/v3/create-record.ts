@@ -63,6 +63,8 @@ export async function createRecord(
 	payload: {
 		input: CreateRecordInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateRecordOutput> {
 	const response = await this.endpointCaller<CreateRecordOutput>(

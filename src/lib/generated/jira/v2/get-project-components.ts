@@ -103,6 +103,8 @@ export async function getProjectComponents(
 	payload: {
 		input: GetProjectComponentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetProjectComponentsOutput> {
 	const response = await this.endpointCaller<GetProjectComponentsOutput>(

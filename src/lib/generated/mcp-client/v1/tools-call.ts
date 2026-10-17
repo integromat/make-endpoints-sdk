@@ -40,6 +40,8 @@ export async function toolsCall(
 	payload: {
 		input: ToolsCallInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ToolsCallOutput> {
 	const response = await this.endpointCaller<ToolsCallOutput>(

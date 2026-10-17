@@ -27,6 +27,8 @@ export async function deletePermission(
 	payload: {
 		input: DeletePermissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeletePermissionOutput> {
 	const response = await this.endpointCaller<DeletePermissionOutput>(

@@ -324,6 +324,8 @@ export async function createDataSourceItem(
 	payload: {
 		input: CreateDataSourceItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateDataSourceItemOutput> {
 	const response = await this.endpointCaller<CreateDataSourceItemOutput>(

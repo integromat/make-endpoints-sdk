@@ -393,6 +393,8 @@ export async function createGroup(
 	payload: {
 		input: CreateGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateGroupOutput> {
 	const response = await this.endpointCaller<CreateGroupOutput>(

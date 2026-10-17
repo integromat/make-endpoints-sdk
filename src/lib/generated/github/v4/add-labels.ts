@@ -72,6 +72,8 @@ export async function addLabels(
 	payload: {
 		input: AddLabelsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddLabelsOutput> {
 	const response = await this.endpointCaller<AddLabelsOutput>(

@@ -2361,6 +2361,8 @@ export async function listContacts(
 	payload: {
 		input: ListContactsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListContactsOutput> {
 	const response = await this.endpointCaller<ListContactsOutput>(

@@ -47,6 +47,8 @@ export async function listChannelMembers(
 	payload: {
 		input: ListChannelMembersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListChannelMembersOutput> {
 	const response = await this.endpointCaller<ListChannelMembersOutput>(

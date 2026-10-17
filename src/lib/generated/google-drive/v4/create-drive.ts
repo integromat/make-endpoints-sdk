@@ -275,6 +275,8 @@ export async function createDrive(
 	payload: {
 		input: CreateDriveInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateDriveOutput> {
 	const response = await this.endpointCaller<CreateDriveOutput>(

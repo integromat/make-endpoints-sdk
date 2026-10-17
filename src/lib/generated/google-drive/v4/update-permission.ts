@@ -135,6 +135,8 @@ export async function updatePermission(
 	payload: {
 		input: UpdatePermissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdatePermissionOutput> {
 	const response = await this.endpointCaller<UpdatePermissionOutput>(

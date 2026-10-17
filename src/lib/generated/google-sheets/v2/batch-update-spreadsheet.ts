@@ -204,6 +204,8 @@ export async function batchUpdateSpreadsheet(
 	payload: {
 		input: BatchUpdateSpreadsheetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchUpdateSpreadsheetOutput> {
 	const response = await this.endpointCaller<BatchUpdateSpreadsheetOutput>(

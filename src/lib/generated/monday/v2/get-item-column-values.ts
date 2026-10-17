@@ -14,6 +14,8 @@ export async function getItemColumnValues(
 	payload: {
 		input: GetItemColumnValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetItemColumnValuesOutput> {
 	const response = await this.endpointCaller<GetItemColumnValuesOutput>(

@@ -28,6 +28,8 @@ export async function unpinChatMessage(
 	payload: {
 		input: UnpinChatMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UnpinChatMessageOutput> {
 	const response = await this.endpointCaller<UnpinChatMessageOutput>(

@@ -1143,6 +1143,8 @@ export async function createFolder(
 	payload: {
 		input: CreateFolderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFolderOutput> {
 	const response = await this.endpointCaller<CreateFolderOutput>(

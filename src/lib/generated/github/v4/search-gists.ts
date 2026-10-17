@@ -161,6 +161,8 @@ export async function searchGists(
 	payload: {
 		input: SearchGistsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchGistsOutput> {
 	const response = await this.endpointCaller<SearchGistsOutput>(

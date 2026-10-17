@@ -229,6 +229,8 @@ export async function searchPullRequests(
 	payload: {
 		input: SearchPullRequestsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchPullRequestsOutput> {
 	const response = await this.endpointCaller<SearchPullRequestsOutput>(

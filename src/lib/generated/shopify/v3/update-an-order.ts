@@ -182,6 +182,8 @@ export async function updateAnOrder(
 	payload: {
 		input: UpdateAnOrderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateAnOrderOutput> {
 	const response = await this.endpointCaller<UpdateAnOrderOutput>(

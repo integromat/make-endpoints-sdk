@@ -23,6 +23,8 @@ export async function deleteAtask(
 	payload: {
 		input: DeleteATaskInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteATaskOutput> {
 	const response = await this.endpointCaller<DeleteATaskOutput>(

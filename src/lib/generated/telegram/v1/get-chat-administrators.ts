@@ -152,6 +152,8 @@ export async function getChatAdministrators(
 	payload: {
 		input: GetChatAdministratorsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetChatAdministratorsOutput> {
 	const response = await this.endpointCaller<GetChatAdministratorsOutput>(

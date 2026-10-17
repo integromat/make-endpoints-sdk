@@ -19,6 +19,8 @@ export async function deleteForm(
 	payload: {
 		input: DeleteFormInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteFormOutput> {
 	const response = await this.endpointCaller<DeleteFormOutput>(

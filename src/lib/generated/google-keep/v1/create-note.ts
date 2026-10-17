@@ -218,6 +218,8 @@ export async function createNote(
 	payload: {
 		input: CreateNoteInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateNoteOutput> {
 	const response = await this.endpointCaller<CreateNoteOutput>(

@@ -14,6 +14,8 @@ export async function getTeam(
 	payload: {
 		input: GetTeamInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetTeamOutput> {
 	const response = await this.endpointCaller<GetTeamOutput>(

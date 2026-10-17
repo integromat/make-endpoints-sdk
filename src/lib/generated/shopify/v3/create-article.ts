@@ -149,6 +149,8 @@ export async function createArticle(
 	payload: {
 		input: CreateArticleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateArticleOutput> {
 	const response = await this.endpointCaller<CreateArticleOutput>(

@@ -4323,6 +4323,8 @@ export async function getDocument(
 	payload: {
 		input: GetDocumentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetDocumentOutput> {
 	const response = await this.endpointCaller<GetDocumentOutput>(

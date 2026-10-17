@@ -108,6 +108,8 @@ export async function getRelease(
 	payload: {
 		input: GetReleaseInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetReleaseOutput> {
 	const response = await this.endpointCaller<GetReleaseOutput>(

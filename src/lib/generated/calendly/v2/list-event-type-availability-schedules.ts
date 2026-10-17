@@ -123,6 +123,8 @@ export async function listEventTypeAvailabilitySchedules(
 	payload: {
 		input: ListEventTypeAvailabilitySchedulesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListEventTypeAvailabilitySchedulesOutput> {
 	const response = await this.endpointCaller<ListEventTypeAvailabilitySchedulesOutput>(

@@ -177,6 +177,8 @@ export async function getTask(
 	payload: {
 		input: GetTaskInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetTaskOutput> {
 	const response = await this.endpointCaller<GetTaskOutput>(

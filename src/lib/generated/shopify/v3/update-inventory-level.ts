@@ -173,6 +173,8 @@ export async function updateInventoryLevel(
 	payload: {
 		input: UpdateInventoryLevelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateInventoryLevelOutput> {
 	const response = await this.endpointCaller<UpdateInventoryLevelOutput>(

@@ -24,6 +24,7 @@ import { definitions as googleSlidesV1Definitions } from './google-slides/v1/_de
 import { definitions as googleTasksV5Definitions } from './google-tasks/v5/_definitions.ts';
 import { definitions as highlevelV1Definitions } from './highlevel/v1/_definitions.ts';
 import { definitions as httpV4Definitions } from './http/v4/_definitions.ts';
+import { definitions as hubspotcrmV2Definitions } from './hubspotcrm/v2/_definitions.ts';
 import { definitions as jiraV2Definitions } from './jira/v2/_definitions.ts';
 import { definitions as jotformV1Definitions } from './jotform/v1/_definitions.ts';
 import { definitions as linearV1Definitions } from './linear/v1/_definitions.ts';
@@ -40,6 +41,7 @@ import { definitions as notionV1Definitions } from './notion/v1/_definitions.ts'
 import { definitions as onedriveV2Definitions } from './onedrive/v2/_definitions.ts';
 import { definitions as pinterestV2Definitions } from './pinterest/v2/_definitions.ts';
 import { definitions as pipedriveV2Definitions } from './pipedrive/v2/_definitions.ts';
+import { definitions as salesforceV4Definitions } from './salesforce/v4/_definitions.ts';
 import { definitions as shopifyV3Definitions } from './shopify/v3/_definitions.ts';
 import { definitions as slackV4Definitions } from './slack/v4/_definitions.ts';
 import { definitions as stripeV1Definitions } from './stripe/v1/_definitions.ts';
@@ -74,6 +76,7 @@ export const definitions: EndpointDefinition[] = [
 	...googleTasksV5Definitions,
 	...highlevelV1Definitions,
 	...httpV4Definitions,
+	...hubspotcrmV2Definitions,
 	...jiraV2Definitions,
 	...jotformV1Definitions,
 	...linearV1Definitions,
@@ -90,6 +93,7 @@ export const definitions: EndpointDefinition[] = [
 	...onedriveV2Definitions,
 	...pinterestV2Definitions,
 	...pipedriveV2Definitions,
+	...salesforceV4Definitions,
 	...shopifyV3Definitions,
 	...slackV4Definitions,
 	...stripeV1Definitions,

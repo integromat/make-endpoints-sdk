@@ -32,6 +32,8 @@ export async function setChannelPurpose(
 	payload: {
 		input: SetChannelPurposeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SetChannelPurposeOutput> {
 	const response = await this.endpointCaller<SetChannelPurposeOutput>(

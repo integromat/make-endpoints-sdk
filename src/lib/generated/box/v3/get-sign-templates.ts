@@ -377,6 +377,8 @@ export async function getSignTemplates(
 	payload: {
 		input: GetSignTemplatesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetSignTemplatesOutput> {
 	const response = await this.endpointCaller<GetSignTemplatesOutput>(

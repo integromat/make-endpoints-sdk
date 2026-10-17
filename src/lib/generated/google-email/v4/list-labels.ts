@@ -69,6 +69,8 @@ export async function listLabels(
 	payload: {
 		input: ListLabelsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListLabelsOutput> {
 	const response = await this.endpointCaller<ListLabelsOutput>(

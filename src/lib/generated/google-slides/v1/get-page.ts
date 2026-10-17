@@ -4163,6 +4163,8 @@ export async function getPage(
 	payload: {
 		input: GetPageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPageOutput> {
 	const response = await this.endpointCaller<GetPageOutput>(

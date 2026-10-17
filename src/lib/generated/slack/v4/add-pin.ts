@@ -28,6 +28,8 @@ export async function addPin(
 	payload: {
 		input: AddPinInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddPinOutput> {
 	const response = await this.endpointCaller<AddPinOutput>(

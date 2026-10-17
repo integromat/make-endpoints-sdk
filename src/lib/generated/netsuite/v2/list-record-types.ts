@@ -21,6 +21,8 @@ export async function listRecordTypes(
 	payload: {
 		input: ListRecordTypesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListRecordTypesOutput> {
 	const response = await this.endpointCaller<ListRecordTypesOutput>(

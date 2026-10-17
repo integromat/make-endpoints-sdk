@@ -45,6 +45,8 @@ export async function cancelEvent(
 	payload: {
 		input: CancelEventInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CancelEventOutput> {
 	const response = await this.endpointCaller<CancelEventOutput>(

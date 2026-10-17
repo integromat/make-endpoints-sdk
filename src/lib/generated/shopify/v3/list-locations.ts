@@ -188,6 +188,8 @@ export async function listLocations(
 	payload: {
 		input: ListLocationsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListLocationsOutput> {
 	const response = await this.endpointCaller<ListLocationsOutput>(

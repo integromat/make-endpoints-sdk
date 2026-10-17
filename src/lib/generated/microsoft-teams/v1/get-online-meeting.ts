@@ -319,6 +319,8 @@ export async function getOnlineMeeting(
 	payload: {
 		input: GetOnlineMeetingInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetOnlineMeetingOutput> {
 	const response = await this.endpointCaller<GetOnlineMeetingOutput>(

@@ -14,6 +14,8 @@ export async function moveItemToGroup(
 	payload: {
 		input: MoveItemToGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<MoveItemToGroupOutput> {
 	const response = await this.endpointCaller<MoveItemToGroupOutput>(

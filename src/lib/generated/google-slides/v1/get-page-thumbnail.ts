@@ -49,6 +49,8 @@ export async function getPageThumbnail(
 	payload: {
 		input: GetPageThumbnailInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPageThumbnailOutput> {
 	const response = await this.endpointCaller<GetPageThumbnailOutput>(

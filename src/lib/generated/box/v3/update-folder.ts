@@ -1222,6 +1222,8 @@ export async function updateFolder(
 	payload: {
 		input: UpdateFolderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFolderOutput> {
 	const response = await this.endpointCaller<UpdateFolderOutput>(

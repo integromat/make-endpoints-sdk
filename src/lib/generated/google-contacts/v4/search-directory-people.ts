@@ -2344,6 +2344,8 @@ export async function searchDirectoryPeople(
 	payload: {
 		input: SearchDirectoryPeopleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchDirectoryPeopleOutput> {
 	const response = await this.endpointCaller<SearchDirectoryPeopleOutput>(

@@ -14,6 +14,8 @@ export async function listAssets(
 	payload: {
 		input: ListAssetsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListAssetsOutput> {
 	const response = await this.endpointCaller<ListAssetsOutput>(

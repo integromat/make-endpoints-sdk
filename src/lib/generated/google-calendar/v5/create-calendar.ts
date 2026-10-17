@@ -123,6 +123,8 @@ export async function createCalendar(
 	payload: {
 		input: CreateCalendarInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateCalendarOutput> {
 	const response = await this.endpointCaller<CreateCalendarOutput>(

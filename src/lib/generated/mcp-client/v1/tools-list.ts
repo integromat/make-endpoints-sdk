@@ -118,6 +118,8 @@ export async function toolsList(
 	payload: {
 		input: ToolsListInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ToolsListOutput> {
 	const response = await this.endpointCaller<ToolsListOutput>(

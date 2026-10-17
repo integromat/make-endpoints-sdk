@@ -179,6 +179,8 @@ export async function updateProduct(
 	payload: {
 		input: UpdateProductInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateProductOutput> {
 	const response = await this.endpointCaller<UpdateProductOutput>(

@@ -249,6 +249,8 @@ export async function sendAudio(
 	payload: {
 		input: SendAudioInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendAudioOutput> {
 	const response = await this.endpointCaller<SendAudioOutput>(

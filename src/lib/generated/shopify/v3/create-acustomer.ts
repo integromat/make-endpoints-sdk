@@ -171,6 +171,8 @@ export async function createAcustomer(
 	payload: {
 		input: CreateACustomerInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateACustomerOutput> {
 	const response = await this.endpointCaller<CreateACustomerOutput>(

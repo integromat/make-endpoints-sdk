@@ -36,6 +36,8 @@ export async function listFormQuestions(
 	payload: {
 		input: ListFormQuestionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListFormQuestionsOutput> {
 	const response = await this.endpointCaller<ListFormQuestionsOutput>(

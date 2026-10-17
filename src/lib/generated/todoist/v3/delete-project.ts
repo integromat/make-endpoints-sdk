@@ -19,6 +19,8 @@ export async function deleteProject(
 	payload: {
 		input: DeleteProjectInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteProjectOutput> {
 	const response = await this.endpointCaller<DeleteProjectOutput>(

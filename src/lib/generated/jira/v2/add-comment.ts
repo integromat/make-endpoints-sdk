@@ -198,6 +198,8 @@ export async function addComment(
 	payload: {
 		input: AddCommentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddCommentOutput> {
 	const response = await this.endpointCaller<AddCommentOutput>(

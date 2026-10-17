@@ -86,6 +86,8 @@ export async function lookupUserByEmail(
 	payload: {
 		input: LookupUserByEmailInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<LookupUserByEmailOutput> {
 	const response = await this.endpointCaller<LookupUserByEmailOutput>(

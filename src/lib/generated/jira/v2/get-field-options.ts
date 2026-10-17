@@ -87,6 +87,8 @@ export async function getFieldOptions(
 	payload: {
 		input: GetFieldOptionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFieldOptionsOutput> {
 	const response = await this.endpointCaller<GetFieldOptionsOutput>(

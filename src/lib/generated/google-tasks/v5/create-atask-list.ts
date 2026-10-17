@@ -35,6 +35,8 @@ export async function createAtaskList(
 	payload: {
 		input: CreateATaskListInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateATaskListOutput> {
 	const response = await this.endpointCaller<CreateATaskListOutput>(

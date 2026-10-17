@@ -777,6 +777,8 @@ export async function updateFile(
 	payload: {
 		input: UpdateFileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFileOutput> {
 	const response = await this.endpointCaller<UpdateFileOutput>(

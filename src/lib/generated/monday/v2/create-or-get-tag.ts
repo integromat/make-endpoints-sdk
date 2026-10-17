@@ -14,6 +14,8 @@ export async function createOrGetTag(
 	payload: {
 		input: CreateOrGetTagInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateOrGetTagOutput> {
 	const response = await this.endpointCaller<CreateOrGetTagOutput>(

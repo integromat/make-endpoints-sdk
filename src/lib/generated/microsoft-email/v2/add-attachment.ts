@@ -76,6 +76,8 @@ export async function addAttachment(
 	payload: {
 		input: AddAttachmentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddAttachmentOutput> {
 	const response = await this.endpointCaller<AddAttachmentOutput>(

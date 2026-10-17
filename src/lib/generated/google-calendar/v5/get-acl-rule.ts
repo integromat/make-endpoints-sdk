@@ -53,6 +53,8 @@ export async function getAclRule(
 	payload: {
 		input: GetAclRuleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAclRuleOutput> {
 	const response = await this.endpointCaller<GetAclRuleOutput>(

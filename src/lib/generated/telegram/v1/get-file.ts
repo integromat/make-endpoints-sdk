@@ -36,6 +36,8 @@ export async function getFile(
 	payload: {
 		input: GetFileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFileOutput> {
 	const response = await this.endpointCaller<GetFileOutput>(

@@ -23,6 +23,8 @@ export async function assignIssue(
 	payload: {
 		input: AssignIssueInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AssignIssueOutput> {
 	const response = await this.endpointCaller<AssignIssueOutput>(

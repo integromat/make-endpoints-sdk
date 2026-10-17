@@ -127,6 +127,8 @@ export async function searchMilestones(
 	payload: {
 		input: SearchMilestonesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchMilestonesOutput> {
 	const response = await this.endpointCaller<SearchMilestonesOutput>(

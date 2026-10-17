@@ -203,6 +203,8 @@ export async function createAfulfillment(
 	payload: {
 		input: CreateAFulfillmentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateAFulfillmentOutput> {
 	const response = await this.endpointCaller<CreateAFulfillmentOutput>(

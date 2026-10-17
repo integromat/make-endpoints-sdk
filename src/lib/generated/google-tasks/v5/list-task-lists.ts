@@ -63,6 +63,8 @@ export async function listTaskLists(
 	payload: {
 		input: ListTaskListsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListTaskListsOutput> {
 	const response = await this.endpointCaller<ListTaskListsOutput>(

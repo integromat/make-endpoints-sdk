@@ -14,6 +14,8 @@ export async function createNotification(
 	payload: {
 		input: CreateNotificationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateNotificationOutput> {
 	const response = await this.endpointCaller<CreateNotificationOutput>(

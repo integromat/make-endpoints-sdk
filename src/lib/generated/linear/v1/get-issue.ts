@@ -86,6 +86,8 @@ export async function getIssue(
 	payload: {
 		input: GetIssueInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetIssueOutput> {
 	const response = await this.endpointCaller<GetIssueOutput>(

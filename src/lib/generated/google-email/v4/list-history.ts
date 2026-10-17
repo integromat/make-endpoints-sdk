@@ -128,6 +128,8 @@ export async function listHistory(
 	payload: {
 		input: ListHistoryInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListHistoryOutput> {
 	const response = await this.endpointCaller<ListHistoryOutput>(

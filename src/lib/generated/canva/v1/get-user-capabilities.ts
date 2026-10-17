@@ -21,6 +21,8 @@ export async function getUserCapabilities(
 	payload: {
 		input: GetUserCapabilitiesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetUserCapabilitiesOutput> {
 	const response = await this.endpointCaller<GetUserCapabilitiesOutput>(

@@ -99,6 +99,8 @@ export async function createDesign(
 	payload: {
 		input: CreateDesignInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateDesignOutput> {
 	const response = await this.endpointCaller<CreateDesignOutput>(

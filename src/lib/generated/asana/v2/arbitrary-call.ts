@@ -70,6 +70,8 @@ export async function arbitraryCall(
 	payload: {
 		input: ArbitraryCallInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArbitraryCallOutput> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(

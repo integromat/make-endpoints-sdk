@@ -102,6 +102,8 @@ export async function appendValues(
 	payload: {
 		input: AppendValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AppendValuesOutput> {
 	const response = await this.endpointCaller<AppendValuesOutput>(

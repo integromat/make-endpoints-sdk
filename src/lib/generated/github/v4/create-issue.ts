@@ -107,6 +107,8 @@ export async function createIssue(
 	payload: {
 		input: CreateIssueInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateIssueOutput> {
 	const response = await this.endpointCaller<CreateIssueOutput>(

@@ -68,6 +68,8 @@ export async function createBlogPost(
 	payload: {
 		input: CreateBlogPostInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateBlogPostOutput> {
 	const response = await this.endpointCaller<CreateBlogPostOutput>(

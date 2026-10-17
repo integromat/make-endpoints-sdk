@@ -14,6 +14,8 @@ export async function nextItemsPage(
 	payload: {
 		input: NextItemsPageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<NextItemsPageOutput> {
 	const response = await this.endpointCaller<NextItemsPageOutput>(

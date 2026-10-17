@@ -956,6 +956,8 @@ export async function updateEvent(
 	payload: {
 		input: UpdateEventInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateEventOutput> {
 	const response = await this.endpointCaller<UpdateEventOutput>(

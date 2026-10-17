@@ -198,6 +198,8 @@ export async function sendMessage(
 	payload: {
 		input: SendMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendMessageOutput> {
 	const response = await this.endpointCaller<SendMessageOutput>(

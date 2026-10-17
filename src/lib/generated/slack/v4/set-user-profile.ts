@@ -101,6 +101,8 @@ export async function setUserProfile(
 	payload: {
 		input: SetUserProfileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SetUserProfileOutput> {
 	const response = await this.endpointCaller<SetUserProfileOutput>(

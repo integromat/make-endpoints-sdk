@@ -71,6 +71,8 @@ export async function listAttachments(
 	payload: {
 		input: ListAttachmentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListAttachmentsOutput> {
 	const response = await this.endpointCaller<ListAttachmentsOutput>(

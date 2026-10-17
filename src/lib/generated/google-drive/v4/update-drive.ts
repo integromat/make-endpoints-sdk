@@ -283,6 +283,8 @@ export async function updateDrive(
 	payload: {
 		input: UpdateDriveInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateDriveOutput> {
 	const response = await this.endpointCaller<UpdateDriveOutput>(

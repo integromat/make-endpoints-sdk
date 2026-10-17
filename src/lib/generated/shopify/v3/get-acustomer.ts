@@ -336,6 +336,8 @@ export async function getAcustomer(
 	payload: {
 		input: GetACustomerInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetACustomerOutput> {
 	const response = await this.endpointCaller<GetACustomerOutput>(

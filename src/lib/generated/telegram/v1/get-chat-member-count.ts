@@ -24,6 +24,8 @@ export async function getChatMemberCount(
 	payload: {
 		input: GetChatMemberCountInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetChatMemberCountOutput> {
 	const response = await this.endpointCaller<GetChatMemberCountOutput>(

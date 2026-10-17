@@ -32,6 +32,8 @@ export async function banChatMember(
 	payload: {
 		input: BanChatMemberInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BanChatMemberOutput> {
 	const response = await this.endpointCaller<BanChatMemberOutput>(

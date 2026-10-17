@@ -109,6 +109,8 @@ export async function updateContactGroup(
 	payload: {
 		input: UpdateContactGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateContactGroupOutput> {
 	const response = await this.endpointCaller<UpdateContactGroupOutput>(

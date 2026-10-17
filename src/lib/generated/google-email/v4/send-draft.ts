@@ -169,6 +169,8 @@ export async function sendDraft(
 	payload: {
 		input: SendDraftInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendDraftOutput> {
 	const response = await this.endpointCaller<SendDraftOutput>(

@@ -14,6 +14,8 @@ export async function duplicateItem(
 	payload: {
 		input: DuplicateItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DuplicateItemOutput> {
 	const response = await this.endpointCaller<DuplicateItemOutput>(

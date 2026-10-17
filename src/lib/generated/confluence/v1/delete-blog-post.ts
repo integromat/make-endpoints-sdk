@@ -36,6 +36,8 @@ export async function deleteBlogPost(
 	payload: {
 		input: DeleteBlogPostInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteBlogPostOutput> {
 	const response = await this.endpointCaller<DeleteBlogPostOutput>(

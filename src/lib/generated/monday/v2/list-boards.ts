@@ -14,6 +14,8 @@ export async function listBoards(
 	payload: {
 		input: ListBoardsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListBoardsOutput> {
 	const response = await this.endpointCaller<ListBoardsOutput>(

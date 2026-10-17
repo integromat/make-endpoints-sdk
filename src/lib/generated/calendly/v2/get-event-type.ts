@@ -196,6 +196,8 @@ export async function getEventType(
 	payload: {
 		input: GetEventTypeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetEventTypeOutput> {
 	const response = await this.endpointCaller<GetEventTypeOutput>(

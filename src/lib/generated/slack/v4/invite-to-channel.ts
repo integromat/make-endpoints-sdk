@@ -105,6 +105,8 @@ export async function inviteToChannel(
 	payload: {
 		input: InviteToChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<InviteToChannelOutput> {
 	const response = await this.endpointCaller<InviteToChannelOutput>(

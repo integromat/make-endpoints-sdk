@@ -14,6 +14,8 @@ export async function deleteItem(
 	payload: {
 		input: DeleteItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteItemOutput> {
 	const response = await this.endpointCaller<DeleteItemOutput>(

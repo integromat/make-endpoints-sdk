@@ -466,6 +466,8 @@ export async function replyToChannelMessage(
 	payload: {
 		input: ReplyToChannelMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ReplyToChannelMessageOutput> {
 	const response = await this.endpointCaller<ReplyToChannelMessageOutput>(

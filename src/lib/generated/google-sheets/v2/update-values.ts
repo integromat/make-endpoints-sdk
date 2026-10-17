@@ -85,6 +85,8 @@ export async function updateValues(
 	payload: {
 		input: UpdateValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateValuesOutput> {
 	const response = await this.endpointCaller<UpdateValuesOutput>(

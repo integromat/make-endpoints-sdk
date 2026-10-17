@@ -58,6 +58,8 @@ export async function createFormSubmission(
 	payload: {
 		input: CreateFormSubmissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFormSubmissionOutput> {
 	const response = await this.endpointCaller<CreateFormSubmissionOutput>(

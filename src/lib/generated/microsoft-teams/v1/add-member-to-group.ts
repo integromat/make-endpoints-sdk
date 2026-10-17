@@ -23,6 +23,8 @@ export async function addMemberToGroup(
 	payload: {
 		input: AddMemberToGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddMemberToGroupOutput> {
 	const response = await this.endpointCaller<AddMemberToGroupOutput>(

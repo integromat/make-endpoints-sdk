@@ -23,6 +23,8 @@ export async function deleteWebhook(
 	payload: {
 		input: DeleteWebhookInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteWebhookOutput> {
 	const response = await this.endpointCaller<DeleteWebhookOutput>(

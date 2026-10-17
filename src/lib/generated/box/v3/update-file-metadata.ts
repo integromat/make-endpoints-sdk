@@ -81,6 +81,8 @@ export async function updateFileMetadata(
 	payload: {
 		input: UpdateFileMetadataInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFileMetadataOutput> {
 	const response = await this.endpointCaller<UpdateFileMetadataOutput>(

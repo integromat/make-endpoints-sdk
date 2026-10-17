@@ -14,6 +14,8 @@ export async function createColumn(
 	payload: {
 		input: CreateColumnInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateColumnOutput> {
 	const response = await this.endpointCaller<CreateColumnOutput>(

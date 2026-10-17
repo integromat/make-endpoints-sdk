@@ -14,6 +14,8 @@ export async function searchItemsByColumnValues(
 	payload: {
 		input: SearchItemsByColumnValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchItemsByColumnValuesOutput> {
 	const response = await this.endpointCaller<SearchItemsByColumnValuesOutput>(

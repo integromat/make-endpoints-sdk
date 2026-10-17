@@ -2990,6 +2990,8 @@ export async function sync(
 	payload: {
 		input: SyncInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SyncOutput> {
 	const response = await this.endpointCaller<SyncOutput>(

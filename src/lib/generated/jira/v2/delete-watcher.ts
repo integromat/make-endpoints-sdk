@@ -23,6 +23,8 @@ export async function deleteWatcher(
 	payload: {
 		input: DeleteWatcherInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteWatcherOutput> {
 	const response = await this.endpointCaller<DeleteWatcherOutput>(

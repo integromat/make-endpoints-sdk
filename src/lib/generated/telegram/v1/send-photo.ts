@@ -218,6 +218,8 @@ export async function sendPhoto(
 	payload: {
 		input: SendPhotoInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendPhotoOutput> {
 	const response = await this.endpointCaller<SendPhotoOutput>(

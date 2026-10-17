@@ -14,6 +14,8 @@ export async function archiveItem(
 	payload: {
 		input: ArchiveItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArchiveItemOutput> {
 	const response = await this.endpointCaller<ArchiveItemOutput>(

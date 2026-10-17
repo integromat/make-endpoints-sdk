@@ -113,6 +113,8 @@ export async function createChannel(
 	payload: {
 		input: CreateChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateChannelOutput> {
 	const response = await this.endpointCaller<CreateChannelOutput>(

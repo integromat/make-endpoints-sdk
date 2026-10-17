@@ -315,6 +315,8 @@ export async function moveMessage(
 	payload: {
 		input: MoveMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<MoveMessageOutput> {
 	const response = await this.endpointCaller<MoveMessageOutput>(

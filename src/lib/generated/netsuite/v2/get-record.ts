@@ -69,6 +69,8 @@ export async function getRecord(
 	payload: {
 		input: GetRecordInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetRecordOutput> {
 	const response = await this.endpointCaller<GetRecordOutput>(

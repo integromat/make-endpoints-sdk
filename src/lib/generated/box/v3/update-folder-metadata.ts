@@ -81,6 +81,8 @@ export async function updateFolderMetadata(
 	payload: {
 		input: UpdateFolderMetadataInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFolderMetadataOutput> {
 	const response = await this.endpointCaller<UpdateFolderMetadataOutput>(

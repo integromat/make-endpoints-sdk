@@ -2348,6 +2348,8 @@ export async function listDirectoryPeople(
 	payload: {
 		input: ListDirectoryPeopleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListDirectoryPeopleOutput> {
 	const response = await this.endpointCaller<ListDirectoryPeopleOutput>(

@@ -675,6 +675,8 @@ export async function searchOrders(
 	payload: {
 		input: SearchOrdersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchOrdersOutput> {
 	const response = await this.endpointCaller<SearchOrdersOutput>(

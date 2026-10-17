@@ -4928,6 +4928,8 @@ export async function createPresentation(
 	payload: {
 		input: CreatePresentationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreatePresentationOutput> {
 	const response = await this.endpointCaller<CreatePresentationOutput>(

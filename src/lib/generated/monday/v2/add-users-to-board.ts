@@ -14,6 +14,8 @@ export async function addUsersToBoard(
 	payload: {
 		input: AddUsersToBoardInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddUsersToBoardOutput> {
 	const response = await this.endpointCaller<AddUsersToBoardOutput>(

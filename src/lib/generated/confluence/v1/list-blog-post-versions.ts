@@ -72,6 +72,8 @@ export async function listBlogPostVersions(
 	payload: {
 		input: ListBlogPostVersionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListBlogPostVersionsOutput> {
 	const response = await this.endpointCaller<ListBlogPostVersionsOutput>(

@@ -105,6 +105,8 @@ export async function getRevision(
 	payload: {
 		input: GetRevisionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetRevisionOutput> {
 	const response = await this.endpointCaller<GetRevisionOutput>(

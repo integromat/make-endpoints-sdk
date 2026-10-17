@@ -19,6 +19,8 @@ export async function deleteAnote(
 	payload: {
 		input: DeleteANoteInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteANoteOutput> {
 	const response = await this.endpointCaller<DeleteANoteOutput>(

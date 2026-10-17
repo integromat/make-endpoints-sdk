@@ -58,6 +58,8 @@ export async function upsertRecord(
 	payload: {
 		input: UpsertRecordInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpsertRecordOutput> {
 	const response = await this.endpointCaller<UpsertRecordOutput>(

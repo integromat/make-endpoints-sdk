@@ -40,6 +40,8 @@ export async function getAtaskList(
 	payload: {
 		input: GetATaskListInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetATaskListOutput> {
 	const response = await this.endpointCaller<GetATaskListOutput>(

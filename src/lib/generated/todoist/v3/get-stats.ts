@@ -286,6 +286,8 @@ export async function getStats(
 	payload: {
 		input: GetStatsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetStatsOutput> {
 	const response = await this.endpointCaller<GetStatsOutput>(

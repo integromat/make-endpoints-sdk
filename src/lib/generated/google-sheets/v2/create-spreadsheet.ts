@@ -271,6 +271,8 @@ export async function createSpreadsheet(
 	payload: {
 		input: CreateSpreadsheetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateSpreadsheetOutput> {
 	const response = await this.endpointCaller<CreateSpreadsheetOutput>(

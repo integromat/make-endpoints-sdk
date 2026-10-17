@@ -14,6 +14,8 @@ export async function runMondayAi(
 	payload: {
 		input: RunMondayAiInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RunMondayAiOutput> {
 	const response = await this.endpointCaller<RunMondayAiOutput>(

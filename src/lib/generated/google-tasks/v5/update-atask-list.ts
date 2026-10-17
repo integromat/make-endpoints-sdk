@@ -40,6 +40,8 @@ export async function updateAtaskList(
 	payload: {
 		input: UpdateATaskListInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateATaskListOutput> {
 	const response = await this.endpointCaller<UpdateATaskListOutput>(

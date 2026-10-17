@@ -14,6 +14,8 @@ export async function getGroup(
 	payload: {
 		input: GetGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetGroupOutput> {
 	const response = await this.endpointCaller<GetGroupOutput>(

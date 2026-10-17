@@ -27,6 +27,8 @@ export async function deleteFieldOption(
 	payload: {
 		input: DeleteFieldOptionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteFieldOptionOutput> {
 	const response = await this.endpointCaller<DeleteFieldOptionOutput>(

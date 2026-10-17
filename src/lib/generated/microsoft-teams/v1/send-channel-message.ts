@@ -462,6 +462,8 @@ export async function sendChannelMessage(
 	payload: {
 		input: SendChannelMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendChannelMessageOutput> {
 	const response = await this.endpointCaller<SendChannelMessageOutput>(

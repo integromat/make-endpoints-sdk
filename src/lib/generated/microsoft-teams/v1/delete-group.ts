@@ -19,6 +19,8 @@ export async function deleteGroup(
 	payload: {
 		input: DeleteGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteGroupOutput> {
 	const response = await this.endpointCaller<DeleteGroupOutput>(

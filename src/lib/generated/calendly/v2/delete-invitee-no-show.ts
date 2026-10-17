@@ -19,6 +19,8 @@ export async function deleteInviteeNoShow(
 	payload: {
 		input: DeleteInviteeNoShowInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteInviteeNoShowOutput> {
 	const response = await this.endpointCaller<DeleteInviteeNoShowOutput>(

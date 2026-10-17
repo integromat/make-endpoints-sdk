@@ -2337,6 +2337,8 @@ export async function searchContacts(
 	payload: {
 		input: SearchContactsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchContactsOutput> {
 	const response = await this.endpointCaller<SearchContactsOutput>(

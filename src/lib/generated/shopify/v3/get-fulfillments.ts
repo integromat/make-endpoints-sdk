@@ -703,6 +703,8 @@ export async function getFulfillments(
 	payload: {
 		input: GetFulfillmentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFulfillmentsOutput> {
 	const response = await this.endpointCaller<GetFulfillmentsOutput>(

@@ -32,6 +32,8 @@ export async function clearValues(
 	payload: {
 		input: ClearValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ClearValuesOutput> {
 	const response = await this.endpointCaller<ClearValuesOutput>(

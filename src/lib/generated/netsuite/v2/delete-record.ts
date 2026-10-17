@@ -32,6 +32,8 @@ export async function deleteRecord(
 	payload: {
 		input: DeleteRecordInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteRecordOutput> {
 	const response = await this.endpointCaller<DeleteRecordOutput>(

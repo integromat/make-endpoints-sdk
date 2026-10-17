@@ -158,6 +158,8 @@ export async function createAtask(
 	payload: {
 		input: CreateATaskInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateATaskOutput> {
 	const response = await this.endpointCaller<CreateATaskOutput>(

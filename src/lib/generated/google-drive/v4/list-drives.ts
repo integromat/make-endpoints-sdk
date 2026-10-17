@@ -235,6 +235,8 @@ export async function listDrives(
 	payload: {
 		input: ListDrivesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListDrivesOutput> {
 	const response = await this.endpointCaller<ListDrivesOutput>(

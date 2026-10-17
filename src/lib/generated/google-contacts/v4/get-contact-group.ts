@@ -86,6 +86,8 @@ export async function getContactGroup(
 	payload: {
 		input: GetContactGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetContactGroupOutput> {
 	const response = await this.endpointCaller<GetContactGroupOutput>(

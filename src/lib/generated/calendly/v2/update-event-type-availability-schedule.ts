@@ -143,6 +143,8 @@ export async function updateEventTypeAvailabilitySchedule(
 	payload: {
 		input: UpdateEventTypeAvailabilityScheduleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateEventTypeAvailabilityScheduleOutput> {
 	const response = await this.endpointCaller<UpdateEventTypeAvailabilityScheduleOutput>(

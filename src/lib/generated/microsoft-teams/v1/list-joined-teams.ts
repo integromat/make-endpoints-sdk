@@ -189,6 +189,8 @@ export async function listJoinedTeams(
 	payload: {
 		input: ListJoinedTeamsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListJoinedTeamsOutput> {
 	const response = await this.endpointCaller<ListJoinedTeamsOutput>(

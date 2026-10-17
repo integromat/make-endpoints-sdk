@@ -51,6 +51,8 @@ export async function listEventTypeAvailableTimes(
 	payload: {
 		input: ListEventTypeAvailableTimesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListEventTypeAvailableTimesOutput> {
 	const response = await this.endpointCaller<ListEventTypeAvailableTimesOutput>(

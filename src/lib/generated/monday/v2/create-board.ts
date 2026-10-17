@@ -14,6 +14,8 @@ export async function createBoard(
 	payload: {
 		input: CreateBoardInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateBoardOutput> {
 	const response = await this.endpointCaller<CreateBoardOutput>(

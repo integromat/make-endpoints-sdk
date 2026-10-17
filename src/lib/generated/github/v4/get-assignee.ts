@@ -68,6 +68,8 @@ export async function getAssignee(
 	payload: {
 		input: GetAssigneeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAssigneeOutput> {
 	const response = await this.endpointCaller<GetAssigneeOutput>(

@@ -90,6 +90,8 @@ export async function getOrganizationMembership(
 	payload: {
 		input: GetOrganizationMembershipInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetOrganizationMembershipOutput> {
 	const response = await this.endpointCaller<GetOrganizationMembershipOutput>(

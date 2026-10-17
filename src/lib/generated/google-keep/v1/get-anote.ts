@@ -161,6 +161,8 @@ export async function getAnote(
 	payload: {
 		input: GetANoteInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetANoteOutput> {
 	const response = await this.endpointCaller<GetANoteOutput>(

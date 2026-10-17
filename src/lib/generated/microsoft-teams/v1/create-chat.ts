@@ -132,6 +132,8 @@ export async function createChat(
 	payload: {
 		input: CreateChatInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateChatOutput> {
 	const response = await this.endpointCaller<CreateChatOutput>(

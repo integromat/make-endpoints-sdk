@@ -25,6 +25,8 @@ export async function deleteApermission(
 	payload: {
 		input: DeleteAPermissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteAPermissionOutput> {
 	const response = await this.endpointCaller<DeleteAPermissionOutput>(

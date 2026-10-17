@@ -435,6 +435,8 @@ export async function createDraft(
 	payload: {
 		input: CreateDraftInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateDraftOutput> {
 	const response = await this.endpointCaller<CreateDraftOutput>(

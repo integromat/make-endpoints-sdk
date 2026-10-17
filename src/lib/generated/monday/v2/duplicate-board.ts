@@ -14,6 +14,8 @@ export async function duplicateBoard(
 	payload: {
 		input: DuplicateBoardInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DuplicateBoardOutput> {
 	const response = await this.endpointCaller<DuplicateBoardOutput>(

@@ -53,6 +53,8 @@ export async function batchModifyMessages(
 	payload: {
 		input: BatchModifyMessagesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchModifyMessagesOutput> {
 	const response = await this.endpointCaller<BatchModifyMessagesOutput>(

@@ -180,6 +180,8 @@ export async function listNotes(
 	payload: {
 		input: ListNotesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListNotesOutput> {
 	const response = await this.endpointCaller<ListNotesOutput>(

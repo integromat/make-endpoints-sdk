@@ -649,6 +649,8 @@ export async function getAnOrder(
 	payload: {
 		input: GetAnOrderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAnOrderOutput> {
 	const response = await this.endpointCaller<GetAnOrderOutput>(

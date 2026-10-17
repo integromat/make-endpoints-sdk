@@ -351,6 +351,8 @@ export async function searchFulfillmentOrders(
 	payload: {
 		input: SearchFulfillmentOrdersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchFulfillmentOrdersOutput> {
 	const response = await this.endpointCaller<SearchFulfillmentOrdersOutput>(

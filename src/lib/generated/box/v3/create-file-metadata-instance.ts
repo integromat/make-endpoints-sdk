@@ -64,6 +64,8 @@ export async function createFileMetadataInstance(
 	payload: {
 		input: CreateFileMetadataInstanceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFileMetadataInstanceOutput> {
 	const response = await this.endpointCaller<CreateFileMetadataInstanceOutput>(

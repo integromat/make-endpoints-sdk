@@ -260,6 +260,8 @@ export async function createEventType(
 	payload: {
 		input: CreateEventTypeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateEventTypeOutput> {
 	const response = await this.endpointCaller<CreateEventTypeOutput>(

@@ -61,6 +61,8 @@ export async function createOrganizationInvitation(
 	payload: {
 		input: CreateOrganizationInvitationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateOrganizationInvitationOutput> {
 	const response = await this.endpointCaller<CreateOrganizationInvitationOutput>(

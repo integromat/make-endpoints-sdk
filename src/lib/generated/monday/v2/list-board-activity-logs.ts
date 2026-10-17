@@ -14,6 +14,8 @@ export async function listBoardActivityLogs(
 	payload: {
 		input: ListBoardActivityLogsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListBoardActivityLogsOutput> {
 	const response = await this.endpointCaller<ListBoardActivityLogsOutput>(

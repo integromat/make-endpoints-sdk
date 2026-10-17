@@ -23,6 +23,8 @@ export async function deleteContactGroup(
 	payload: {
 		input: DeleteContactGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteContactGroupOutput> {
 	const response = await this.endpointCaller<DeleteContactGroupOutput>(

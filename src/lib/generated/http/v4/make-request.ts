@@ -37,6 +37,8 @@ export async function makeRequest(
 	payload: {
 		input: MakeRequestInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<MakeRequestOutput> {
 	const response = await this.endpointCaller<MakeRequestOutput>(

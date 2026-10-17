@@ -97,6 +97,8 @@ export async function createContactGroup(
 	payload: {
 		input: CreateContactGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateContactGroupOutput> {
 	const response = await this.endpointCaller<CreateContactGroupOutput>(

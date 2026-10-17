@@ -64,6 +64,8 @@ export async function listUserBusyTimes(
 	payload: {
 		input: ListUserBusyTimesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListUserBusyTimesOutput> {
 	const response = await this.endpointCaller<ListUserBusyTimesOutput>(

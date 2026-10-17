@@ -103,6 +103,8 @@ export async function getRecordDefinitions(
 	payload: {
 		input: GetRecordDefinitionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetRecordDefinitionsOutput> {
 	const response = await this.endpointCaller<GetRecordDefinitionsOutput>(

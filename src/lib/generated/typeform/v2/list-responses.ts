@@ -280,6 +280,8 @@ export async function listResponses(
 	payload: {
 		input: ListResponsesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListResponsesOutput> {
 	const response = await this.endpointCaller<ListResponsesOutput>(

@@ -14,6 +14,8 @@ export async function clearCalendar(
 	payload: {
 		input: ClearCalendarInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ClearCalendarOutput> {
 	const response = await this.endpointCaller<ClearCalendarOutput>(

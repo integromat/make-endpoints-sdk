@@ -133,6 +133,8 @@ export async function listOrganizationMemberships(
 	payload: {
 		input: ListOrganizationMembershipsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListOrganizationMembershipsOutput> {
 	const response = await this.endpointCaller<ListOrganizationMembershipsOutput>(

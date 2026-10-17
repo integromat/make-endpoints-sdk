@@ -115,6 +115,8 @@ export async function updateFormQuestions(
 	payload: {
 		input: UpdateFormQuestionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFormQuestionsOutput> {
 	const response = await this.endpointCaller<UpdateFormQuestionsOutput>(

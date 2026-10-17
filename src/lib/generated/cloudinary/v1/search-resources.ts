@@ -188,6 +188,8 @@ export async function searchResources(
 	payload: {
 		input: SearchResourcesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchResourcesOutput> {
 	const response = await this.endpointCaller<SearchResourcesOutput>(

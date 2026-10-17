@@ -66,6 +66,8 @@ export async function createFieldOptions(
 	payload: {
 		input: CreateFieldOptionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFieldOptionsOutput> {
 	const response = await this.endpointCaller<CreateFieldOptionsOutput>(

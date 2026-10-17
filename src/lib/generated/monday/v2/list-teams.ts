@@ -14,6 +14,8 @@ export async function listTeams(
 	payload: {
 		input: ListTeamsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListTeamsOutput> {
 	const response = await this.endpointCaller<ListTeamsOutput>(

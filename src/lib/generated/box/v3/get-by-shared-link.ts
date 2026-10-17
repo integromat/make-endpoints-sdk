@@ -671,6 +671,8 @@ export async function getBySharedLink(
 	payload: {
 		input: GetBySharedLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetBySharedLinkOutput> {
 	const response = await this.endpointCaller<GetBySharedLinkOutput>(

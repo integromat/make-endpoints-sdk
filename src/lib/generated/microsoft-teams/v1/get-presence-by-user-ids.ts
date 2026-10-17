@@ -116,6 +116,8 @@ export async function getPresenceByUserIds(
 	payload: {
 		input: GetPresenceByUserIdsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPresenceByUserIdsOutput> {
 	const response = await this.endpointCaller<GetPresenceByUserIdsOutput>(

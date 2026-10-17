@@ -287,6 +287,8 @@ export async function listEvents(
 	payload: {
 		input: ListEventsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListEventsOutput> {
 	const response = await this.endpointCaller<ListEventsOutput>(

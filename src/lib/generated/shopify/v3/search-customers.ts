@@ -380,6 +380,8 @@ export async function searchCustomers(
 	payload: {
 		input: SearchCustomersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchCustomersOutput> {
 	const response = await this.endpointCaller<SearchCustomersOutput>(

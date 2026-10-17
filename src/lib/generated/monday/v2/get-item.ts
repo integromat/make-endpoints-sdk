@@ -14,6 +14,8 @@ export async function getItem(
 	payload: {
 		input: GetItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetItemOutput> {
 	const response = await this.endpointCaller<GetItemOutput>(

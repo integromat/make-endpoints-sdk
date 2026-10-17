@@ -260,6 +260,8 @@ export async function updateEventType(
 	payload: {
 		input: UpdateEventTypeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateEventTypeOutput> {
 	const response = await this.endpointCaller<UpdateEventTypeOutput>(

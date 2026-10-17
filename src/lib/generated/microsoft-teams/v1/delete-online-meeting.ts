@@ -19,6 +19,8 @@ export async function deleteOnlineMeeting(
 	payload: {
 		input: DeleteOnlineMeetingInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteOnlineMeetingOutput> {
 	const response = await this.endpointCaller<DeleteOnlineMeetingOutput>(

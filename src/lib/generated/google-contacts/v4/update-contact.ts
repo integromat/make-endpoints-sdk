@@ -2783,6 +2783,8 @@ export async function updateContact(
 	payload: {
 		input: UpdateContactInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateContactOutput> {
 	const response = await this.endpointCaller<UpdateContactOutput>(

@@ -37,6 +37,8 @@ export async function createInviteeNoShow(
 	payload: {
 		input: CreateInviteeNoShowInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateInviteeNoShowOutput> {
 	const response = await this.endpointCaller<CreateInviteeNoShowOutput>(

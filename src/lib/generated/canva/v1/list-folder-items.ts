@@ -165,6 +165,8 @@ export async function listFolderItems(
 	payload: {
 		input: ListFolderItemsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListFolderItemsOutput> {
 	const response = await this.endpointCaller<ListFolderItemsOutput>(

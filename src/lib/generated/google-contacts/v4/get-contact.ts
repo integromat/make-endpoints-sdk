@@ -2322,6 +2322,8 @@ export async function getContact(
 	payload: {
 		input: GetContactInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetContactOutput> {
 	const response = await this.endpointCaller<GetContactOutput>(

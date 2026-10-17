@@ -319,6 +319,8 @@ export async function getMessage(
 	payload: {
 		input: GetMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetMessageOutput> {
 	const response = await this.endpointCaller<GetMessageOutput>(

@@ -14,6 +14,8 @@ export async function listWorkspaces(
 	payload: {
 		input: ListWorkspacesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListWorkspacesOutput> {
 	const response = await this.endpointCaller<ListWorkspacesOutput>(

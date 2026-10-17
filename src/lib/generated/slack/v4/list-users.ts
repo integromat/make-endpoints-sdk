@@ -121,6 +121,8 @@ export async function listUsers(
 	payload: {
 		input: ListUsersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListUsersOutput> {
 	const response = await this.endpointCaller<ListUsersOutput>(

@@ -42,6 +42,8 @@ export async function getRecordSchema(
 	payload: {
 		input: GetRecordSchemaInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetRecordSchemaOutput> {
 	const response = await this.endpointCaller<GetRecordSchemaOutput>(

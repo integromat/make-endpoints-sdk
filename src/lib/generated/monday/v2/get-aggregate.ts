@@ -14,6 +14,8 @@ export async function getAggregate(
 	payload: {
 		input: GetAggregateInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAggregateOutput> {
 	const response = await this.endpointCaller<GetAggregateOutput>(

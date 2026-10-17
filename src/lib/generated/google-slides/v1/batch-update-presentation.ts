@@ -605,6 +605,8 @@ export async function batchUpdatePresentation(
 	payload: {
 		input: BatchUpdatePresentationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchUpdatePresentationOutput> {
 	const response = await this.endpointCaller<BatchUpdatePresentationOutput>(

@@ -757,6 +757,8 @@ export async function searchPages(
 	payload: {
 		input: SearchPagesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchPagesOutput> {
 	const response = await this.endpointCaller<SearchPagesOutput>(

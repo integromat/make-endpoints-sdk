@@ -44,6 +44,8 @@ export async function getUploadUrlexternal(
 	payload: {
 		input: GetUploadURLExternalInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetUploadURLExternalOutput> {
 	const response = await this.endpointCaller<GetUploadURLExternalOutput>(

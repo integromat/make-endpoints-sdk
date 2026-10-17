@@ -48,6 +48,8 @@ export async function getValues(
 	payload: {
 		input: GetValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetValuesOutput> {
 	const response = await this.endpointCaller<GetValuesOutput>(

@@ -24,6 +24,7 @@ import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts'
 import { endpoints as googleTasksEndpoints } from './google-tasks/_catalog.ts';
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
+import { endpoints as hubspotcrmEndpoints } from './hubspotcrm/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
 import { endpoints as jotformEndpoints } from './jotform/_catalog.ts';
 import { endpoints as linearEndpoints } from './linear/_catalog.ts';
@@ -40,6 +41,7 @@ import { endpoints as notionEndpoints } from './notion/_catalog.ts';
 import { endpoints as onedriveEndpoints } from './onedrive/_catalog.ts';
 import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
 import { endpoints as pipedriveEndpoints } from './pipedrive/_catalog.ts';
+import { endpoints as salesforceEndpoints } from './salesforce/_catalog.ts';
 import { endpoints as shopifyEndpoints } from './shopify/_catalog.ts';
 import { endpoints as slackEndpoints } from './slack/_catalog.ts';
 import { endpoints as stripeEndpoints } from './stripe/_catalog.ts';
@@ -75,6 +77,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		googleTasks: googleTasksEndpoints(endpointCaller),
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
+		hubspotcrm: hubspotcrmEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
 		jotform: jotformEndpoints(endpointCaller),
 		linear: linearEndpoints(endpointCaller),
@@ -91,6 +94,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		onedrive: onedriveEndpoints(endpointCaller),
 		pinterest: pinterestEndpoints(endpointCaller),
 		pipedrive: pipedriveEndpoints(endpointCaller),
+		salesforce: salesforceEndpoints(endpointCaller),
 		shopify: shopifyEndpoints(endpointCaller),
 		slack: slackEndpoints(endpointCaller),
 		stripe: stripeEndpoints(endpointCaller),

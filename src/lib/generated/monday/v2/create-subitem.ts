@@ -14,6 +14,8 @@ export async function createSubitem(
 	payload: {
 		input: CreateSubitemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateSubitemOutput> {
 	const response = await this.endpointCaller<CreateSubitemOutput>(

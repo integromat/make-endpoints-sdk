@@ -352,6 +352,8 @@ export async function createEventInvitee(
 	payload: {
 		input: CreateEventInviteeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateEventInviteeOutput> {
 	const response = await this.endpointCaller<CreateEventInviteeOutput>(

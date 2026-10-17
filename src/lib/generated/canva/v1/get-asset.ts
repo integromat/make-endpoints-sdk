@@ -130,6 +130,8 @@ export async function getAsset(
 	payload: {
 		input: GetAssetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAssetOutput> {
 	const response = await this.endpointCaller<GetAssetOutput>(

@@ -35,6 +35,8 @@ export async function listUserMeetingLocations(
 	payload: {
 		input: ListUserMeetingLocationsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListUserMeetingLocationsOutput> {
 	const response = await this.endpointCaller<ListUserMeetingLocationsOutput>(

@@ -97,6 +97,8 @@ export async function searchRecords(
 	payload: {
 		input: SearchRecordsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchRecordsOutput> {
 	const response = await this.endpointCaller<SearchRecordsOutput>(

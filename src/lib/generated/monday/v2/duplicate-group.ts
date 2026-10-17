@@ -14,6 +14,8 @@ export async function duplicateGroup(
 	payload: {
 		input: DuplicateGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DuplicateGroupOutput> {
 	const response = await this.endpointCaller<DuplicateGroupOutput>(

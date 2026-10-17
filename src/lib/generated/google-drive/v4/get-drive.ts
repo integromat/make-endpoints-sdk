@@ -212,6 +212,8 @@ export async function getDrive(
 	payload: {
 		input: GetDriveInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetDriveOutput> {
 	const response = await this.endpointCaller<GetDriveOutput>(

@@ -449,6 +449,8 @@ export async function cancelSignRequest(
 	payload: {
 		input: CancelSignRequestInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CancelSignRequestOutput> {
 	const response = await this.endpointCaller<CancelSignRequestOutput>(

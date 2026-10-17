@@ -194,6 +194,8 @@ export async function getThread(
 	payload: {
 		input: GetThreadInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetThreadOutput> {
 	const response = await this.endpointCaller<GetThreadOutput>(

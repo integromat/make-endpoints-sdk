@@ -32,6 +32,8 @@ export async function kickFromChannel(
 	payload: {
 		input: KickFromChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<KickFromChannelOutput> {
 	const response = await this.endpointCaller<KickFromChannelOutput>(

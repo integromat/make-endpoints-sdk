@@ -40,6 +40,8 @@ export async function transitionIssue(
 	payload: {
 		input: TransitionIssueInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<TransitionIssueOutput> {
 	const response = await this.endpointCaller<TransitionIssueOutput>(

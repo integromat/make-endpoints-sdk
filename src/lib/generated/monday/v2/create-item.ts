@@ -14,6 +14,8 @@ export async function createItem(
 	payload: {
 		input: CreateItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateItemOutput> {
 	const response = await this.endpointCaller<CreateItemOutput>(

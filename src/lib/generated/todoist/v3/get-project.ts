@@ -174,6 +174,8 @@ export async function getProject(
 	payload: {
 		input: GetProjectInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetProjectOutput> {
 	const response = await this.endpointCaller<GetProjectOutput>(

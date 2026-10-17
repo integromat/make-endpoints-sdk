@@ -127,6 +127,8 @@ export async function searchIssues(
 	payload: {
 		input: SearchIssuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchIssuesOutput> {
 	const response = await this.endpointCaller<SearchIssuesOutput>(

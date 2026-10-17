@@ -14,6 +14,8 @@ export async function deleteSubscribersFromBoard(
 	payload: {
 		input: DeleteSubscribersFromBoardInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteSubscribersFromBoardOutput> {
 	const response = await this.endpointCaller<DeleteSubscribersFromBoardOutput>(

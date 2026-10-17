@@ -162,6 +162,8 @@ export async function getFileInfo(
 	payload: {
 		input: GetFileInfoInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFileInfoOutput> {
 	const response = await this.endpointCaller<GetFileInfoOutput>(

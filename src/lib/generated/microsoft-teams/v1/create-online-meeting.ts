@@ -450,6 +450,8 @@ export async function createOnlineMeeting(
 	payload: {
 		input: CreateOnlineMeetingInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateOnlineMeetingOutput> {
 	const response = await this.endpointCaller<CreateOnlineMeetingOutput>(

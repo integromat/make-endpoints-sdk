@@ -81,6 +81,8 @@ export async function listUserAvailabilitySchedules(
 	payload: {
 		input: ListUserAvailabilitySchedulesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListUserAvailabilitySchedulesOutput> {
 	const response = await this.endpointCaller<ListUserAvailabilitySchedulesOutput>(

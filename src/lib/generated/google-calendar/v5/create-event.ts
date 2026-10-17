@@ -952,6 +952,8 @@ export async function createEvent(
 	payload: {
 		input: CreateEventInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateEventOutput> {
 	const response = await this.endpointCaller<CreateEventOutput>(

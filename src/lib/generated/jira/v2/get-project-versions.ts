@@ -128,6 +128,8 @@ export async function getProjectVersions(
 	payload: {
 		input: GetProjectVersionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetProjectVersionsOutput> {
 	const response = await this.endpointCaller<GetProjectVersionsOutput>(

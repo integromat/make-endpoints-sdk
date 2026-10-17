@@ -72,6 +72,8 @@ export async function listWebhooks(
 	payload: {
 		input: ListWebhooksInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListWebhooksOutput> {
 	const response = await this.endpointCaller<ListWebhooksOutput>(

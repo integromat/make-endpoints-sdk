@@ -69,6 +69,8 @@ export async function getWebhook(
 	payload: {
 		input: GetWebhookInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetWebhookOutput> {
 	const response = await this.endpointCaller<GetWebhookOutput>(

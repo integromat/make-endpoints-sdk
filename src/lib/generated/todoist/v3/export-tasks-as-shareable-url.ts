@@ -32,6 +32,8 @@ export async function exportTasksAsShareableUrl(
 	payload: {
 		input: ExportTasksAsShareableUrlInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ExportTasksAsShareableUrlOutput> {
 	const response = await this.endpointCaller<ExportTasksAsShareableUrlOutput>(

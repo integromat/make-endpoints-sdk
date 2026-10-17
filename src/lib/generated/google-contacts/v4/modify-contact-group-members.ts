@@ -44,6 +44,8 @@ export async function modifyContactGroupMembers(
 	payload: {
 		input: ModifyContactGroupMembersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ModifyContactGroupMembersOutput> {
 	const response = await this.endpointCaller<ModifyContactGroupMembersOutput>(

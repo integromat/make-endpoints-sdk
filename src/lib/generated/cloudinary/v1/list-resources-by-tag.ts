@@ -178,6 +178,8 @@ export async function listResourcesByTag(
 	payload: {
 		input: ListResourcesByTagInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListResourcesByTagOutput> {
 	const response = await this.endpointCaller<ListResourcesByTagOutput>(

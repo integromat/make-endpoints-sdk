@@ -72,6 +72,8 @@ export async function updateBlogPost(
 	payload: {
 		input: UpdateBlogPostInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateBlogPostOutput> {
 	const response = await this.endpointCaller<UpdateBlogPostOutput>(

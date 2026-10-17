@@ -89,6 +89,8 @@ export async function createApermission(
 	payload: {
 		input: CreateAPermissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateAPermissionOutput> {
 	const response = await this.endpointCaller<CreateAPermissionOutput>(

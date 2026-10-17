@@ -2330,6 +2330,8 @@ export async function updateContactPhoto(
 	payload: {
 		input: UpdateContactPhotoInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateContactPhotoOutput> {
 	const response = await this.endpointCaller<UpdateContactPhotoOutput>(

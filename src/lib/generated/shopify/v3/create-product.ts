@@ -461,6 +461,8 @@ export async function createProduct(
 	payload: {
 		input: CreateProductInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateProductOutput> {
 	const response = await this.endpointCaller<CreateProductOutput>(

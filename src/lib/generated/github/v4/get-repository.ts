@@ -89,6 +89,8 @@ export async function getRepository(
 	payload: {
 		input: GetRepositoryInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetRepositoryOutput> {
 	const response = await this.endpointCaller<GetRepositoryOutput>(

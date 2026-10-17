@@ -172,6 +172,8 @@ export async function createUser(
 	payload: {
 		input: CreateUserInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateUserOutput> {
 	const response = await this.endpointCaller<CreateUserOutput>(

@@ -134,6 +134,8 @@ export async function getGlobalMetadataTemplates(
 	payload: {
 		input: GetGlobalMetadataTemplatesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetGlobalMetadataTemplatesOutput> {
 	const response = await this.endpointCaller<GetGlobalMetadataTemplatesOutput>(

@@ -595,6 +595,8 @@ export async function sendMediaGroup(
 	payload: {
 		input: SendMediaGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendMediaGroupOutput> {
 	const response = await this.endpointCaller<SendMediaGroupOutput>(

@@ -64,6 +64,8 @@ export async function createFolderMetadataInstance(
 	payload: {
 		input: CreateFolderMetadataInstanceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFolderMetadataInstanceOutput> {
 	const response = await this.endpointCaller<CreateFolderMetadataInstanceOutput>(

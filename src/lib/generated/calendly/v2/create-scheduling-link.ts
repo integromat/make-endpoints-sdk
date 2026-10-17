@@ -37,6 +37,8 @@ export async function createSchedulingLink(
 	payload: {
 		input: CreateSchedulingLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateSchedulingLinkOutput> {
 	const response = await this.endpointCaller<CreateSchedulingLinkOutput>(

@@ -66,6 +66,8 @@ export async function updateFieldOptions(
 	payload: {
 		input: UpdateFieldOptionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFieldOptionsOutput> {
 	const response = await this.endpointCaller<UpdateFieldOptionsOutput>(

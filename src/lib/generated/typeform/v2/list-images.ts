@@ -14,6 +14,8 @@ export async function listImages(
 	payload: {
 		input: ListImagesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListImagesOutput> {
 	const response = await this.endpointCaller<ListImagesOutput>(

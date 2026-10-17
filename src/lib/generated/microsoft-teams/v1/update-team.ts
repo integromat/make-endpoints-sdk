@@ -55,6 +55,8 @@ export async function updateTeam(
 	payload: {
 		input: UpdateTeamInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateTeamOutput> {
 	const response = await this.endpointCaller<UpdateTeamOutput>(

@@ -347,6 +347,8 @@ export async function listRepositories(
 	payload: {
 		input: ListRepositoriesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListRepositoriesOutput> {
 	const response = await this.endpointCaller<ListRepositoriesOutput>(

@@ -133,6 +133,8 @@ export async function updateAcustomer(
 	payload: {
 		input: UpdateACustomerInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateACustomerOutput> {
 	const response = await this.endpointCaller<UpdateACustomerOutput>(

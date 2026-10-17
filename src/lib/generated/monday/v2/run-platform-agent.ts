@@ -14,6 +14,8 @@ export async function runPlatformAgent(
 	payload: {
 		input: RunPlatformAgentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RunPlatformAgentOutput> {
 	const response = await this.endpointCaller<RunPlatformAgentOutput>(

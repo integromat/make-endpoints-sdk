@@ -2747,6 +2747,8 @@ export async function createContact(
 	payload: {
 		input: CreateContactInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateContactOutput> {
 	const response = await this.endpointCaller<CreateContactOutput>(

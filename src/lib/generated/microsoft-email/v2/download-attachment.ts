@@ -72,6 +72,8 @@ export async function downloadAttachment(
 	payload: {
 		input: DownloadAttachmentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DownloadAttachmentOutput> {
 	const response = await this.endpointCaller<DownloadAttachmentOutput>(

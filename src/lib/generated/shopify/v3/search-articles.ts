@@ -177,6 +177,8 @@ export async function searchArticles(
 	payload: {
 		input: SearchArticlesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchArticlesOutput> {
 	const response = await this.endpointCaller<SearchArticlesOutput>(

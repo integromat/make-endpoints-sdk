@@ -85,6 +85,8 @@ export async function runSuiteQlquery(
 	payload: {
 		input: RunSuiteQLQueryInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RunSuiteQLQueryOutput> {
 	const response = await this.endpointCaller<RunSuiteQLQueryOutput>(

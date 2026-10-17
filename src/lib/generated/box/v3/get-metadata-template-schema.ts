@@ -117,6 +117,8 @@ export async function getMetadataTemplateSchema(
 	payload: {
 		input: GetMetadataTemplateSchemaInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetMetadataTemplateSchemaOutput> {
 	const response = await this.endpointCaller<GetMetadataTemplateSchemaOutput>(

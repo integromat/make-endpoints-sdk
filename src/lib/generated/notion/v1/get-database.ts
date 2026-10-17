@@ -227,6 +227,8 @@ export async function getDatabase(
 	payload: {
 		input: GetDatabaseInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetDatabaseOutput> {
 	const response = await this.endpointCaller<GetDatabaseOutput>(

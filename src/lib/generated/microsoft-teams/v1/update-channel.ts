@@ -39,6 +39,8 @@ export async function updateChannel(
 	payload: {
 		input: UpdateChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateChannelOutput> {
 	const response = await this.endpointCaller<UpdateChannelOutput>(

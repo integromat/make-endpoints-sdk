@@ -23,6 +23,8 @@ export async function deleteChannel(
 	payload: {
 		input: DeleteChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteChannelOutput> {
 	const response = await this.endpointCaller<DeleteChannelOutput>(

@@ -65,6 +65,8 @@ export async function getFreeBusy(
 	payload: {
 		input: GetFreeBusyInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFreeBusyOutput> {
 	const response = await this.endpointCaller<GetFreeBusyOutput>(

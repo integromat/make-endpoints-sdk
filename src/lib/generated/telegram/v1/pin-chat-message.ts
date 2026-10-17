@@ -32,6 +32,8 @@ export async function pinChatMessage(
 	payload: {
 		input: PinChatMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<PinChatMessageOutput> {
 	const response = await this.endpointCaller<PinChatMessageOutput>(

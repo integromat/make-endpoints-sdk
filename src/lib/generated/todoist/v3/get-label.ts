@@ -40,6 +40,8 @@ export async function getLabel(
 	payload: {
 		input: GetLabelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetLabelOutput> {
 	const response = await this.endpointCaller<GetLabelOutput>(

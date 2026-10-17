@@ -229,6 +229,8 @@ export async function getEventInvitee(
 	payload: {
 		input: GetEventInviteeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetEventInviteeOutput> {
 	const response = await this.endpointCaller<GetEventInviteeOutput>(

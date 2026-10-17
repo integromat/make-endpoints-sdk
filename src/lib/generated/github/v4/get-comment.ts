@@ -138,6 +138,8 @@ export async function getComment(
 	payload: {
 		input: GetCommentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetCommentOutput> {
 	const response = await this.endpointCaller<GetCommentOutput>(

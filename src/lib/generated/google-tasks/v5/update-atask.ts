@@ -154,6 +154,8 @@ export async function updateAtask(
 	payload: {
 		input: UpdateATaskInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateATaskOutput> {
 	const response = await this.endpointCaller<UpdateATaskOutput>(

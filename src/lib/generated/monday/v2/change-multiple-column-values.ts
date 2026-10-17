@@ -14,6 +14,8 @@ export async function changeMultipleColumnValues(
 	payload: {
 		input: ChangeMultipleColumnValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ChangeMultipleColumnValuesOutput> {
 	const response = await this.endpointCaller<ChangeMultipleColumnValuesOutput>(

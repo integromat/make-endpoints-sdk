@@ -445,6 +445,8 @@ export async function getSignRequest(
 	payload: {
 		input: GetSignRequestInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetSignRequestOutput> {
 	const response = await this.endpointCaller<GetSignRequestOutput>(

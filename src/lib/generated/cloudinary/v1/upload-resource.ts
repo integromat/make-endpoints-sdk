@@ -210,6 +210,8 @@ export async function uploadResource(
 	payload: {
 		input: UploadResourceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UploadResourceOutput> {
 	const response = await this.endpointCaller<UploadResourceOutput>(

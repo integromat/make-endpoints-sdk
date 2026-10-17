@@ -35,6 +35,8 @@ export async function searchUsers(
 	payload: {
 		input: SearchUsersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchUsersOutput> {
 	const response = await this.endpointCaller<SearchUsersOutput>(

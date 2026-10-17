@@ -24,6 +24,8 @@ export async function deleteFile(
 	payload: {
 		input: DeleteFileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteFileOutput> {
 	const response = await this.endpointCaller<DeleteFileOutput>(

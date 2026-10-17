@@ -186,6 +186,8 @@ export async function searchCommitComments(
 	payload: {
 		input: SearchCommitCommentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchCommitCommentsOutput> {
 	const response = await this.endpointCaller<SearchCommitCommentsOutput>(

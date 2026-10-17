@@ -40,6 +40,8 @@ export async function removeReaction(
 	payload: {
 		input: RemoveReactionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RemoveReactionOutput> {
 	const response = await this.endpointCaller<RemoveReactionOutput>(

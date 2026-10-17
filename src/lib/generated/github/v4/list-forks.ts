@@ -134,6 +134,8 @@ export async function listForks(
 	payload: {
 		input: ListForksInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListForksOutput> {
 	const response = await this.endpointCaller<ListForksOutput>(

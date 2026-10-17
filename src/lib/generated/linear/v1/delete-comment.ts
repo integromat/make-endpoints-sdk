@@ -24,6 +24,8 @@ export async function deleteComment(
 	payload: {
 		input: DeleteCommentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteCommentOutput> {
 	const response = await this.endpointCaller<DeleteCommentOutput>(

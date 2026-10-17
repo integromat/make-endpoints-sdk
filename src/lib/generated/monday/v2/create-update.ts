@@ -14,6 +14,8 @@ export async function createUpdate(
 	payload: {
 		input: CreateUpdateInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateUpdateOutput> {
 	const response = await this.endpointCaller<CreateUpdateOutput>(

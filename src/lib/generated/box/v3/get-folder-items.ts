@@ -741,6 +741,8 @@ export async function getFolderItems(
 	payload: {
 		input: GetFolderItemsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFolderItemsOutput> {
 	const response = await this.endpointCaller<GetFolderItemsOutput>(

@@ -80,6 +80,8 @@ export async function createIssueLink(
 	payload: {
 		input: CreateIssueLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateIssueLinkOutput> {
 	const response = await this.endpointCaller<CreateIssueLinkOutput>(

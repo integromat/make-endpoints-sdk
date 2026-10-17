@@ -1530,6 +1530,8 @@ export async function searchForContent(
 	payload: {
 		input: SearchForContentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchForContentOutput> {
 	const response = await this.endpointCaller<SearchForContentOutput>(

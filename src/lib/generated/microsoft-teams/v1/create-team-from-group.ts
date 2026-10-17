@@ -271,6 +271,8 @@ export async function createTeamFromGroup(
 	payload: {
 		input: CreateTeamFromGroupInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateTeamFromGroupOutput> {
 	const response = await this.endpointCaller<CreateTeamFromGroupOutput>(

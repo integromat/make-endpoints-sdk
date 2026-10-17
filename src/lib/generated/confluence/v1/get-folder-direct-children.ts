@@ -81,6 +81,8 @@ export async function getFolderDirectChildren(
 	payload: {
 		input: GetFolderDirectChildrenInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFolderDirectChildrenOutput> {
 	const response = await this.endpointCaller<GetFolderDirectChildrenOutput>(

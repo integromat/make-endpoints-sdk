@@ -50,6 +50,8 @@ export async function updateRecord(
 	payload: {
 		input: UpdateRecordInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateRecordOutput> {
 	const response = await this.endpointCaller<UpdateRecordOutput>(
