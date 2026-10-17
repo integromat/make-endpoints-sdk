@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.7.0...v0.8.0) (2026-10-17)
+
+
+### Features
+
+* pass a confidential flag through execute, the tools and the CLI ([#12](https://github.com/integromat/make-endpoints-sdk/issues/12)) ([4d6d3ce](https://github.com/integromat/make-endpoints-sdk/commit/4d6d3ce6879319a265faaba5df54b07ff70fafed))
+* pass an idempotency key through execute, the tools and the CLI [BAR-4272] ([#14](https://github.com/integromat/make-endpoints-sdk/issues/14)) ([db9a35f](https://github.com/integromat/make-endpoints-sdk/commit/db9a35f8668e0f851c46fa9122b79db91b441cc1))
+* update generated endpoints ([a4f21a4](https://github.com/integromat/make-endpoints-sdk/commit/a4f21a4b0198bb08706ae3a87a84a646f70c2cce))
+
 ## [0.7.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.6.0...v0.7.0) (2026-10-16)
 
 
