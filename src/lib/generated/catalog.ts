@@ -13,15 +13,18 @@ import { endpoints as discordEndpoints } from './discord/_catalog.ts';
 import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
+import { endpoints as googleChatEndpoints } from './google-chat/_catalog.ts';
 import { endpoints as googleContactsEndpoints } from './google-contacts/_catalog.ts';
 import { endpoints as googleDocsEndpoints } from './google-docs/_catalog.ts';
 import { endpoints as googleDriveEndpoints } from './google-drive/_catalog.ts';
 import { endpoints as googleEmailEndpoints } from './google-email/_catalog.ts';
 import { endpoints as googleFormsEndpoints } from './google-forms/_catalog.ts';
+import { endpoints as googleGroupsEndpoints } from './google-groups/_catalog.ts';
 import { endpoints as googleKeepEndpoints } from './google-keep/_catalog.ts';
 import { endpoints as googleSheetsEndpoints } from './google-sheets/_catalog.ts';
 import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts';
 import { endpoints as googleTasksEndpoints } from './google-tasks/_catalog.ts';
+import { endpoints as googlecloudvisionEndpoints } from './googlecloudvision/_catalog.ts';
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
 import { endpoints as hubspotcrmEndpoints } from './hubspotcrm/_catalog.ts';
@@ -66,15 +69,18 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		dropbox: dropboxEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
+		googleChat: googleChatEndpoints(endpointCaller),
 		googleContacts: googleContactsEndpoints(endpointCaller),
 		googleDocs: googleDocsEndpoints(endpointCaller),
 		googleDrive: googleDriveEndpoints(endpointCaller),
 		googleEmail: googleEmailEndpoints(endpointCaller),
 		googleForms: googleFormsEndpoints(endpointCaller),
+		googleGroups: googleGroupsEndpoints(endpointCaller),
 		googleKeep: googleKeepEndpoints(endpointCaller),
 		googleSheets: googleSheetsEndpoints(endpointCaller),
 		googleSlides: googleSlidesEndpoints(endpointCaller),
 		googleTasks: googleTasksEndpoints(endpointCaller),
+		googlecloudvision: googlecloudvisionEndpoints(endpointCaller),
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
 		hubspotcrm: hubspotcrmEndpoints(endpointCaller),

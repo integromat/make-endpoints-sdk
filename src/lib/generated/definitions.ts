@@ -13,15 +13,18 @@ import { definitions as discordV2Definitions } from './discord/v2/_definitions.t
 import { definitions as dropboxV5Definitions } from './dropbox/v5/_definitions.ts';
 import { definitions as githubV4Definitions } from './github/v4/_definitions.ts';
 import { definitions as googleCalendarV5Definitions } from './google-calendar/v5/_definitions.ts';
+import { definitions as googleChatV1Definitions } from './google-chat/v1/_definitions.ts';
 import { definitions as googleContactsV4Definitions } from './google-contacts/v4/_definitions.ts';
 import { definitions as googleDocsV1Definitions } from './google-docs/v1/_definitions.ts';
 import { definitions as googleDriveV4Definitions } from './google-drive/v4/_definitions.ts';
 import { definitions as googleEmailV4Definitions } from './google-email/v4/_definitions.ts';
 import { definitions as googleFormsV2Definitions } from './google-forms/v2/_definitions.ts';
+import { definitions as googleGroupsV1Definitions } from './google-groups/v1/_definitions.ts';
 import { definitions as googleKeepV1Definitions } from './google-keep/v1/_definitions.ts';
 import { definitions as googleSheetsV2Definitions } from './google-sheets/v2/_definitions.ts';
 import { definitions as googleSlidesV1Definitions } from './google-slides/v1/_definitions.ts';
 import { definitions as googleTasksV5Definitions } from './google-tasks/v5/_definitions.ts';
+import { definitions as googlecloudvisionV1Definitions } from './googlecloudvision/v1/_definitions.ts';
 import { definitions as highlevelV1Definitions } from './highlevel/v1/_definitions.ts';
 import { definitions as httpV4Definitions } from './http/v4/_definitions.ts';
 import { definitions as hubspotcrmV2Definitions } from './hubspotcrm/v2/_definitions.ts';
@@ -65,15 +68,18 @@ export const definitions: EndpointDefinition[] = [
 	...dropboxV5Definitions,
 	...githubV4Definitions,
 	...googleCalendarV5Definitions,
+	...googleChatV1Definitions,
 	...googleContactsV4Definitions,
 	...googleDocsV1Definitions,
 	...googleDriveV4Definitions,
 	...googleEmailV4Definitions,
 	...googleFormsV2Definitions,
+	...googleGroupsV1Definitions,
 	...googleKeepV1Definitions,
 	...googleSheetsV2Definitions,
 	...googleSlidesV1Definitions,
 	...googleTasksV5Definitions,
+	...googlecloudvisionV1Definitions,
 	...highlevelV1Definitions,
 	...httpV4Definitions,
 	...hubspotcrmV2Definitions,
