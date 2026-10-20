@@ -2,18 +2,14 @@ import type { EndpointCaller, EndpointOptions, EndpointPointer } from './shared.
 import { resolveProjectId } from './teams-to-projects.ts';
 import type { Transport, TransportContext } from './transport/transport.ts';
 
-/** `projectId` is the new name of `teamId`; pass either. Both is fine only when they are equal. */
-export type EndpointsSdkOptions = { transport: Transport } & (
-	| { projectId: number; teamId?: number }
-	| { teamId: number; projectId?: number }
-);
-
-const _resolveOptionsProjectId = ({ projectId, teamId }: EndpointsSdkOptions): number => {
-	const id = resolveProjectId(projectId, teamId);
-	if (typeof id !== 'number') {
-		throw new Error('projectId must be a number.');
-	}
-	return id;
+/**
+ * `teamId` stays required in the type, as before. `projectId` is its alias: JavaScript callers can
+ * pass either (both only when equal); TypeScript callers pass `projectId` next to `teamId` for now.
+ */
+export type EndpointsSdkOptions = {
+	transport: Transport;
+	teamId: number;
+	projectId?: number;
 };
 
 export type EndpointsCatalog<ENDPOINTS> = (endpointCaller: EndpointCaller) => ENDPOINTS;
@@ -32,7 +28,8 @@ export class BaseEndpointsSdk<ENDPOINTS> {
 
 	constructor(options: EndpointsSdkOptions, catalog: EndpointsCatalog<ENDPOINTS>) {
 		this.#transport = options.transport;
-		this.#teamId = _resolveOptionsProjectId(options);
+		// Not validated: a missing or non-number ID is sent as before. Only conflicting aliases throw.
+		this.#teamId = resolveProjectId(options.projectId, options.teamId) as number;
 		this.#endpointCaller = this.#callEndpoint.bind(this);
 		this.endpoints = catalog(this.#endpointCaller);
 	}

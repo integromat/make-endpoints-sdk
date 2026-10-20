@@ -101,38 +101,38 @@ const TEAM_ID_DESCRIPTION = 'The ID of the Team the Endpoint is executed in.';
 const PROJECT_ID_DESCRIPTION =
 	'The ID of the Project (formerly Team) the Endpoint is executed in.';
 
-/** The scope property name tools require: `projectId` with the flag on, `teamId` otherwise. */
-const _scopeProperty = (): 'projectId' | 'teamId' => {
-	return isTeamsToProjectsEnabled() ? 'projectId' : 'teamId';
-};
-
 /**
- * `teamId` with the flag off. With it on, `projectId` plus `teamId` as its deprecated alias, so
- * callers that still send `teamId` keep working.
+ * `teamId` stays what the tool requires. `projectId` is added next to it as its alias, whatever the
+ * flag; the flag only picks the wording. Not added to an endpoint tool whose input has a field
+ * named `projectId` (Jira, Linear, ...): that field is the app's, not Make's.
  */
 const _scopeProperties = (
 	teamDescription: string,
 	projectDescription: string,
 ): Record<string, JSONSchema> => {
 	if (!isTeamsToProjectsEnabled()) {
-		return { teamId: { type: 'number', description: teamDescription } };
+		return {
+			teamId: { type: 'number', description: teamDescription },
+			projectId: { type: 'number', description: 'Alias of `teamId`.' },
+		};
 	}
 	return {
-		projectId: { type: 'number', description: projectDescription },
 		teamId: {
 			type: 'number',
-			description: 'Deprecated alias of `projectId`: Teams were renamed to Projects.',
+			description: 'Alias of `projectId`: Teams were renamed to Projects.',
 		},
+		projectId: { type: 'number', description: projectDescription },
 	};
 };
 
-/** The team ID from tool arguments, read from `projectId` first when the flag is on. */
+/** The scope ID from tool arguments: `projectId`, or its alias `teamId`. */
 const _scopeIdFromArgs = ({ projectId, teamId }: Record<string, JSONValue>): JSONValue => {
-	return isTeamsToProjectsEnabled() ? resolveProjectId(projectId, teamId) : teamId;
+	return resolveProjectId(projectId, teamId);
 };
 
-/** The error for a missing or non-numeric team ID, named after the property tools require. */
-const _scopeIdError = (): Error => new Error(`${_scopeProperty()} must be a number.`);
+/** The error for a missing or non-numeric scope ID. */
+const _scopeIdError = (): Error =>
+	new Error(teamOrProject('teamId must be a number.', 'projectId must be a number.'));
 
 type CallEndpointParams = {
 	pointer: EndpointPointer;
@@ -195,8 +195,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 	);
 	// An endpoint field named `projectId` (Jira, Linear, ...) keeps the name, so there the Make
 	// scope stays `teamId` only.
-	const aliasesProject =
-		isTeamsToProjectsEnabled() && !fields.some(([field]) => field === 'projectId');
+	const aliasesProject = !fields.some(([field]) => field === 'projectId');
 	const requiredFields = Array.isArray(required) ? required.map(String) : [];
 	const connectionTypes = Object.keys(accounts);
 	const takesConnection = connectionTypes.length > 0;
@@ -231,9 +230,7 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 				},
 			},
 			// Input fields can arrive separately or inside `input`, so they're checked in `execute`.
-			required: takesConnection
-				? [aliasesProject ? 'projectId' : 'teamId', 'connectionId']
-				: [aliasesProject ? 'projectId' : 'teamId'],
+			required: takesConnection ? ['teamId', 'connectionId'] : ['teamId'],
 		},
 		definition,
 		latest,
@@ -245,9 +242,12 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 				delete rest.projectId;
 			}
 			if (typeof teamId !== 'number') {
-				throw new Error(`${aliasesProject ? 'projectId' : 'teamId'} must be a number.`);
+				throw _scopeIdError();
 			}
-			const merged = { ...(input !== undefined && _isRecord(input) ? input : {}), ...rest };
+			const merged = {
+				...(input !== undefined && _isRecord(input) ? input : {}),
+				...rest,
+			};
 			const missing = requiredFields.filter((field) => merged[field] === undefined);
 			if (missing.length > 0) {
 				throw new Error(`Missing required input fields: ${missing.join(', ')}.`);
@@ -270,7 +270,11 @@ const EXECUTE_TOOL: EndpointTool = {
 	category: 'endpoints',
 	scope: SCOPE,
 	scopeId: 'teamId',
-	annotations: { readOnlyHint: false, openWorldHint: true, destructiveHint: true },
+	annotations: {
+		readOnlyHint: false,
+		openWorldHint: true,
+		destructiveHint: true,
+	},
 	inputSchema: {
 		type: 'object',
 		properties: {
@@ -282,7 +286,10 @@ const EXECUTE_TOOL: EndpointTool = {
 				type: 'number',
 				description: 'Version of the App from which the Endpoint should be executed.',
 			},
-			endpointName: { type: 'string', description: 'Name of the Endpoint to be executed.' },
+			endpointName: {
+				type: 'string',
+				description: 'Name of the Endpoint to be executed.',
+			},
 			..._scopeProperties(TEAM_ID_DESCRIPTION, PROJECT_ID_DESCRIPTION),
 			connectionId: {
 				type: 'number',
@@ -293,7 +300,7 @@ const EXECUTE_TOOL: EndpointTool = {
 				description: 'Object containing input values of the Endpoint.',
 			},
 		},
-		required: ['appName', 'appVersion', 'endpointName', _scopeProperty()],
+		required: ['appName', 'appVersion', 'endpointName', 'teamId'],
 	},
 	execute: async (make, args) => {
 		const { appName, appVersion, endpointName, connectionId, input } = args;
@@ -328,7 +335,9 @@ export const listUsableEndpoints = async (
 	make: Make,
 	teamId: number,
 ): Promise<UsableEndpointPackage[]> => {
-	const { body } = await new SdkTransport(make).send<{ packages: UsableEndpointPackage[] }>({
+	const { body } = await new SdkTransport(make).send<{
+		packages: UsableEndpointPackage[];
+	}>({
 		path: '/imt/endpoints-usable',
 		query: new URLSearchParams({ teamId: String(teamId) }),
 	});
@@ -352,7 +361,7 @@ const LIST_USABLE_TOOL: EndpointTool = {
 			'The ID of the Team to list usable Endpoints for.',
 			'The ID of the Project (formerly Team) to list usable Endpoints for.',
 		),
-		required: [_scopeProperty()],
+		required: ['teamId'],
 	},
 	execute: async (make, args) => {
 		const teamId = _scopeIdFromArgs(args);
@@ -535,7 +544,9 @@ const _buildConnectionsListTool = (
 			},
 			scopes: {
 				type: 'object',
-				patternProperties: { '^.*$': { type: 'array', items: { type: 'string' } } },
+				patternProperties: {
+					'^.*$': { type: 'array', items: { type: 'string' } },
+				},
 				description:
 					'Required scopes per connection type, as a JSON object, e.g. {"google":["email"]}. Applies to the types listed in `type` and sets `scoped` on each row.',
 			},
@@ -543,14 +554,17 @@ const _buildConnectionsListTool = (
 				type: 'string',
 				description: "Only connections usable by this app's endpoints, e.g. google-docs.",
 			},
-			appVersion: { type: 'number', description: 'Version of the app. Latest when omitted.' },
+			appVersion: {
+				type: 'number',
+				description: 'Version of the app. Latest when omitted.',
+			},
 			endpoint: {
 				type: 'string',
 				description:
 					'Only connections usable by this endpoint of the app, e.g. get-document or getDocument.',
 			},
 		},
-		required: [_scopeProperty()],
+		required: ['teamId'],
 	},
 	execute: async (make, args) => {
 		const { app } = args;
@@ -562,10 +576,21 @@ const _buildConnectionsListTool = (
 			app === undefined
 				? _filterByType(args)
 				: _filterByApp(endpointDefinitions, latestVersions, args);
-		const rows = await make.connections.list(teamId, { ...options, cols: ['*'] });
+		const rows = await make.connections.list(teamId, {
+			...options,
+			cols: ['*'],
+		});
 		return rows.map((row): UsableConnection => {
 			const { id, name, accountName, accountLabel, accountType, expire } = row;
-			return { id, name, accountName, accountLabel, accountType, expire, ...describe(row) };
+			return {
+				id,
+				name,
+				accountName,
+				accountLabel,
+				accountType,
+				expire,
+				...describe(row),
+			};
 		});
 	},
 });

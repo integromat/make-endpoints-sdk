@@ -87,6 +87,7 @@ describe('buildEndpointTools', () => {
 
 		expect(Object.keys(inputSchema.properties ?? {})).toEqual([
 			'teamId',
+			'projectId',
 			'connectionId',
 			'itemId',
 			'input',

@@ -2,7 +2,7 @@ import type { Command } from 'commander';
 
 import type { EndpointDefinition } from '../lib/shared.ts';
 import type { EndpointTool, UsableEndpointPackage } from '../lib/tools.ts';
-import { isTeamsToProjectsEnabled, teamOrProject } from '../lib/teams-to-projects.ts';
+import { teamOrProject } from '../lib/teams-to-projects.ts';
 import { listUsableEndpoints } from '../lib/tools.ts';
 
 import type { GlobalOptions } from './commands.ts';
@@ -58,7 +58,10 @@ const _listApps = (
 ): { name: string; versions: string[]; endpointCount: number }[] => {
 	const apps = new Map<string, { versions: Set<number>; endpointCount: number }>();
 	for (const { definition } of tools) {
-		const app = apps.get(definition.appName) ?? { versions: new Set(), endpointCount: 0 };
+		const app = apps.get(definition.appName) ?? {
+			versions: new Set(),
+			endpointCount: 0,
+		};
 		app.versions.add(definition.appVersion);
 		app.endpointCount += 1;
 		apps.set(definition.appName, app);
@@ -100,9 +103,7 @@ const _resolveTeamIdOption = ({
 	teamId?: string;
 }): string | undefined => {
 	if (projectId !== undefined && teamId !== undefined && projectId !== teamId) {
-		throw new Error(
-			'--project-id and --team-id differ. Pass only --project-id; --team-id is its deprecated alias.',
-		);
+		throw new Error('--project-id and --team-id differ. Pass only one of them.');
 	}
 	return projectId ?? teamId;
 };
@@ -205,19 +206,21 @@ export const registerCatalogCommands = (program: Command, tools: EndpointTool[])
 		.description('List apps, or the endpoints of an app or app version')
 		.argument('[app]', 'app name, e.g. google-docs')
 		.argument('[version]', 'app version, e.g. v2');
-	if (isTeamsToProjectsEnabled()) {
-		listCommand
-			.option(
-				'--project-id <id>',
-				'List only what this project (formerly team) can use, with its connections, from the API (needs apps:read)',
-			)
-			.option('--team-id <id>', 'Deprecated alias of --project-id: Teams were renamed to Projects');
-	} else {
-		listCommand.option(
+	listCommand
+		.option(
 			'--team-id <id>',
-			'List only what this team can use, with its connections, from the API (needs apps:read)',
+			teamOrProject(
+				'List only what this team can use, with its connections, from the API (needs apps:read)',
+				'Deprecated alias of --project-id: Teams were renamed to Projects',
+			),
+		)
+		.option(
+			'--project-id <id>',
+			teamOrProject(
+				'Alias of --team-id',
+				'List only what this project (formerly team) can use, with its connections, from the API (needs apps:read)',
+			),
 		);
-	}
 	listCommand
 		.helpGroup('Others:')
 		.action(

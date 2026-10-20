@@ -1,7 +1,7 @@
 import type { Make } from '@makehq/sdk';
 import type { Command } from 'commander';
 
-import { isTeamsToProjectsEnabled, teamOrProject } from '../lib/teams-to-projects.ts';
+import { teamOrProject } from '../lib/teams-to-projects.ts';
 
 import type { GlobalOptions } from './commands.ts';
 import { createMakeClient, exitWithError } from './commands.ts';
@@ -11,7 +11,7 @@ type Environment = {
 	id: number;
 	name: string;
 	teams: { id: number; name: string; type: 'personal' | 'standard' }[];
-	projects?: { id: number; name: string; type: 'personal' | 'standard' }[];
+	projects: { id: number; name: string; type: 'personal' | 'standard' }[];
 }[];
 
 /**
@@ -27,7 +27,11 @@ const _getEnvironment = async (make: Make): Promise<Environment> => {
 	// Both columns are `null` when empty, whatever `@makehq/sdk` declares.
 	return organizations.map(({ id, name, teams, privateSpaces }) => {
 		const spaces = [
-			...(teams ?? []).map((team) => ({ id: team.id, name: team.name, type: 'standard' as const })),
+			...(teams ?? []).map((team) => ({
+				id: team.id,
+				name: team.name,
+				type: 'standard' as const,
+			})),
 			...(privateSpaces ?? []).map((space) => ({
 				id: space.id,
 				name: space.name,
@@ -38,7 +42,7 @@ const _getEnvironment = async (make: Make): Promise<Environment> => {
 			id,
 			name,
 			teams: spaces,
-			...(isTeamsToProjectsEnabled() ? { projects: spaces } : {}),
+			projects: spaces,
 		};
 	});
 };
@@ -61,7 +65,12 @@ export const registerWhoamiCommand = (program: Command): void => {
 					options.environment ? _getEnvironment(make) : undefined,
 				]);
 				const { output } = cmd.optsWithGlobals<GlobalOptions>();
-				const result = { name, email, zone, ...(organizations ? { organizations } : {}) };
+				const result = {
+					name,
+					email,
+					zone,
+					...(organizations ? { organizations } : {}),
+				};
 				process.stdout.write(`${formatOutput(result, output ?? 'json')}\n`);
 			} catch (error) {
 				exitWithError(error);

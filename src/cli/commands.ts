@@ -131,6 +131,12 @@ export const createMakeClient = async (cmd: Command): Promise<{ make: Make; zone
 	return { make: new Make(token, zone), zone };
 };
 
+/** Whether the endpoint behind `tool` has an input field of this name of its own. */
+const _hasInputField = (tool: EndpointTool, field: string): boolean => {
+	const fields = tool.definition?.inputSchema.properties;
+	return typeof fields === 'object' && fields !== null && !Array.isArray(fields) && field in fields;
+};
+
 const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName: string): void => {
 	if (parent.commands.some((command) => command.name() === actionName)) {
 		_warnSkipped(parent, actionName);
@@ -144,9 +150,13 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 	const inputRequired = new Set(properties.input?.required ?? []);
 	// Flag names are derived lossily, so map each option back to the property it was made for.
 	const optionProperties = new Map<string, string>();
-	// With the flag on, tools require `projectId` and keep `teamId` as its deprecated alias, so
-	// `--project-id` can't be mandatory for commander; `--team-id` alone must still work.
-	const projectAlias = required.has('projectId') && properties.teamId !== undefined;
+	// Tools that require `teamId` take `projectId` as its alias, so neither flag can be mandatory for
+	// commander: either one satisfies it, and `action` checks that one was given. An endpoint with
+	// an input field of its own named `projectId` (Jira, Linear, ...) has no alias.
+	const projectAlias =
+		required.has('teamId') &&
+		properties.projectId !== undefined &&
+		!_hasInputField(tool, 'projectId');
 
 	for (const [property, schema] of Object.entries(properties)) {
 		const flagName = _toFlagName(property);
@@ -164,7 +174,7 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 			isBoolean ? `--${flagName} [value]` : `--${flagName} <value>`,
 			isRequired ? `${schema.description ?? ''} (required)`.trim() : (schema.description ?? ''),
 		);
-		if (required.has(property) && !isBoolean && !(projectAlias && property === 'projectId')) {
+		if (required.has(property) && !isBoolean && !(projectAlias && property === 'teamId')) {
 			option.makeOptionMandatory(true);
 		}
 		if (schema.enum && !isBoolean) {
@@ -179,7 +189,7 @@ const _registerToolAsCommand = (parent: Command, tool: EndpointTool, actionName:
 		if (projectAlias) {
 			const { projectId, teamId } = localOptions;
 			if (projectId === undefined && teamId === undefined) {
-				cmd.error("error: required option '--project-id <value>' not specified");
+				cmd.error("error: required option '--team-id <value>' not specified");
 			}
 			try {
 				resolveProjectId(

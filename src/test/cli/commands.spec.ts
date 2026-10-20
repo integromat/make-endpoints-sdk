@@ -61,7 +61,10 @@ afterEach(() => {
 });
 
 const run = (args: string[], definitions: EndpointDefinition[] = DEFINITIONS): Promise<Command> => {
-	const program = createProgram({ version: '0.0.0', tools: buildEndpointTools(definitions) });
+	const program = createProgram({
+		version: '0.0.0',
+		tools: buildEndpointTools(definitions),
+	});
 	return program.parseAsync(args, { from: 'user' });
 };
 
@@ -75,7 +78,10 @@ const findCommand = (parent: Command, ...path: string[]): Command | undefined =>
 const lastBody = (): unknown => (fetchMock.mock.lastCall?.[1] as { body: unknown }).body;
 
 describe('command tree', () => {
-	const program = createProgram({ version: '0.0.0', tools: buildEndpointTools(DEFINITIONS) });
+	const program = createProgram({
+		version: '0.0.0',
+		tools: buildEndpointTools(DEFINITIONS),
+	});
 
 	it('puts every version of an app under v<N>', () => {
 		expect(findCommand(program, 'alpha', 'v1', 'get-item')).toBeDefined();
@@ -111,7 +117,15 @@ describe('command tree', () => {
 	it('filters connections by type or by app and endpoint', () => {
 		expect(
 			findCommand(program, 'connections', 'list')?.options.map((option) => option.long),
-		).toEqual(['--team-id', '--type', '--scopes', '--app', '--app-version', '--endpoint']);
+		).toEqual([
+			'--team-id',
+			'--project-id',
+			'--type',
+			'--scopes',
+			'--app',
+			'--app-version',
+			'--endpoint',
+		]);
 	});
 
 	it('skips input fields whose flag would shadow a global option', () => {
@@ -119,7 +133,14 @@ describe('command tree', () => {
 			(option) => option.long,
 		);
 
-		expect(flags).toEqual(['--team-id', '--include-archived', '--limit', '--tags', '--input']);
+		expect(flags).toEqual([
+			'--team-id',
+			'--project-id',
+			'--include-archived',
+			'--limit',
+			'--tags',
+			'--input',
+		]);
 	});
 
 	it('marks required flags, including required input fields, in their descriptions', () => {
@@ -265,7 +286,9 @@ describe('endpoint commands', () => {
 	});
 
 	it('exits with 1 when a required tool argument is missing', async () => {
-		await expect(run(['alpha', 'get-item', '--item-id', 'i1'])).rejects.toThrow(ExitError);
+		await expect(
+			run(['alpha', 'get-item', '--item-id', 'i1', '--connection-id', '9']),
+		).rejects.toThrow(ExitError);
 
 		expect(stderr).toContain("required option '--team-id <value>' not specified");
 	});
@@ -405,7 +428,10 @@ describe('describe', () => {
 	it('accepts the wire endpoint name and an explicit version', async () => {
 		await run(['describe', 'alpha', 'v1', 'getItem']);
 
-		expect(JSON.parse(stdout)).toMatchObject({ name: 'alpha-v1_get-item', appVersion: 1 });
+		expect(JSON.parse(stdout)).toMatchObject({
+			name: 'alpha-v1_get-item',
+			appVersion: 1,
+		});
 	});
 
 	it('marks deprecated endpoints', async () => {
@@ -447,5 +473,63 @@ describe('coerceValue', () => {
 	it('uses the first type of a type array and keeps untyped values as strings', () => {
 		expect(coerceValue('2', { type: ['number', 'null'] } as never)).toBe(2);
 		expect(coerceValue('2', {})).toBe('2');
+	});
+});
+
+describe('--project-id, the alias of --team-id', () => {
+	it.each([['--team-id'], ['--project-id']])(
+		'runs an endpoint command with %s alone',
+		async (flag) => {
+			await run(['beta', 'list-things', flag, '7']);
+
+			expect(lastBody()).toMatchObject({ teamId: 7 });
+			expect(lastBody()).not.toHaveProperty('projectId');
+		},
+	);
+
+	it('accepts both when they are equal', async () => {
+		await run(['beta', 'list-things', '--team-id', '7', '--project-id', '7']);
+
+		expect(lastBody()).toMatchObject({ teamId: 7 });
+	});
+
+	it('exits with 1 when they differ, before any request', async () => {
+		await expect(
+			run(['beta', 'list-things', '--team-id', '7', '--project-id', '8']),
+		).rejects.toThrow(ExitError);
+
+		expect(stderr).toContain('projectId and teamId differ.');
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+
+	it('still asks for --team-id when neither is given', async () => {
+		await expect(run(['beta', 'list-things'])).rejects.toThrow(ExitError);
+
+		expect(stderr).toContain("required option '--team-id <value>' not specified");
+	});
+
+	it('leaves --project-id of an endpoint with a projectId input of its own to the endpoint', async () => {
+		const jira: EndpointDefinition = {
+			appName: 'jira',
+			appVersion: 1,
+			endpointName: 'getProject',
+			accounts: {},
+			inputSchema: {
+				type: 'object',
+				properties: { projectId: { type: 'string' } },
+				required: ['projectId'],
+			},
+			outputSchema: { type: 'object', properties: {} },
+		};
+
+		await run(['jira', 'get-project', '--team-id', '7', '--project-id', 'JIRA-1'], [jira]);
+
+		expect(lastBody()).toMatchObject({
+			teamId: 7,
+			input: { projectId: 'JIRA-1' },
+		});
+		await expect(run(['jira', 'get-project', '--project-id', 'JIRA-1'], [jira])).rejects.toThrow(
+			ExitError,
+		);
 	});
 });

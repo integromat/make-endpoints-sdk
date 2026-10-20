@@ -175,7 +175,9 @@ describe('SDK discovery commands', () => {
 		await run(['teams', 'list', '--organization-id', '5', '--include-private-spaces']);
 
 		expect(teamsList.mock.lastCall?.[0]).toBe(5);
-		expect(teamsList.mock.lastCall?.[1]).toMatchObject({ includePrivateSpaces: true });
+		expect(teamsList.mock.lastCall?.[1]).toMatchObject({
+			includePrivateSpaces: true,
+		});
 	});
 });
 
@@ -222,7 +224,10 @@ describe('connections list', () => {
 		]);
 		expect(connectionsList).toHaveBeenCalledWith(7, {
 			type: ['alpha', 'alpha-oauth'],
-			scopes: { alpha: ['items:read'], 'alpha-oauth': ['items:read', 'profile'] },
+			scopes: {
+				alpha: ['items:read'],
+				'alpha-oauth': ['items:read', 'profile'],
+			},
 			cols: ['*'],
 		});
 	});
@@ -246,7 +251,12 @@ describe('list --team-id', () => {
 			query: { teamId: '7' },
 		});
 		expect(JSON.parse(stdout)).toEqual([
-			{ name: 'alpha', label: 'Alpha', versions: ['v1', 'v2'], endpointCount: 3 },
+			{
+				name: 'alpha',
+				label: 'Alpha',
+				versions: ['v1', 'v2'],
+				endpointCount: 3,
+			},
 			{ name: 'beta', label: 'Beta', versions: [], endpointCount: 0 },
 		]);
 	});
@@ -367,8 +377,12 @@ describe('whoami', () => {
 						{ id: 7, name: 'Team', type: 'standard' },
 						{ id: 8, name: 'Ada', type: 'personal' },
 					],
+					projects: [
+						{ id: 7, name: 'Team', type: 'standard' },
+						{ id: 8, name: 'Ada', type: 'personal' },
+					],
 				},
-				{ id: 2, name: 'Other', teams: [] },
+				{ id: 2, name: 'Other', teams: [], projects: [] },
 			],
 		});
 		expect(organizationsList).toHaveBeenCalledWith({
@@ -385,5 +399,25 @@ describe('whoami', () => {
 
 		expect(stderr).toBe('Error [403]: Access denied\n');
 		expect(stdout).toBe('');
+	});
+});
+
+describe('list --project-id, the alias of --team-id', () => {
+	it('asks the API for the same team as --team-id', async () => {
+		await run(['list', '--project-id', '7']);
+
+		expect(fetchMock).toHaveBeenCalledWith('/imt/endpoints-usable', {
+			method: 'GET',
+			query: { teamId: '7' },
+		});
+	});
+
+	it('exits with 1 when the two differ, before calling the API', async () => {
+		await expect(run(['list', '--team-id', '7', '--project-id', '8'])).rejects.toThrow(
+			new ExitError(1),
+		);
+
+		expect(stderr).toBe('Error: --project-id and --team-id differ. Pass only one of them.\n');
+		expect(fetchMock).not.toHaveBeenCalled();
 	});
 });
