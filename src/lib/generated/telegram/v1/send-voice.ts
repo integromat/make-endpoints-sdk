@@ -210,6 +210,8 @@ export async function sendVoice(
 	payload: {
 		input: SendVoiceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendVoiceOutput> {
 	const response = await this.endpointCaller<SendVoiceOutput>(

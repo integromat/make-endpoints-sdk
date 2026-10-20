@@ -443,6 +443,8 @@ export async function updateDraft(
 	payload: {
 		input: UpdateDraftInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateDraftOutput> {
 	const response = await this.endpointCaller<UpdateDraftOutput>(

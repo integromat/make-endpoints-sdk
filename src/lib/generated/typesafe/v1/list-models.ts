@@ -32,6 +32,8 @@ export async function listModels(
 	payload: {
 		input: ListModelsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListModelsOutput> {
 	const response = await this.endpointCaller<ListModelsOutput>(

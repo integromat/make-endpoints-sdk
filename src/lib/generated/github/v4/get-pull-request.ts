@@ -208,6 +208,8 @@ export async function getPullRequest(
 	payload: {
 		input: GetPullRequestInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPullRequestOutput> {
 	const response = await this.endpointCaller<GetPullRequestOutput>(

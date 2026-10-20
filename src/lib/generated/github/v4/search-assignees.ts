@@ -172,6 +172,8 @@ export async function searchAssignees(
 	payload: {
 		input: SearchAssigneesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchAssigneesOutput> {
 	const response = await this.endpointCaller<SearchAssigneesOutput>(

@@ -180,6 +180,8 @@ export async function editMessageText(
 	payload: {
 		input: EditMessageTextInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<EditMessageTextOutput> {
 	const response = await this.endpointCaller<EditMessageTextOutput>(

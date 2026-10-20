@@ -83,6 +83,8 @@ export async function replyToMessage(
 	payload: {
 		input: ReplyToMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ReplyToMessageOutput> {
 	const response = await this.endpointCaller<ReplyToMessageOutput>(

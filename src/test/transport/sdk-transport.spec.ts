@@ -36,10 +36,64 @@ describe('SdkTransport driving execute()', () => {
 		});
 	});
 
+	it('posts the confidential flag next to the input when set', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42, confidential: true });
+
+		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
+			method: 'POST',
+			body: { ...POINTER, input: INPUT, connectionId: 42, confidential: true, teamId: 77 },
+		});
+	});
+
+	it('posts the idempotency key next to the input, not in a header', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42, idempotencyKey: 'order-7:retry' });
+
+		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
+			method: 'POST',
+			body: {
+				...POINTER,
+				input: INPUT,
+				connectionId: 42,
+				idempotencyKey: 'order-7:retry',
+				teamId: 77,
+			},
+		});
+	});
+
+	it('leaves the idempotency key out of the body when there is none', async () => {
+		const { fetch, sdk } = createSdk();
+
+		await sdk.execute(POINTER, { input: INPUT, connectionId: 42 });
+
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('body.idempotencyKey');
+		expect(fetch.mock.calls[0]?.[1]).not.toHaveProperty('headers');
+	});
+
 	it('resolves to the wrapped envelope', async () => {
 		const { sdk } = createSdk();
 
 		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toEqual({
+			output: OUTPUT,
+		});
+	});
+
+	it('passes the execution block through', async () => {
+		const execution = { id: 'exec-1', replayed: true, confidential: true } as const;
+		const { sdk } = createSdk(vi.fn().mockResolvedValue({ output: OUTPUT, execution }));
+
+		await expect(
+			sdk.execute(POINTER, { input: INPUT, connectionId: 42, idempotencyKey: 'k' }),
+		).resolves.toStrictEqual({ output: OUTPUT, execution });
+	});
+
+	it('leaves execution out when the server sends none', async () => {
+		const { sdk } = createSdk();
+
+		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toStrictEqual({
 			output: OUTPUT,
 		});
 	});

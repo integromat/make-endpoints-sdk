@@ -108,6 +108,8 @@ export async function createUrlImportJob(
 	payload: {
 		input: CreateUrlImportJobInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateUrlImportJobOutput> {
 	const response = await this.endpointCaller<CreateUrlImportJobOutput>(

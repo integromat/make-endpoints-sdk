@@ -114,6 +114,8 @@ export async function searchMetafields(
 	payload: {
 		input: SearchMetafieldsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchMetafieldsOutput> {
 	const response = await this.endpointCaller<SearchMetafieldsOutput>(

@@ -106,6 +106,8 @@ export async function listComments(
 	payload: {
 		input: ListCommentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListCommentsOutput> {
 	const response = await this.endpointCaller<ListCommentsOutput>(

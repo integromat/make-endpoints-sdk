@@ -23,6 +23,8 @@ export async function deleteAclRule(
 	payload: {
 		input: DeleteAclRuleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteAclRuleOutput> {
 	const response = await this.endpointCaller<DeleteAclRuleOutput>(

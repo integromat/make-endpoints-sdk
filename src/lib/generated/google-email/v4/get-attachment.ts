@@ -32,6 +32,8 @@ export async function getAttachment(
 	payload: {
 		input: GetAttachmentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAttachmentOutput> {
 	const response = await this.endpointCaller<GetAttachmentOutput>(

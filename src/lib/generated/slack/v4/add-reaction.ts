@@ -32,6 +32,8 @@ export async function addReaction(
 	payload: {
 		input: AddReactionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddReactionOutput> {
 	const response = await this.endpointCaller<AddReactionOutput>(

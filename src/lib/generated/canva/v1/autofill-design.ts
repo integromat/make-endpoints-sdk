@@ -106,6 +106,8 @@ export async function autofillDesign(
 	payload: {
 		input: AutofillDesignInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AutofillDesignOutput> {
 	const response = await this.endpointCaller<AutofillDesignOutput>(

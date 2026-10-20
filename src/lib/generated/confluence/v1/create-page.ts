@@ -77,6 +77,8 @@ export async function createPage(
 	payload: {
 		input: CreatePageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreatePageOutput> {
 	const response = await this.endpointCaller<CreatePageOutput>(

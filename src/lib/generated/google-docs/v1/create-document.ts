@@ -2766,6 +2766,8 @@ export async function createDocument(
 	payload: {
 		input: CreateDocumentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateDocumentOutput> {
 	const response = await this.endpointCaller<CreateDocumentOutput>(

@@ -338,6 +338,8 @@ export async function getProduct(
 	payload: {
 		input: GetProductInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetProductOutput> {
 	const response = await this.endpointCaller<GetProductOutput>(

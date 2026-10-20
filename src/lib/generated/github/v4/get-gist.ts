@@ -137,6 +137,8 @@ export async function getGist(
 	payload: {
 		input: GetGistInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetGistOutput> {
 	const response = await this.endpointCaller<GetGistOutput>(

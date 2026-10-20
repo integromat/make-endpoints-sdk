@@ -64,6 +64,8 @@ export async function setFormPublishSettings(
 	payload: {
 		input: SetFormPublishSettingsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SetFormPublishSettingsOutput> {
 	const response = await this.endpointCaller<SetFormPublishSettingsOutput>(

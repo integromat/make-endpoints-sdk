@@ -497,6 +497,8 @@ export async function editMessageCaption(
 	payload: {
 		input: EditMessageCaptionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<EditMessageCaptionOutput> {
 	const response = await this.endpointCaller<EditMessageCaptionOutput>(

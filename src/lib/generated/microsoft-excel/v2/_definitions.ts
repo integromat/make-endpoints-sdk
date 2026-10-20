@@ -8,6 +8,8 @@ export const definitions: EndpointDefinition[] = [
 		endpointName: 'arbitraryCall',
 		label: 'Arbitrary call',
 		description: 'Performs an arbitrary authorized API call.',
+		context:
+			'---\nname: arbitraryCall\ndescription: Performs an arbitrary authorized API call.\n---\n\n# Arbitrary call\n\nSends one HTTP request to Microsoft Graph. The base URL is hardcoded to `https://graph.microsoft.com`. Put the versioned path in `url`, for example `/v1.0/me`.\n\nUses the Microsoft 365 Excel connection. This endpoint adds no extra scope.\n\nCheap read: method `GET`, url `/v1.0/me`, no body and no query string.\n\nDocs: https://learn.microsoft.com/en-us/graph/api/resources/excel\n\n`qs` becomes the query string. `body` is the JSON body and is ignored for `GET`. Do not send an Authorization header; the connection adds it.\n\nIf a call needs a workbook session, send header `workbook-session-id`. This endpoint does not create a session.',
 		accounts: { azure: { scope: [] } },
 		annotations: {
 			readOnlyHint: false,

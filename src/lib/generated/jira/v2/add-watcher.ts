@@ -23,6 +23,8 @@ export async function addWatcher(
 	payload: {
 		input: AddWatcherInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddWatcherOutput> {
 	const response = await this.endpointCaller<AddWatcherOutput>(

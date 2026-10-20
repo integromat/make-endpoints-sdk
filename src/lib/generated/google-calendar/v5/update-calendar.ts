@@ -127,6 +127,8 @@ export async function updateCalendar(
 	payload: {
 		input: UpdateCalendarInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateCalendarOutput> {
 	const response = await this.endpointCaller<UpdateCalendarOutput>(

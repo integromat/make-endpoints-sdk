@@ -100,6 +100,8 @@ export async function searchBlogPosts(
 	payload: {
 		input: SearchBlogPostsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchBlogPostsOutput> {
 	const response = await this.endpointCaller<SearchBlogPostsOutput>(

@@ -94,6 +94,8 @@ export async function joinChannel(
 	payload: {
 		input: JoinChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<JoinChannelOutput> {
 	const response = await this.endpointCaller<JoinChannelOutput>(

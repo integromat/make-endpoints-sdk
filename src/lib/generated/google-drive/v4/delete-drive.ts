@@ -27,6 +27,8 @@ export async function deleteDrive(
 	payload: {
 		input: DeleteDriveInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteDriveOutput> {
 	const response = await this.endpointCaller<DeleteDriveOutput>(

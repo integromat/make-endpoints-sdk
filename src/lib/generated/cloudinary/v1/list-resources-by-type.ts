@@ -207,6 +207,8 @@ export async function listResourcesByType(
 	payload: {
 		input: ListResourcesByTypeInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListResourcesByTypeOutput> {
 	const response = await this.endpointCaller<ListResourcesByTypeOutput>(

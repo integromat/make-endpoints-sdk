@@ -19,6 +19,8 @@ export async function deleteIssueLink(
 	payload: {
 		input: DeleteIssueLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteIssueLinkOutput> {
 	const response = await this.endpointCaller<DeleteIssueLinkOutput>(

@@ -296,6 +296,8 @@ export async function getProductVariant(
 	payload: {
 		input: GetProductVariantInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetProductVariantOutput> {
 	const response = await this.endpointCaller<GetProductVariantOutput>(

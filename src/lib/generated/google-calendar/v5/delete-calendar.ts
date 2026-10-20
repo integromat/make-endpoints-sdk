@@ -19,6 +19,8 @@ export async function deleteCalendar(
 	payload: {
 		input: DeleteCalendarInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteCalendarOutput> {
 	const response = await this.endpointCaller<DeleteCalendarOutput>(

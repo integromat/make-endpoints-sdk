@@ -156,6 +156,8 @@ export async function getUserUsage(
 	payload: {
 		input: GetUserUsageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetUserUsageOutput> {
 	const response = await this.endpointCaller<GetUserUsageOutput>(

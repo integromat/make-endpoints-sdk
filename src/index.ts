@@ -4,6 +4,7 @@ export type {
 	EndpointAccount,
 	EndpointAnnotations,
 	EndpointDefinition,
+	EndpointExecution,
 	EndpointJsonSchema,
 } from './lib/shared.ts';
 export { SdkTransport } from './lib/transport/sdk-transport.ts';

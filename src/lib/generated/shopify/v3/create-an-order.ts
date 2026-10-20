@@ -928,6 +928,8 @@ export async function createAnOrder(
 	payload: {
 		input: CreateAnOrderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateAnOrderOutput> {
 	const response = await this.endpointCaller<CreateAnOrderOutput>(

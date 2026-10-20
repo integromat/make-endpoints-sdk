@@ -136,6 +136,8 @@ describe('command tree', () => {
 		expect(flags).toEqual([
 			'--team-id',
 			'--project-id',
+			'--confidential',
+			'--idempotency-key',
 			'--include-archived',
 			'--limit',
 			'--tags',
@@ -218,6 +220,70 @@ describe('endpoint commands', () => {
 			appVersion: 1,
 			endpointName: 'getItem',
 		});
+	});
+
+	it('sends --confidential as the body flag, not as an input field', async () => {
+		await run([
+			'alpha',
+			'get-item',
+			'--item-id',
+			'i1',
+			'--team-id',
+			'7',
+			'--connection-id',
+			'9',
+			'--input',
+			'{"teamId":"t"}',
+			'--confidential',
+		]);
+
+		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
+	});
+
+	it('sends --idempotency-key in the body and prints the execution block', async () => {
+		const execution = { id: 'exec-1', replayed: true };
+		fetchMock.mockResolvedValue({ output: { id: 'item-1' }, execution });
+
+		await run([
+			'alpha',
+			'get-item',
+			'--item-id',
+			'i1',
+			'--team-id',
+			'7',
+			'--connection-id',
+			'9',
+			'--input',
+			'{"teamId":"t"}',
+			'--idempotency-key',
+			'order-7',
+		]);
+
+		expect(lastBody()).toMatchObject({
+			idempotencyKey: 'order-7',
+			input: { itemId: 'i1', teamId: 't' },
+		});
+		expect(fetchMock.mock.lastCall?.[1]).not.toHaveProperty('headers');
+		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution });
+	});
+
+	it('keeps the key a string even when it looks like a number', async () => {
+		await run([
+			'endpoints',
+			'execute',
+			'--app-name',
+			'alpha',
+			'--app-version',
+			'2',
+			'--endpoint-name',
+			'getItem',
+			'--team-id',
+			'7',
+			'--idempotency-key',
+			'12345',
+		]);
+
+		expect(lastBody()).toMatchObject({ idempotencyKey: '12345' });
 	});
 
 	it('lets separate flags override keys of --input', async () => {

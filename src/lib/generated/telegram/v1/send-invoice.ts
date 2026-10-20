@@ -312,6 +312,8 @@ export async function sendInvoice(
 	payload: {
 		input: SendInvoiceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendInvoiceOutput> {
 	const response = await this.endpointCaller<SendInvoiceOutput>(

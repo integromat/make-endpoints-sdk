@@ -109,6 +109,8 @@ export async function batchUpdateDocument(
 	payload: {
 		input: BatchUpdateDocumentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchUpdateDocumentOutput> {
 	const response = await this.endpointCaller<BatchUpdateDocumentOutput>(

@@ -120,6 +120,8 @@ export async function listForms(
 	payload: {
 		input: ListFormsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListFormsOutput> {
 	const response = await this.endpointCaller<ListFormsOutput>(

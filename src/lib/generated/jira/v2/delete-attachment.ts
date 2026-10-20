@@ -19,6 +19,8 @@ export async function deleteAttachment(
 	payload: {
 		input: DeleteAttachmentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteAttachmentOutput> {
 	const response = await this.endpointCaller<DeleteAttachmentOutput>(

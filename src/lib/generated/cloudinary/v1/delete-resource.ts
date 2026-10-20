@@ -40,6 +40,8 @@ export async function deleteResource(
 	payload: {
 		input: DeleteResourceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteResourceOutput> {
 	const response = await this.endpointCaller<DeleteResourceOutput>(

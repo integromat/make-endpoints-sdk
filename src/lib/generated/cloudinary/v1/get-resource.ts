@@ -407,6 +407,8 @@ export async function getResource(
 	payload: {
 		input: GetResourceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetResourceOutput> {
 	const response = await this.endpointCaller<GetResourceOutput>(

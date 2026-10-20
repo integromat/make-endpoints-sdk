@@ -143,6 +143,8 @@ export async function updateComponent(
 	payload: {
 		input: UpdateComponentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateComponentOutput> {
 	const response = await this.endpointCaller<UpdateComponentOutput>(

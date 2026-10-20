@@ -64,6 +64,8 @@ export async function listBrandTemplates(
 	payload: {
 		input: ListBrandTemplatesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListBrandTemplatesOutput> {
 	const response = await this.endpointCaller<ListBrandTemplatesOutput>(

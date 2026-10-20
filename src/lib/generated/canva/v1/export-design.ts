@@ -116,6 +116,8 @@ export async function exportDesign(
 	payload: {
 		input: ExportDesignInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ExportDesignOutput> {
 	const response = await this.endpointCaller<ExportDesignOutput>(

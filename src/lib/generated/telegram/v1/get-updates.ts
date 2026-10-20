@@ -1129,6 +1129,8 @@ export async function getUpdates(
 	payload: {
 		input: GetUpdatesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetUpdatesOutput> {
 	const response = await this.endpointCaller<GetUpdatesOutput>(

@@ -28,6 +28,8 @@ export async function deleteMessage(
 	payload: {
 		input: DeleteMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteMessageOutput> {
 	const response = await this.endpointCaller<DeleteMessageOutput>(

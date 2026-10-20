@@ -23,6 +23,8 @@ export async function deleteComponent(
 	payload: {
 		input: DeleteComponentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteComponentOutput> {
 	const response = await this.endpointCaller<DeleteComponentOutput>(

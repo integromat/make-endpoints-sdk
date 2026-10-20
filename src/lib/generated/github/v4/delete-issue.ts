@@ -28,6 +28,8 @@ export async function deleteIssue(
 	payload: {
 		input: DeleteIssueInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteIssueOutput> {
 	const response = await this.endpointCaller<DeleteIssueOutput>(

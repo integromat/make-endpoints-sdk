@@ -149,6 +149,8 @@ export async function postMessage(
 	payload: {
 		input: PostMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<PostMessageOutput> {
 	const response = await this.endpointCaller<PostMessageOutput>(

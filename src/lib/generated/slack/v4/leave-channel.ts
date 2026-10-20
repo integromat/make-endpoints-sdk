@@ -28,6 +28,8 @@ export async function leaveChannel(
 	payload: {
 		input: LeaveChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<LeaveChannelOutput> {
 	const response = await this.endpointCaller<LeaveChannelOutput>(

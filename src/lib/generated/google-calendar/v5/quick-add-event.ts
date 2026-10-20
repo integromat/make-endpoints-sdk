@@ -575,6 +575,8 @@ export async function quickAddEvent(
 	payload: {
 		input: QuickAddEventInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<QuickAddEventOutput> {
 	const response = await this.endpointCaller<QuickAddEventOutput>(

@@ -3,8 +3,7 @@ import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
 
 export type ArbitraryCallInput = {
 	/**
-	 * Enter a path relative to `{you_mailchimp_domain.com}/3.0`.
-	 * e.g.`/campaigns`
+	 * Enter a path relative to the connection host, for example `https://us1.api.mailchimp.com/3.0`. For example, `/ping`.
 	 */
 	url: string;
 	/**
@@ -71,6 +70,8 @@ export async function arbitraryCall(
 	payload: {
 		input: ArbitraryCallInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArbitraryCallOutput> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(

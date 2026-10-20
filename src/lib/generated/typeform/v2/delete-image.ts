@@ -19,6 +19,8 @@ export async function deleteImage(
 	payload: {
 		input: DeleteImageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteImageOutput> {
 	const response = await this.endpointCaller<DeleteImageOutput>(

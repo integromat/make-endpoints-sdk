@@ -134,6 +134,8 @@ export async function listFiles(
 	payload: {
 		input: ListFilesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListFilesOutput> {
 	const response = await this.endpointCaller<ListFilesOutput>(

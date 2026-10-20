@@ -169,6 +169,8 @@ export async function trashMessage(
 	payload: {
 		input: TrashMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<TrashMessageOutput> {
 	const response = await this.endpointCaller<TrashMessageOutput>(

@@ -367,6 +367,8 @@ export async function updateProductVariants(
 	payload: {
 		input: UpdateProductVariantsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateProductVariantsOutput> {
 	const response = await this.endpointCaller<UpdateProductVariantsOutput>(

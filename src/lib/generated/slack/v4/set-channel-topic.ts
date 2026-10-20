@@ -67,6 +67,8 @@ export async function setChannelTopic(
 	payload: {
 		input: SetChannelTopicInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SetChannelTopicOutput> {
 	const response = await this.endpointCaller<SetChannelTopicOutput>(

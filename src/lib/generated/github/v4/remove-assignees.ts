@@ -68,6 +68,8 @@ export async function removeAssignees(
 	payload: {
 		input: RemoveAssigneesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RemoveAssigneesOutput> {
 	const response = await this.endpointCaller<RemoveAssigneesOutput>(

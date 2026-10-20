@@ -2578,6 +2578,8 @@ export async function updateForm(
 	payload: {
 		input: UpdateFormInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateFormOutput> {
 	const response = await this.endpointCaller<UpdateFormOutput>(

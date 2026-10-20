@@ -1062,6 +1062,8 @@ export async function copyFile(
 	payload: {
 		input: CopyFileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CopyFileOutput> {
 	const response = await this.endpointCaller<CopyFileOutput>(

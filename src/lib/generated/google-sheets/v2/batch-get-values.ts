@@ -61,6 +61,8 @@ export async function batchGetValues(
 	payload: {
 		input: BatchGetValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchGetValuesOutput> {
 	const response = await this.endpointCaller<BatchGetValuesOutput>(

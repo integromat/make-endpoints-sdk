@@ -203,6 +203,8 @@ export async function modifyMessageLabels(
 	payload: {
 		input: ModifyMessageLabelsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ModifyMessageLabelsOutput> {
 	const response = await this.endpointCaller<ModifyMessageLabelsOutput>(

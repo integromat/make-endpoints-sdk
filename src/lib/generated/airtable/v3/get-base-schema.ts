@@ -75,6 +75,8 @@ export async function getBaseSchema(
 	payload: {
 		input: GetBaseSchemaInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetBaseSchemaOutput> {
 	const response = await this.endpointCaller<GetBaseSchemaOutput>(

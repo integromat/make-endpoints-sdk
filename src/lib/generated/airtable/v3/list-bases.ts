@@ -41,6 +41,8 @@ export async function listBases(
 	payload: {
 		input: ListBasesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListBasesOutput> {
 	const response = await this.endpointCaller<ListBasesOutput>(

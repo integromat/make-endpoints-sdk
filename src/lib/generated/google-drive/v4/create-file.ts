@@ -1067,6 +1067,8 @@ export async function createFile(
 	payload: {
 		input: CreateFileInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateFileOutput> {
 	const response = await this.endpointCaller<CreateFileOutput>(

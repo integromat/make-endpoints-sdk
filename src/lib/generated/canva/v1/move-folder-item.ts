@@ -23,6 +23,8 @@ export async function moveFolderItem(
 	payload: {
 		input: MoveFolderItemInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<MoveFolderItemOutput> {
 	const response = await this.endpointCaller<MoveFolderItemOutput>(

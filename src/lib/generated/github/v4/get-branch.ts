@@ -112,6 +112,8 @@ export async function getBranch(
 	payload: {
 		input: GetBranchInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetBranchOutput> {
 	const response = await this.endpointCaller<GetBranchOutput>(

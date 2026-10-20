@@ -108,6 +108,8 @@ export async function createWebhook(
 	payload: {
 		input: CreateWebhookInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateWebhookOutput> {
 	const response = await this.endpointCaller<CreateWebhookOutput>(

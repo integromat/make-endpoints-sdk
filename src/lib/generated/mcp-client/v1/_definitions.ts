@@ -73,9 +73,9 @@ export const definitions: EndpointDefinition[] = [
 		appVersion: 1,
 		endpointName: 'toolsList',
 		label: 'List tools',
-		description: 'Returns the tools the connected MCP server offers.',
+		description: 'Returns the tools and server information the connected MCP server reports.',
 		context:
-			'---\nname: toolsList\ndescription: This endpoint can be used to discover the tools an MCP server offers\n---\n\nLists the tools exposed by the MCP server the connection points at. Every tool is returned with its JSON Schema input schema, so a tool can be called afterwards.',
+			'---\nname: toolsList\ndescription: This endpoint can be used to discover the tools an MCP server offers\n---\n\nLists the tools exposed by the MCP server the connection points at. Every tool is returned with its JSON Schema input schema, so a tool can be called afterwards. Returns server information under _meta["io.modelcontextprotocol/serverInfo"]. Preserves server-supplied information and uses MCP initialisation metadata as a fallback for older servers. Returns the user\'s Make connection label under _meta["com.make/mcp-client"].connectionLabel when available.',
 		accounts: { mcp: { scope: [] } },
 		annotations: {
 			readOnlyHint: true,
@@ -97,6 +97,82 @@ export const definitions: EndpointDefinition[] = [
 		outputSchema: {
 			type: 'object',
 			properties: {
+				_meta: {
+					type: 'object',
+					description:
+						'Server metadata, including server information and the Make connection label in separate namespaces.',
+					properties: {
+						'com.make/mcp-client': {
+							type: 'object',
+							description:
+								'Metadata supplied by Make. Server-supplied values in this namespace are replaced.',
+							properties: {
+								connectionLabel: {
+									type: 'string',
+									description:
+										"The user's Make connection label. Separate from the server-reported name. Omitted when unavailable.",
+								},
+							},
+							required: [],
+						},
+						'io.modelcontextprotocol/serverInfo': {
+							type: 'object',
+							description:
+								'Server-supplied response metadata, with MCP initialisation metadata as a fallback for older servers. This is not a verified identity. Omitted when unavailable.',
+							properties: {
+								name: {
+									type: 'string',
+									description:
+										'Server name intended for programmatic use. Use it for display when title is absent.',
+								},
+								version: {
+									type: 'string',
+									description: 'Version of the server implementation.',
+								},
+								description: {
+									type: 'string',
+									description:
+										'Optional description of the server and its capabilities.',
+								},
+								websiteUrl: {
+									type: 'string',
+									description: "Optional URL of the server's website.",
+								},
+								icons: {
+									type: 'array',
+									description: 'Optional icons the server publishes for display.',
+									items: {
+										type: 'object',
+										properties: {
+											src: {
+												type: 'string',
+												description: 'URL or data URI of the icon.',
+											},
+											mimeType: {
+												type: 'string',
+												description: 'Optional MIME type of the icon.',
+											},
+											sizes: {
+												type: 'array',
+												description:
+													'Optional supported sizes, such as 48x48 or any for scalable icons.',
+												items: { type: 'string' },
+											},
+											theme: {
+												type: 'string',
+												description:
+													'Optional background theme: light or dark. When absent, the icon supports either theme.',
+											},
+										},
+										required: ['src'],
+									},
+								},
+							},
+							required: ['name', 'version'],
+						},
+					},
+					required: [],
+				},
 				tools: {
 					type: 'array',
 					description:
@@ -152,13 +228,6 @@ export const definitions: EndpointDefinition[] = [
 					type: 'string',
 					description:
 						'Present when more tools are available. Pass it as `cursor` to get the next page.',
-				},
-				_meta: {
-					type: 'object',
-					description: 'Metadata the server attached to the response.',
-					properties: {},
-					required: [],
-					additionalProperties: true,
 				},
 			},
 			required: [],

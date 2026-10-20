@@ -170,6 +170,8 @@ export async function getUser(
 	payload: {
 		input: GetUserInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetUserOutput> {
 	const response = await this.endpointCaller<GetUserOutput>(

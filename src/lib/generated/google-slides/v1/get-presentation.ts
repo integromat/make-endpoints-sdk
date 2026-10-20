@@ -4933,6 +4933,8 @@ export async function getPresentation(
 	payload: {
 		input: GetPresentationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPresentationOutput> {
 	const response = await this.endpointCaller<GetPresentationOutput>(

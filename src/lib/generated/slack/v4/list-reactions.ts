@@ -80,6 +80,8 @@ export async function listReactions(
 	payload: {
 		input: ListReactionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListReactionsOutput> {
 	const response = await this.endpointCaller<ListReactionsOutput>(

@@ -95,6 +95,8 @@ export async function searchBranches(
 	payload: {
 		input: SearchBranchesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchBranchesOutput> {
 	const response = await this.endpointCaller<SearchBranchesOutput>(

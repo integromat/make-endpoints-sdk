@@ -187,6 +187,8 @@ export async function getSpreadsheet(
 	payload: {
 		input: GetSpreadsheetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetSpreadsheetOutput> {
 	const response = await this.endpointCaller<GetSpreadsheetOutput>(

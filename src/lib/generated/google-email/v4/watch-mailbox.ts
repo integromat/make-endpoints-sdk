@@ -36,6 +36,8 @@ export async function watchMailbox(
 	payload: {
 		input: WatchMailboxInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<WatchMailboxOutput> {
 	const response = await this.endpointCaller<WatchMailboxOutput>(

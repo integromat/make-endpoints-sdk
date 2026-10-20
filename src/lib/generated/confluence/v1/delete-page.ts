@@ -36,6 +36,8 @@ export async function deletePage(
 	payload: {
 		input: DeletePageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeletePageOutput> {
 	const response = await this.endpointCaller<DeletePageOutput>(

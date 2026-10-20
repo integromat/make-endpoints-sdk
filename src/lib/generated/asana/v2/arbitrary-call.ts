@@ -41,7 +41,7 @@ export type ArbitraryCallInput = {
 		value?: string;
 	}[];
 	/**
-	 * The HTTP request query body. This input will be ignored if the HTTP request method is `GET`.
+	 * The HTTP request body. This input will be ignored if the HTTP request method is `GET`.
 	 */
 	body?: Record<string, JSONValue>;
 };
@@ -63,13 +63,15 @@ export type ArbitraryCallOutput = {
 
 /**
  * Arbitrary call
- * Performs an arbitrary authorized API call.
+ * Performs an arbitrary authorized API call to the Asana API, similar to the app's "Make an API Call" module.
  */
 export async function arbitraryCall(
 	this: EndpointFunctionThis,
 	payload: {
 		input: ArbitraryCallInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArbitraryCallOutput> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(

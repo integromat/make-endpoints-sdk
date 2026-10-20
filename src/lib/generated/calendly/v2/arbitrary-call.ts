@@ -12,6 +12,8 @@ export type ArbitraryCallInput = {
 	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	/**
 	 * The HTTP request headers. You don't have to add authorization headers; we already did that for you.
+	 *
+	 * Items: An HTTP request header.
 	 */
 	headers?: {
 		/**
@@ -25,14 +27,16 @@ export type ArbitraryCallInput = {
 	}[];
 	/**
 	 * The HTTP request query parameters.
+	 *
+	 * Items: An HTTP request query parameter.
 	 */
 	qs?: {
 		/**
-		 * The HTTP request query parameter's key.
+		 * The HTTP request query parameter key.
 		 */
 		key?: string;
 		/**
-		 * The HTTP request query parameter's value.
+		 * The HTTP request query parameter value.
 		 */
 		value?: string;
 	}[];
@@ -66,6 +70,8 @@ export async function arbitraryCall(
 	payload: {
 		input: ArbitraryCallInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArbitraryCallOutput> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(

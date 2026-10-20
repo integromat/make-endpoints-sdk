@@ -180,6 +180,8 @@ export async function listCommits(
 	payload: {
 		input: ListCommitsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListCommitsOutput> {
 	const response = await this.endpointCaller<ListCommitsOutput>(

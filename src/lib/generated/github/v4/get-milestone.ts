@@ -99,6 +99,8 @@ export async function getMilestone(
 	payload: {
 		input: GetMilestoneInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetMilestoneOutput> {
 	const response = await this.endpointCaller<GetMilestoneOutput>(

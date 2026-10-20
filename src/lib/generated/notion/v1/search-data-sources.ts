@@ -598,6 +598,8 @@ export async function searchDataSources(
 	payload: {
 		input: SearchDataSourcesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchDataSourcesOutput> {
 	const response = await this.endpointCaller<SearchDataSourcesOutput>(

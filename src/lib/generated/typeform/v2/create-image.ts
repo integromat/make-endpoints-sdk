@@ -68,6 +68,8 @@ export async function createImage(
 	payload: {
 		input: CreateImageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateImageOutput> {
 	const response = await this.endpointCaller<CreateImageOutput>(

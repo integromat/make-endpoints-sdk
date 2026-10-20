@@ -210,6 +210,8 @@ export async function sendVideoNote(
 	payload: {
 		input: SendVideoNoteInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendVideoNoteOutput> {
 	const response = await this.endpointCaller<SendVideoNoteOutput>(

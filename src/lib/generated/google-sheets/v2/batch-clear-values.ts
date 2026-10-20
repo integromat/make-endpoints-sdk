@@ -36,6 +36,8 @@ export async function batchClearValues(
 	payload: {
 		input: BatchClearValuesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchClearValuesOutput> {
 	const response = await this.endpointCaller<BatchClearValuesOutput>(

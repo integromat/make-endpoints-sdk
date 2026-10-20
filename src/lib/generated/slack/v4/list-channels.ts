@@ -110,6 +110,8 @@ export async function listChannels(
 	payload: {
 		input: ListChannelsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListChannelsOutput> {
 	const response = await this.endpointCaller<ListChannelsOutput>(

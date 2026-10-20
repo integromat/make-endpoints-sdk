@@ -81,6 +81,8 @@ export async function getPageDirectChildren(
 	payload: {
 		input: GetPageDirectChildrenInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetPageDirectChildrenOutput> {
 	const response = await this.endpointCaller<GetPageDirectChildrenOutput>(

@@ -24,6 +24,8 @@ export async function getBrandTemplateDataset(
 	payload: {
 		input: GetBrandTemplateDatasetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetBrandTemplateDatasetOutput> {
 	const response = await this.endpointCaller<GetBrandTemplateDatasetOutput>(

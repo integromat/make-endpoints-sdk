@@ -185,6 +185,8 @@ export async function listCalendars(
 	payload: {
 		input: ListCalendarsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListCalendarsOutput> {
 	const response = await this.endpointCaller<ListCalendarsOutput>(

@@ -94,6 +94,8 @@ export async function createOrUpdateWebhook(
 	payload: {
 		input: CreateOrUpdateWebhookInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateOrUpdateWebhookOutput> {
 	const response = await this.endpointCaller<CreateOrUpdateWebhookOutput>(

@@ -120,6 +120,8 @@ export async function createProjectVersion(
 	payload: {
 		input: CreateProjectVersionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateProjectVersionOutput> {
 	const response = await this.endpointCaller<CreateProjectVersionOutput>(

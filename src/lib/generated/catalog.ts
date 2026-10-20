@@ -3,23 +3,31 @@ import type { EndpointCaller } from '../shared.ts';
 
 import { endpoints as airtableEndpoints } from './airtable/_catalog.ts';
 import { endpoints as asanaEndpoints } from './asana/_catalog.ts';
+import { endpoints as boxEndpoints } from './box/_catalog.ts';
 import { endpoints as calendlyEndpoints } from './calendly/_catalog.ts';
 import { endpoints as canvaEndpoints } from './canva/_catalog.ts';
 import { endpoints as clickupEndpoints } from './clickup/_catalog.ts';
 import { endpoints as cloudinaryEndpoints } from './cloudinary/_catalog.ts';
 import { endpoints as confluenceEndpoints } from './confluence/_catalog.ts';
 import { endpoints as discordEndpoints } from './discord/_catalog.ts';
+import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
+import { endpoints as googleChatEndpoints } from './google-chat/_catalog.ts';
 import { endpoints as googleContactsEndpoints } from './google-contacts/_catalog.ts';
 import { endpoints as googleDocsEndpoints } from './google-docs/_catalog.ts';
 import { endpoints as googleDriveEndpoints } from './google-drive/_catalog.ts';
 import { endpoints as googleEmailEndpoints } from './google-email/_catalog.ts';
 import { endpoints as googleFormsEndpoints } from './google-forms/_catalog.ts';
+import { endpoints as googleGroupsEndpoints } from './google-groups/_catalog.ts';
+import { endpoints as googleKeepEndpoints } from './google-keep/_catalog.ts';
 import { endpoints as googleSheetsEndpoints } from './google-sheets/_catalog.ts';
 import { endpoints as googleSlidesEndpoints } from './google-slides/_catalog.ts';
+import { endpoints as googleTasksEndpoints } from './google-tasks/_catalog.ts';
+import { endpoints as googlecloudvisionEndpoints } from './googlecloudvision/_catalog.ts';
 import { endpoints as highlevelEndpoints } from './highlevel/_catalog.ts';
 import { endpoints as httpEndpoints } from './http/_catalog.ts';
+import { endpoints as hubspotcrmEndpoints } from './hubspotcrm/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
 import { endpoints as jotformEndpoints } from './jotform/_catalog.ts';
 import { endpoints as linearEndpoints } from './linear/_catalog.ts';
@@ -29,13 +37,20 @@ import { endpoints as mcpClientEndpoints } from './mcp-client/_catalog.ts';
 import { endpoints as microsoftCalendarEndpoints } from './microsoft-calendar/_catalog.ts';
 import { endpoints as microsoftEmailEndpoints } from './microsoft-email/_catalog.ts';
 import { endpoints as microsoftExcelEndpoints } from './microsoft-excel/_catalog.ts';
+import { endpoints as microsoftTeamsEndpoints } from './microsoft-teams/_catalog.ts';
+import { endpoints as mondayEndpoints } from './monday/_catalog.ts';
+import { endpoints as netsuiteEndpoints } from './netsuite/_catalog.ts';
 import { endpoints as notionEndpoints } from './notion/_catalog.ts';
+import { endpoints as onedriveEndpoints } from './onedrive/_catalog.ts';
+import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
 import { endpoints as pipedriveEndpoints } from './pipedrive/_catalog.ts';
+import { endpoints as salesforceEndpoints } from './salesforce/_catalog.ts';
 import { endpoints as shopifyEndpoints } from './shopify/_catalog.ts';
 import { endpoints as slackEndpoints } from './slack/_catalog.ts';
 import { endpoints as stripeEndpoints } from './stripe/_catalog.ts';
 import { endpoints as tallyEndpoints } from './tally/_catalog.ts';
 import { endpoints as telegramEndpoints } from './telegram/_catalog.ts';
+import { endpoints as todoistEndpoints } from './todoist/_catalog.ts';
 import { endpoints as typeformEndpoints } from './typeform/_catalog.ts';
 import { endpoints as typesafeEndpoints } from './typesafe/_catalog.ts';
 import { endpoints as youtubeEndpoints } from './youtube/_catalog.ts';
@@ -44,23 +59,31 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 	return {
 		airtable: airtableEndpoints(endpointCaller),
 		asana: asanaEndpoints(endpointCaller),
+		box: boxEndpoints(endpointCaller),
 		calendly: calendlyEndpoints(endpointCaller),
 		canva: canvaEndpoints(endpointCaller),
 		clickup: clickupEndpoints(endpointCaller),
 		cloudinary: cloudinaryEndpoints(endpointCaller),
 		confluence: confluenceEndpoints(endpointCaller),
 		discord: discordEndpoints(endpointCaller),
+		dropbox: dropboxEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
+		googleChat: googleChatEndpoints(endpointCaller),
 		googleContacts: googleContactsEndpoints(endpointCaller),
 		googleDocs: googleDocsEndpoints(endpointCaller),
 		googleDrive: googleDriveEndpoints(endpointCaller),
 		googleEmail: googleEmailEndpoints(endpointCaller),
 		googleForms: googleFormsEndpoints(endpointCaller),
+		googleGroups: googleGroupsEndpoints(endpointCaller),
+		googleKeep: googleKeepEndpoints(endpointCaller),
 		googleSheets: googleSheetsEndpoints(endpointCaller),
 		googleSlides: googleSlidesEndpoints(endpointCaller),
+		googleTasks: googleTasksEndpoints(endpointCaller),
+		googlecloudvision: googlecloudvisionEndpoints(endpointCaller),
 		highlevel: highlevelEndpoints(endpointCaller),
 		http: httpEndpoints(endpointCaller),
+		hubspotcrm: hubspotcrmEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
 		jotform: jotformEndpoints(endpointCaller),
 		linear: linearEndpoints(endpointCaller),
@@ -70,13 +93,20 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		microsoftCalendar: microsoftCalendarEndpoints(endpointCaller),
 		microsoftEmail: microsoftEmailEndpoints(endpointCaller),
 		microsoftExcel: microsoftExcelEndpoints(endpointCaller),
+		microsoftTeams: microsoftTeamsEndpoints(endpointCaller),
+		monday: mondayEndpoints(endpointCaller),
+		netsuite: netsuiteEndpoints(endpointCaller),
 		notion: notionEndpoints(endpointCaller),
+		onedrive: onedriveEndpoints(endpointCaller),
+		pinterest: pinterestEndpoints(endpointCaller),
 		pipedrive: pipedriveEndpoints(endpointCaller),
+		salesforce: salesforceEndpoints(endpointCaller),
 		shopify: shopifyEndpoints(endpointCaller),
 		slack: slackEndpoints(endpointCaller),
 		stripe: stripeEndpoints(endpointCaller),
 		tally: tallyEndpoints(endpointCaller),
 		telegram: telegramEndpoints(endpointCaller),
+		todoist: todoistEndpoints(endpointCaller),
 		typeform: typeformEndpoints(endpointCaller),
 		typesafe: typesafeEndpoints(endpointCaller),
 		youtube: youtubeEndpoints(endpointCaller),

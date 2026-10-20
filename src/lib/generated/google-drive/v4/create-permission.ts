@@ -143,6 +143,8 @@ export async function createPermission(
 	payload: {
 		input: CreatePermissionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreatePermissionOutput> {
 	const response = await this.endpointCaller<CreatePermissionOutput>(

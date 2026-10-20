@@ -117,6 +117,8 @@ export async function editChatInviteLink(
 	payload: {
 		input: EditChatInviteLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<EditChatInviteLinkOutput> {
 	const response = await this.endpointCaller<EditChatInviteLinkOutput>(

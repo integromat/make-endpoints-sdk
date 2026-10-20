@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.9.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.8.0...v0.9.0) (2026-10-20)
+
+
+### Features
+
+* update generated endpoints ([960c6b9](https://github.com/integromat/make-endpoints-sdk/commit/960c6b99023a7f7d313f747042d9dbf7a07a138f))
+
+## [0.8.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.7.0...v0.8.0) (2026-10-17)
+
+
+### Features
+
+* pass a confidential flag through execute, the tools and the CLI ([#12](https://github.com/integromat/make-endpoints-sdk/issues/12)) ([4d6d3ce](https://github.com/integromat/make-endpoints-sdk/commit/4d6d3ce6879319a265faaba5df54b07ff70fafed))
+* pass an idempotency key through execute, the tools and the CLI [BAR-4272] ([#14](https://github.com/integromat/make-endpoints-sdk/issues/14)) ([db9a35f](https://github.com/integromat/make-endpoints-sdk/commit/db9a35f8668e0f851c46fa9122b79db91b441cc1))
+* update generated endpoints ([a4f21a4](https://github.com/integromat/make-endpoints-sdk/commit/a4f21a4b0198bb08706ae3a87a84a646f70c2cce))
+
+## [0.7.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.6.0...v0.7.0) (2026-10-16)
+
+
+### Features
+
+* update generated endpoints ([c252f43](https://github.com/integromat/make-endpoints-sdk/commit/c252f43464dd98721dd335c15794558d561baf5d))
+
+## [0.6.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.5.0...v0.6.0) (2026-10-15)
+
+
+### Features
+
+* update generated endpoints ([753ccb4](https://github.com/integromat/make-endpoints-sdk/commit/753ccb4ab12f0dad2a5d2ecc82f5fefe383147bf))
+
+## [0.5.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.4.0...v0.5.0) (2026-10-14)
+
+
+### Features
+
+* update generated endpoints ([80aad4e](https://github.com/integromat/make-endpoints-sdk/commit/80aad4ec2a25a84cc1742fe5cd970314001aa63d))
+
 ## [0.4.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.3.0...v0.4.0) (2026-10-12)
 
 

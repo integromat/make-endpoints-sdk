@@ -24,6 +24,8 @@ export async function archiveChannel(
 	payload: {
 		input: ArchiveChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ArchiveChannelOutput> {
 	const response = await this.endpointCaller<ArchiveChannelOutput>(

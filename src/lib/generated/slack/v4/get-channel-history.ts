@@ -116,6 +116,8 @@ export async function getChannelHistory(
 	payload: {
 		input: GetChannelHistoryInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetChannelHistoryOutput> {
 	const response = await this.endpointCaller<GetChannelHistoryOutput>(

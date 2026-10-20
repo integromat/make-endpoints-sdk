@@ -101,6 +101,8 @@ export async function revokeChatInviteLink(
 	payload: {
 		input: RevokeChatInviteLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RevokeChatInviteLinkOutput> {
 	const response = await this.endpointCaller<RevokeChatInviteLinkOutput>(

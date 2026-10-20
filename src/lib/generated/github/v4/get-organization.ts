@@ -64,6 +64,8 @@ export async function getOrganization(
 	payload: {
 		input: GetOrganizationInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetOrganizationOutput> {
 	const response = await this.endpointCaller<GetOrganizationOutput>(

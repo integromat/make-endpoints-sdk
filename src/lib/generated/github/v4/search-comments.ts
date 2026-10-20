@@ -246,6 +246,8 @@ export async function searchComments(
 	payload: {
 		input: SearchCommentsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchCommentsOutput> {
 	const response = await this.endpointCaller<SearchCommentsOutput>(

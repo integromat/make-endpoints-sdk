@@ -43,6 +43,8 @@ export async function forwardMessage(
 	payload: {
 		input: ForwardMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ForwardMessageOutput> {
 	const response = await this.endpointCaller<ForwardMessageOutput>(

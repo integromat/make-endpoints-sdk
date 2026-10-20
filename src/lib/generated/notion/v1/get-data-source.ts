@@ -557,6 +557,8 @@ export async function getDataSource(
 	payload: {
 		input: GetDataSourceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetDataSourceOutput> {
 	const response = await this.endpointCaller<GetDataSourceOutput>(

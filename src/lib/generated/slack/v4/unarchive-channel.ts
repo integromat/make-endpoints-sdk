@@ -24,6 +24,8 @@ export async function unarchiveChannel(
 	payload: {
 		input: UnarchiveChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UnarchiveChannelOutput> {
 	const response = await this.endpointCaller<UnarchiveChannelOutput>(

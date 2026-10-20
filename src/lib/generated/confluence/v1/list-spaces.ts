@@ -116,6 +116,8 @@ export async function listSpaces(
 	payload: {
 		input: ListSpacesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListSpacesOutput> {
 	const response = await this.endpointCaller<ListSpacesOutput>(

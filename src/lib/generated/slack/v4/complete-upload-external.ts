@@ -76,6 +76,8 @@ export async function completeUploadExternal(
 	payload: {
 		input: CompleteUploadExternalInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CompleteUploadExternalOutput> {
 	const response = await this.endpointCaller<CompleteUploadExternalOutput>(

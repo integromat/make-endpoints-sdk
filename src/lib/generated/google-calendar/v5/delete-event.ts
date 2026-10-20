@@ -27,6 +27,8 @@ export async function deleteEvent(
 	payload: {
 		input: DeleteEventInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteEventOutput> {
 	const response = await this.endpointCaller<DeleteEventOutput>(

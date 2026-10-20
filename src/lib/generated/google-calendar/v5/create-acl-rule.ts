@@ -70,6 +70,8 @@ export async function createAclRule(
 	payload: {
 		input: CreateAclRuleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateAclRuleOutput> {
 	const response = await this.endpointCaller<CreateAclRuleOutput>(

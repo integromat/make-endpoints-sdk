@@ -116,6 +116,8 @@ export async function getIssueTransitions(
 	payload: {
 		input: GetIssueTransitionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetIssueTransitionsOutput> {
 	const response = await this.endpointCaller<GetIssueTransitionsOutput>(

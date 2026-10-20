@@ -72,6 +72,8 @@ export async function removeLabel(
 	payload: {
 		input: RemoveLabelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RemoveLabelOutput> {
 	const response = await this.endpointCaller<RemoveLabelOutput>(

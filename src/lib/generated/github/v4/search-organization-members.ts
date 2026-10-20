@@ -94,6 +94,8 @@ export async function searchOrganizationMembers(
 	payload: {
 		input: SearchOrganizationMembersInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchOrganizationMembersOutput> {
 	const response = await this.endpointCaller<SearchOrganizationMembersOutput>(

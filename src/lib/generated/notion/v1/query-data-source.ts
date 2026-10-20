@@ -289,6 +289,8 @@ export async function queryDataSource(
 	payload: {
 		input: QueryDataSourceInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<QueryDataSourceOutput> {
 	const response = await this.endpointCaller<QueryDataSourceOutput>(

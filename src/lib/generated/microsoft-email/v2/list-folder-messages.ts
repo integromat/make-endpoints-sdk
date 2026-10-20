@@ -354,6 +354,8 @@ export async function listFolderMessages(
 	payload: {
 		input: ListFolderMessagesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ListFolderMessagesOutput> {
 	const response = await this.endpointCaller<ListFolderMessagesOutput>(

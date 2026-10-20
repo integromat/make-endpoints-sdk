@@ -113,6 +113,8 @@ export async function createChatInviteLink(
 	payload: {
 		input: CreateChatInviteLinkInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateChatInviteLinkOutput> {
 	const response = await this.endpointCaller<CreateChatInviteLinkOutput>(

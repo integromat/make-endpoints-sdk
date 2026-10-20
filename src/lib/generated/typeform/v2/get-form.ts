@@ -1897,6 +1897,8 @@ export async function getForm(
 	payload: {
 		input: GetFormInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFormOutput> {
 	const response = await this.endpointCaller<GetFormOutput>(

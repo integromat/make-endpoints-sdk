@@ -115,6 +115,8 @@ export async function updateMessage(
 	payload: {
 		input: UpdateMessageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateMessageOutput> {
 	const response = await this.endpointCaller<UpdateMessageOutput>(

@@ -127,6 +127,8 @@ export async function getAbout(
 	payload: {
 		input: GetAboutInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetAboutOutput> {
 	const response = await this.endpointCaller<GetAboutOutput>(

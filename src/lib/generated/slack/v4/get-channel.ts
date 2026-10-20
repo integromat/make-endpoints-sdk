@@ -153,6 +153,8 @@ export async function getChannel(
 	payload: {
 		input: GetChannelInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetChannelOutput> {
 	const response = await this.endpointCaller<GetChannelOutput>(

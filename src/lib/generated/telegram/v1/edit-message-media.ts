@@ -306,6 +306,8 @@ export async function editMessageMedia(
 	payload: {
 		input: EditMessageMediaInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<EditMessageMediaOutput> {
 	const response = await this.endpointCaller<EditMessageMediaOutput>(

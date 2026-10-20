@@ -58,6 +58,8 @@ export async function evaluate(
 	payload: {
 		input: EvaluateInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<EvaluateOutput> {
 	const response = await this.endpointCaller<EvaluateOutput>(

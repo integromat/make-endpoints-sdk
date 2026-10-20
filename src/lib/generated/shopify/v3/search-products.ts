@@ -392,6 +392,8 @@ export async function searchProducts(
 	payload: {
 		input: SearchProductsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SearchProductsOutput> {
 	const response = await this.endpointCaller<SearchProductsOutput>(

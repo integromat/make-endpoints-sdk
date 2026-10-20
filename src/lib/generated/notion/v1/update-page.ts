@@ -328,6 +328,8 @@ export async function updatePage(
 	payload: {
 		input: UpdatePageInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdatePageOutput> {
 	const response = await this.endpointCaller<UpdatePageOutput>(

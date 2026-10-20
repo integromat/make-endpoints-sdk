@@ -100,6 +100,8 @@ export async function promoteChatMember(
 	payload: {
 		input: PromoteChatMemberInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<PromoteChatMemberOutput> {
 	const response = await this.endpointCaller<PromoteChatMemberOutput>(

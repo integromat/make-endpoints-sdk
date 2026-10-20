@@ -61,6 +61,8 @@ export async function updateAclRule(
 	payload: {
 		input: UpdateAclRuleInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateAclRuleOutput> {
 	const response = await this.endpointCaller<UpdateAclRuleOutput>(

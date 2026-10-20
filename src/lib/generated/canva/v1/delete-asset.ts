@@ -19,6 +19,8 @@ export async function deleteAsset(
 	payload: {
 		input: DeleteAssetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteAssetOutput> {
 	const response = await this.endpointCaller<DeleteAssetOutput>(

@@ -68,6 +68,8 @@ export async function addAssignees(
 	payload: {
 		input: AddAssigneesInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<AddAssigneesOutput> {
 	const response = await this.endpointCaller<AddAssigneesOutput>(

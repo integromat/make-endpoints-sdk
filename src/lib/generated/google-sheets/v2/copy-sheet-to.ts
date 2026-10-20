@@ -73,6 +73,8 @@ export async function copySheetTo(
 	payload: {
 		input: CopySheetToInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CopySheetToOutput> {
 	const response = await this.endpointCaller<CopySheetToOutput>(

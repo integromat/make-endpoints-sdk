@@ -128,6 +128,8 @@ export async function updateProjectVersion(
 	payload: {
 		input: UpdateProjectVersionInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateProjectVersionOutput> {
 	const response = await this.endpointCaller<UpdateProjectVersionOutput>(

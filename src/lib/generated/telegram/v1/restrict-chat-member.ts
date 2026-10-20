@@ -105,6 +105,8 @@ export async function restrictChatMember(
 	payload: {
 		input: RestrictChatMemberInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RestrictChatMemberOutput> {
 	const response = await this.endpointCaller<RestrictChatMemberOutput>(

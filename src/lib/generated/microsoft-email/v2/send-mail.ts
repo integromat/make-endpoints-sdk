@@ -153,6 +153,8 @@ export async function sendMail(
 	payload: {
 		input: SendMailInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendMailOutput> {
 	const response = await this.endpointCaller<SendMailOutput>(

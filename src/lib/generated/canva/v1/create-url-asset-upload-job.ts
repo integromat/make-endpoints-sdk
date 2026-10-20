@@ -138,6 +138,8 @@ export async function createUrlAssetUploadJob(
 	payload: {
 		input: CreateUrlAssetUploadJobInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateUrlAssetUploadJobOutput> {
 	const response = await this.endpointCaller<CreateUrlAssetUploadJobOutput>(

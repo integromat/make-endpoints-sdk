@@ -143,6 +143,8 @@ export async function createComponent(
 	payload: {
 		input: CreateComponentInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<CreateComponentOutput> {
 	const response = await this.endpointCaller<CreateComponentOutput>(

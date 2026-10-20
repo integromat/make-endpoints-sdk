@@ -247,6 +247,8 @@ export async function sendSticker(
 	payload: {
 		input: SendStickerInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendStickerOutput> {
 	const response = await this.endpointCaller<SendStickerOutput>(

@@ -37,6 +37,8 @@ export async function reorderFieldOptions(
 	payload: {
 		input: ReorderFieldOptionsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<ReorderFieldOptionsOutput> {
 	const response = await this.endpointCaller<ReorderFieldOptionsOutput>(

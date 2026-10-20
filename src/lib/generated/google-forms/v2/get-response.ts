@@ -52,6 +52,8 @@ export async function getResponse(
 	payload: {
 		input: GetResponseInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetResponseOutput> {
 	const response = await this.endpointCaller<GetResponseOutput>(

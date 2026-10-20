@@ -58,6 +58,8 @@ export async function getFolder(
 	payload: {
 		input: GetFolderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<GetFolderOutput> {
 	const response = await this.endpointCaller<GetFolderOutput>(

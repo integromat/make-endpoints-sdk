@@ -300,6 +300,8 @@ export async function sendVideo(
 	payload: {
 		input: SendVideoInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SendVideoOutput> {
 	const response = await this.endpointCaller<SendVideoOutput>(

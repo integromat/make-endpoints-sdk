@@ -140,6 +140,8 @@ export async function updateAsset(
 	payload: {
 		input: UpdateAssetInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<UpdateAssetOutput> {
 	const response = await this.endpointCaller<UpdateAssetOutput>(

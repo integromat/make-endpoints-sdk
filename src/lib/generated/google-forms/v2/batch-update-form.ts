@@ -1748,6 +1748,8 @@ export async function batchUpdateForm(
 	payload: {
 		input: BatchUpdateFormInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<BatchUpdateFormOutput> {
 	const response = await this.endpointCaller<BatchUpdateFormOutput>(

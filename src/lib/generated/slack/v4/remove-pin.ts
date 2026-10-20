@@ -28,6 +28,8 @@ export async function removePin(
 	payload: {
 		input: RemovePinInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<RemovePinOutput> {
 	const response = await this.endpointCaller<RemovePinOutput>(

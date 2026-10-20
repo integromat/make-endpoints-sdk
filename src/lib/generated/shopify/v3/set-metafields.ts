@@ -146,6 +146,8 @@ export async function setMetafields(
 	payload: {
 		input: SetMetafieldsInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<SetMetafieldsOutput> {
 	const response = await this.endpointCaller<SetMetafieldsOutput>(

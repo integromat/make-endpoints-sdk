@@ -19,6 +19,8 @@ export async function deleteFolder(
 	payload: {
 		input: DeleteFolderInput;
 		connectionId: number;
+		confidential?: boolean;
+		idempotencyKey?: string;
 	},
 ): Promise<DeleteFolderOutput> {
 	const response = await this.endpointCaller<DeleteFolderOutput>(
