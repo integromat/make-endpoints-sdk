@@ -8,6 +8,7 @@ import type {
 	EndpointPointer,
 	JSONValue,
 } from './shared.ts';
+import { isTeamsToProjectsEnabled, resolveProjectId, teamOrProject } from './teams-to-projects.ts';
 import { SdkTransport } from './transport/sdk-transport.ts';
 
 /** JSON Schema of a tool's input. Same shape as `JSONSchema` from `@makehq/sdk/tools`. */
@@ -102,10 +103,42 @@ const RESERVED_ARGUMENTS = new Set([
 	'input',
 ]);
 
-const TEAM_ID_SCHEMA: JSONSchema = {
-	type: 'number',
-	description: 'The ID of the Team the Endpoint is executed in.',
+const TEAM_ID_DESCRIPTION = 'The ID of the Team the Endpoint is executed in.';
+const PROJECT_ID_DESCRIPTION =
+	'The ID of the Project (formerly Team) the Endpoint is executed in.';
+
+/**
+ * `teamId` stays what the tool requires. `projectId` is added next to it as its alias, whatever the
+ * flag; the flag only picks the wording. Not added to an endpoint tool whose input has a field
+ * named `projectId` (Jira, Linear, ...): that field is the app's, not Make's.
+ */
+const _scopeProperties = (
+	teamDescription: string,
+	projectDescription: string,
+): Record<string, JSONSchema> => {
+	if (!isTeamsToProjectsEnabled()) {
+		return {
+			teamId: { type: 'number', description: teamDescription },
+			projectId: { type: 'number', description: 'Alias of `teamId`.' },
+		};
+	}
+	return {
+		teamId: {
+			type: 'number',
+			description: 'Alias of `projectId`: Teams were renamed to Projects.',
+		},
+		projectId: { type: 'number', description: projectDescription },
+	};
 };
+
+/** The scope ID from tool arguments: `projectId`, or its alias `teamId`. */
+const _scopeIdFromArgs = ({ projectId, teamId }: Record<string, JSONValue>): JSONValue => {
+	return resolveProjectId(projectId, teamId);
+};
+
+/** The error for a missing or non-numeric scope ID. */
+const _scopeIdError = (): Error =>
+	new Error(teamOrProject('teamId must be a number.', 'projectId must be a number.'));
 
 const CONFIDENTIAL_SCHEMA: JSONSchema = {
 	type: 'boolean',
@@ -149,7 +182,7 @@ const _callEndpoint = async (
 	{ pointer, teamId, connectionId, confidential, idempotencyKey, input }: CallEndpointParams,
 ): Promise<JSONValue> => {
 	if (typeof teamId !== 'number') {
-		throw new Error('teamId must be a number.');
+		throw _scopeIdError();
 	}
 	if (connectionId !== undefined && typeof connectionId !== 'number') {
 		throw new Error('connectionId must be a number.');
@@ -193,6 +226,9 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 	const fields = Object.entries(_isRecord(properties) ? properties : {}).filter(
 		([field]) => !RESERVED_ARGUMENTS.has(field),
 	);
+	// An endpoint field named `projectId` (Jira, Linear, ...) keeps the name, so there the Make
+	// scope stays `teamId` only.
+	const aliasesProject = !fields.some(([field]) => field === 'projectId');
 	const requiredFields = Array.isArray(required) ? required.map(String) : [];
 	const connectionTypes = Object.keys(accounts);
 	const takesConnection = connectionTypes.length > 0;
@@ -208,7 +244,9 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		inputSchema: {
 			type: 'object',
 			properties: {
-				teamId: TEAM_ID_SCHEMA,
+				...(aliasesProject
+					? _scopeProperties(TEAM_ID_DESCRIPTION, PROJECT_ID_DESCRIPTION)
+					: { teamId: { type: 'number', description: TEAM_ID_DESCRIPTION } }),
 				...(takesConnection
 					? {
 							connectionId: {
@@ -231,11 +269,27 @@ const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): En
 		},
 		definition,
 		latest,
-		execute: async (
-			make,
-			{ teamId, connectionId, confidential, idempotencyKey, input, ...rest },
-		) => {
-			const merged = { ...(input !== undefined && _isRecord(input) ? input : {}), ...rest };
+		execute: async (make, args) => {
+			const {
+				teamId: rawTeamId,
+				connectionId,
+				confidential,
+				idempotencyKey,
+				input,
+				...rest
+			} = args;
+			let teamId = rawTeamId;
+			if (aliasesProject) {
+				teamId = resolveProjectId(rest.projectId, rawTeamId);
+				delete rest.projectId;
+			}
+			if (typeof teamId !== 'number') {
+				throw _scopeIdError();
+			}
+			const merged = {
+				...(input !== undefined && _isRecord(input) ? input : {}),
+				...rest,
+			};
 			const missing = requiredFields.filter((field) => merged[field] === undefined);
 			if (missing.length > 0) {
 				throw new Error(`Missing required input fields: ${missing.join(', ')}.`);
@@ -260,7 +314,11 @@ const EXECUTE_TOOL: EndpointTool = {
 	category: 'endpoints',
 	scope: SCOPE,
 	scopeId: 'teamId',
-	annotations: { readOnlyHint: false, openWorldHint: true, destructiveHint: true },
+	annotations: {
+		readOnlyHint: false,
+		openWorldHint: true,
+		destructiveHint: true,
+	},
 	inputSchema: {
 		type: 'object',
 		properties: {
@@ -272,8 +330,11 @@ const EXECUTE_TOOL: EndpointTool = {
 				type: 'number',
 				description: 'Version of the App from which the Endpoint should be executed.',
 			},
-			endpointName: { type: 'string', description: 'Name of the Endpoint to be executed.' },
-			teamId: TEAM_ID_SCHEMA,
+			endpointName: {
+				type: 'string',
+				description: 'Name of the Endpoint to be executed.',
+			},
+			..._scopeProperties(TEAM_ID_DESCRIPTION, PROJECT_ID_DESCRIPTION),
 			connectionId: {
 				type: 'number',
 				description: 'ID of the Connection to be used for executing the Endpoint.',
@@ -287,19 +348,9 @@ const EXECUTE_TOOL: EndpointTool = {
 		},
 		required: ['appName', 'appVersion', 'endpointName', 'teamId'],
 	},
-	execute: async (
-		make,
-		{
-			appName,
-			appVersion,
-			endpointName,
-			teamId,
-			connectionId,
-			confidential,
-			idempotencyKey,
-			input,
-		},
-	) => {
+	execute: async (make, args) => {
+		const { appName, appVersion, endpointName, connectionId, confidential, idempotencyKey, input } =
+			args;
 		if (
 			typeof appName !== 'string' ||
 			typeof appVersion !== 'number' ||
@@ -309,7 +360,7 @@ const EXECUTE_TOOL: EndpointTool = {
 		}
 		return _callEndpoint(make, {
 			pointer: { appName, appVersion, endpointName },
-			teamId,
+			teamId: _scopeIdFromArgs(args),
 			connectionId,
 			confidential,
 			idempotencyKey,
@@ -333,7 +384,9 @@ export const listUsableEndpoints = async (
 	make: Make,
 	teamId: number,
 ): Promise<UsableEndpointPackage[]> => {
-	const { body } = await new SdkTransport(make).send<{ packages: UsableEndpointPackage[] }>({
+	const { body } = await new SdkTransport(make).send<{
+		packages: UsableEndpointPackage[];
+	}>({
 		path: '/imt/endpoints-usable',
 		query: new URLSearchParams({ teamId: String(teamId) }),
 	});
@@ -344,21 +397,25 @@ const LIST_USABLE_TOOL: EndpointTool = {
 	name: 'endpoints_list-usable',
 	title: 'List Usable Endpoints',
 	description:
-		'Retrieves a list of versioned Packages of Endpoints which can be used in the given Team. This list considers all the Connections that are available in the Team (including their Scopes), and returns only Endpoints which are usable within this context. The ids in `credentialsAvailable` are valid `connectionId`s for the Endpoint. Fails with HTTP 400 when Endpoints are not enabled for the user.',
+		`Retrieves a list of versioned Packages of Endpoints which can be used in the given ${teamOrProject('Team', 'Project')}. ` +
+		`This list considers all the Connections that are available in the ${teamOrProject('Team', 'Project')} (including their Scopes), and returns only Endpoints which are usable within this context. ` +
+		'The ids in `credentialsAvailable` are valid `connectionId`s for the Endpoint. Fails with HTTP 400 when Endpoints are not enabled for the user.',
 	category: 'endpoints',
 	scope: 'apps:read',
 	scopeId: 'teamId',
 	annotations: READ_ONLY_ANNOTATIONS,
 	inputSchema: {
 		type: 'object',
-		properties: {
-			teamId: { type: 'number', description: 'The ID of the Team to list usable Endpoints for.' },
-		},
+		properties: _scopeProperties(
+			'The ID of the Team to list usable Endpoints for.',
+			'The ID of the Project (formerly Team) to list usable Endpoints for.',
+		),
 		required: ['teamId'],
 	},
-	execute: async (make, { teamId }) => {
+	execute: async (make, args) => {
+		const teamId = _scopeIdFromArgs(args);
 		if (typeof teamId !== 'number') {
-			throw new Error('teamId must be a number.');
+			throw _scopeIdError();
 		}
 		return listUsableEndpoints(make, teamId);
 	},
@@ -516,7 +573,8 @@ const _buildConnectionsListTool = (
 	name: 'connections_list',
 	title: 'List connections',
 	description:
-		"Lists the connections of a team. With `app`, lists only connections of the types the app's endpoints accept, each with the endpoints that accept its type (`usableFor`). With `endpoint` too, each row also has the scopes the endpoint needs on that connection type (`requiredScopes`) and whether the connection has them (`scoped`). Alternatively, filter by connection `type` and required `scopes` per type.",
+		`Lists the connections of a ${teamOrProject('team', 'project')}. ` +
+		"With `app`, lists only connections of the types the app's endpoints accept, each with the endpoints that accept its type (`usableFor`). With `endpoint` too, each row also has the scopes the endpoint needs on that connection type (`requiredScopes`) and whether the connection has them (`scoped`). Alternatively, filter by connection `type` and required `scopes` per type.",
 	category: 'connections',
 	scope: 'connections:read',
 	scopeId: 'teamId',
@@ -524,7 +582,10 @@ const _buildConnectionsListTool = (
 	inputSchema: {
 		type: 'object',
 		properties: {
-			teamId: { type: 'number', description: 'The ID of the Team to list connections of.' },
+			..._scopeProperties(
+				'The ID of the Team to list connections of.',
+				'The ID of the Project (formerly Team) to list connections of.',
+			),
 			type: {
 				type: 'array',
 				items: { type: 'string' },
@@ -532,7 +593,9 @@ const _buildConnectionsListTool = (
 			},
 			scopes: {
 				type: 'object',
-				patternProperties: { '^.*$': { type: 'array', items: { type: 'string' } } },
+				patternProperties: {
+					'^.*$': { type: 'array', items: { type: 'string' } },
+				},
 				description:
 					'Required scopes per connection type, as a JSON object, e.g. {"google":["email"]}. Applies to the types listed in `type` and sets `scoped` on each row.',
 			},
@@ -540,7 +603,10 @@ const _buildConnectionsListTool = (
 				type: 'string',
 				description: "Only connections usable by this app's endpoints, e.g. google-docs.",
 			},
-			appVersion: { type: 'number', description: 'Version of the app. Latest when omitted.' },
+			appVersion: {
+				type: 'number',
+				description: 'Version of the app. Latest when omitted.',
+			},
 			endpoint: {
 				type: 'string',
 				description:
@@ -550,18 +616,30 @@ const _buildConnectionsListTool = (
 		required: ['teamId'],
 	},
 	execute: async (make, args) => {
-		const { teamId, app } = args;
+		const { app } = args;
+		const teamId = _scopeIdFromArgs(args);
 		if (typeof teamId !== 'number') {
-			throw new Error('teamId must be a number.');
+			throw _scopeIdError();
 		}
 		const { options, describe } =
 			app === undefined
 				? _filterByType(args)
 				: _filterByApp(endpointDefinitions, latestVersions, args);
-		const rows = await make.connections.list(teamId, { ...options, cols: ['*'] });
+		const rows = await make.connections.list(teamId, {
+			...options,
+			cols: ['*'],
+		});
 		return rows.map((row): UsableConnection => {
 			const { id, name, accountName, accountLabel, accountType, expire } = row;
-			return { id, name, accountName, accountLabel, accountType, expire, ...describe(row) };
+			return {
+				id,
+				name,
+				accountName,
+				accountLabel,
+				accountType,
+				expire,
+				...describe(row),
+			};
 		});
 	},
 });

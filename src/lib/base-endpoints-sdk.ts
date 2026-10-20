@@ -1,9 +1,15 @@
 import type { EndpointCaller, EndpointOptions, EndpointPointer } from './shared.ts';
+import { resolveProjectId } from './teams-to-projects.ts';
 import type { Transport, TransportContext } from './transport/transport.ts';
 
+/**
+ * `teamId` stays required in the type, as before. `projectId` is its alias: JavaScript callers can
+ * pass either (both only when equal); TypeScript callers pass `projectId` next to `teamId` for now.
+ */
 export type EndpointsSdkOptions = {
 	transport: Transport;
 	teamId: number;
+	projectId?: number;
 };
 
 export type EndpointsCatalog<ENDPOINTS> = (endpointCaller: EndpointCaller) => ENDPOINTS;
@@ -22,7 +28,8 @@ export class BaseEndpointsSdk<ENDPOINTS> {
 
 	constructor(options: EndpointsSdkOptions, catalog: EndpointsCatalog<ENDPOINTS>) {
 		this.#transport = options.transport;
-		this.#teamId = options.teamId;
+		// Not validated: a missing or non-number ID is sent as before. Only conflicting aliases throw.
+		this.#teamId = resolveProjectId(options.projectId, options.teamId) as number;
 		this.#endpointCaller = this.#callEndpoint.bind(this);
 		this.endpoints = catalog(this.#endpointCaller);
 	}

@@ -1,5 +1,6 @@
 import { Command, Option } from 'commander';
 
+import { isTeamsToProjectsEnabled } from '../lib/teams-to-projects.ts';
 import type { EndpointTool } from '../lib/tools.ts';
 
 import { registerAgentCommand } from './agent-command.ts';
@@ -30,6 +31,20 @@ Start here (agents):
 Output is JSON by default; --output table gives a quick look. Exit code 2 = Make API error, 1 = usage error.
 Full guide: make-endpoints-cli agent`;
 
+/** `START_HERE` in project terms. Kept in step with it. */
+const START_HERE_PROJECTS = `
+Start here (agents):
+  1. whoami --environment               your organizations and projects (formerly teams), private spaces included
+  2. list --project-id <id>             apps and endpoints the project can use now; skip when you know the app
+  3. describe <app> <endpoint>          input fields and the connection types the endpoint accepts
+  4. connections list --project-id <id> --app <app> --endpoint <endpoint>
+                                        which --connection-id to pass; prefer "scoped": true, false is unconfirmed
+  5. <app> <endpoint> --project-id <id> --connection-id <id> --<field> <value>
+                                        call it; --input '{...}' passes the whole input as JSON instead
+Teams were renamed to Projects; --team-id still works as a deprecated alias of --project-id.
+Output is JSON by default; --output table gives a quick look. Exit code 2 = Make API error, 1 = usage error.
+Full guide: make-endpoints-cli agent`;
+
 /** Builds the `make-endpoints-cli` command tree without parsing anything. */
 export const createProgram = ({ version, tools }: CreateProgramParams): Command => {
 	const program = new Command();
@@ -44,7 +59,7 @@ export const createProgram = ({ version, tools }: CreateProgramParams): Command 
 				.choices(['json', 'compact', 'table'])
 				.default('json'),
 		)
-		.addHelpText('after', START_HERE);
+		.addHelpText('after', isTeamsToProjectsEnabled() ? START_HERE_PROJECTS : START_HERE);
 	// Before the tool commands, so an app can never take these names.
 	registerCatalogCommands(program, tools);
 	registerWhoamiCommand(program);
