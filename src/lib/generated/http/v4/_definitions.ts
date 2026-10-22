@@ -9,7 +9,7 @@ export const definitions: EndpointDefinition[] = [
 		label: 'Make a request',
 		description: 'Makes an arbitrary HTTPS request using a saved HTTP connection.',
 		context:
-			'---\nname: makeRequest\ndescription: Make an HTTPS request using an API key, Basic Auth or existing OAuth connection.\n---\n\nUse an authorized connectionId. New HTTP API-key and Basic connections enforce their configured service origins. Existing OAuth connections retain their existing destination contract. Credentials are not endpoint inputs. Binary data is base64 with dataEncoding.',
+			'---\nname: makeRequest\ndescription: Make an HTTPS request using an API key, Basic Auth or existing OAuth connection.\n---\n\nUse an authorized connectionId. New HTTP API-key, Basic and OAuth connections enforce their configured service origins unless the connection explicitly opts out. Older OAuth connections without a saved destination policy keep their existing behavior. Credentials are not endpoint inputs. Binary data is base64 with dataEncoding.',
 		accounts: {
 			'http-v4-apikey': { scope: [] },
 			'http-v4-basicauth': { scope: [] },

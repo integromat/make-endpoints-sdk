@@ -51,6 +51,7 @@ import { endpoints as stripeEndpoints } from './stripe/_catalog.ts';
 import { endpoints as tallyEndpoints } from './tally/_catalog.ts';
 import { endpoints as telegramEndpoints } from './telegram/_catalog.ts';
 import { endpoints as todoistEndpoints } from './todoist/_catalog.ts';
+import { endpoints as trelloEndpoints } from './trello/_catalog.ts';
 import { endpoints as typeformEndpoints } from './typeform/_catalog.ts';
 import { endpoints as typesafeEndpoints } from './typesafe/_catalog.ts';
 import { endpoints as youtubeEndpoints } from './youtube/_catalog.ts';
@@ -107,6 +108,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		tally: tallyEndpoints(endpointCaller),
 		telegram: telegramEndpoints(endpointCaller),
 		todoist: todoistEndpoints(endpointCaller),
+		trello: trelloEndpoints(endpointCaller),
 		typeform: typeformEndpoints(endpointCaller),
 		typesafe: typesafeEndpoints(endpointCaller),
 		youtube: youtubeEndpoints(endpointCaller),

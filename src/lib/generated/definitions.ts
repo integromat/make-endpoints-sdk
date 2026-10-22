@@ -51,6 +51,7 @@ import { definitions as stripeV1Definitions } from './stripe/v1/_definitions.ts'
 import { definitions as tallyV1Definitions } from './tally/v1/_definitions.ts';
 import { definitions as telegramV1Definitions } from './telegram/v1/_definitions.ts';
 import { definitions as todoistV3Definitions } from './todoist/v3/_definitions.ts';
+import { definitions as trelloV4Definitions } from './trello/v4/_definitions.ts';
 import { definitions as typeformV2Definitions } from './typeform/v2/_definitions.ts';
 import { definitions as typesafeV1Definitions } from './typesafe/v1/_definitions.ts';
 import { definitions as youtubeV4Definitions } from './youtube/v4/_definitions.ts';
@@ -106,6 +107,7 @@ export const definitions: EndpointDefinition[] = [
 	...tallyV1Definitions,
 	...telegramV1Definitions,
 	...todoistV3Definitions,
+	...trelloV4Definitions,
 	...typeformV2Definitions,
 	...typesafeV1Definitions,
 	...youtubeV4Definitions,
