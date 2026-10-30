@@ -5,7 +5,7 @@ export type GetUserCapabilitiesInput = Record<string, never>;
 
 export type GetUserCapabilitiesOutput = {
 	/**
-	 * A list of API capabilities available to the user. Possible values include `analytics`, `autofill`, `brand_template`, `export_png_transparency`, `resize`, and `team_restricted_app`. Enterprise users typically have `autofill` and `brand_template` capabilities.
+	 * A list of API capabilities available to the user. Possible values include `analytics`, `autofill`, `background_removal`, `brand_template`, `design_generation`, `export_png_transparency`, `image_to_design_imports`, `resize`, and `team_restricted_app`. Which capabilities a user has depends on their Canva plan and team settings.
 	 *
 	 * Items: The name of an API capability available to the user.
 	 */

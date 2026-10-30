@@ -1,6 +1,7 @@
 // Generated file. Do not edit by hand.
 import type { EndpointCaller } from '../shared.ts';
 
+import { endpoints as activeDirectoryEndpoints } from './active-directory/_catalog.ts';
 import { endpoints as airtableEndpoints } from './airtable/_catalog.ts';
 import { endpoints as asanaEndpoints } from './asana/_catalog.ts';
 import { endpoints as boxEndpoints } from './box/_catalog.ts';
@@ -11,6 +12,7 @@ import { endpoints as cloudinaryEndpoints } from './cloudinary/_catalog.ts';
 import { endpoints as confluenceEndpoints } from './confluence/_catalog.ts';
 import { endpoints as discordEndpoints } from './discord/_catalog.ts';
 import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
+import { endpoints as facebookMessengerEndpoints } from './facebook-messenger/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
 import { endpoints as googleChatEndpoints } from './google-chat/_catalog.ts';
@@ -35,8 +37,11 @@ import { endpoints as linkedinEndpoints } from './linkedin/_catalog.ts';
 import { endpoints as mailchimpEndpoints } from './mailchimp/_catalog.ts';
 import { endpoints as mcpClientEndpoints } from './mcp-client/_catalog.ts';
 import { endpoints as microsoftCalendarEndpoints } from './microsoft-calendar/_catalog.ts';
+import { endpoints as microsoftDynamics365CrmEndpoints } from './microsoft-dynamics-365-crm/_catalog.ts';
 import { endpoints as microsoftEmailEndpoints } from './microsoft-email/_catalog.ts';
 import { endpoints as microsoftExcelEndpoints } from './microsoft-excel/_catalog.ts';
+import { endpoints as microsoftPeopleEndpoints } from './microsoft-people/_catalog.ts';
+import { endpoints as microsoftSharepointEndpoints } from './microsoft-sharepoint/_catalog.ts';
 import { endpoints as microsoftTeamsEndpoints } from './microsoft-teams/_catalog.ts';
 import { endpoints as mondayEndpoints } from './monday/_catalog.ts';
 import { endpoints as netsuiteEndpoints } from './netsuite/_catalog.ts';
@@ -54,10 +59,12 @@ import { endpoints as todoistEndpoints } from './todoist/_catalog.ts';
 import { endpoints as trelloEndpoints } from './trello/_catalog.ts';
 import { endpoints as typeformEndpoints } from './typeform/_catalog.ts';
 import { endpoints as typesafeEndpoints } from './typesafe/_catalog.ts';
+import { endpoints as webflowEndpoints } from './webflow/_catalog.ts';
 import { endpoints as youtubeEndpoints } from './youtube/_catalog.ts';
 
 export const endpoints = (endpointCaller: EndpointCaller) => {
 	return {
+		activeDirectory: activeDirectoryEndpoints(endpointCaller),
 		airtable: airtableEndpoints(endpointCaller),
 		asana: asanaEndpoints(endpointCaller),
 		box: boxEndpoints(endpointCaller),
@@ -68,6 +75,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		confluence: confluenceEndpoints(endpointCaller),
 		discord: discordEndpoints(endpointCaller),
 		dropbox: dropboxEndpoints(endpointCaller),
+		facebookMessenger: facebookMessengerEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
 		googleChat: googleChatEndpoints(endpointCaller),
@@ -92,8 +100,11 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		mailchimp: mailchimpEndpoints(endpointCaller),
 		mcpClient: mcpClientEndpoints(endpointCaller),
 		microsoftCalendar: microsoftCalendarEndpoints(endpointCaller),
+		microsoftDynamics365Crm: microsoftDynamics365CrmEndpoints(endpointCaller),
 		microsoftEmail: microsoftEmailEndpoints(endpointCaller),
 		microsoftExcel: microsoftExcelEndpoints(endpointCaller),
+		microsoftPeople: microsoftPeopleEndpoints(endpointCaller),
+		microsoftSharepoint: microsoftSharepointEndpoints(endpointCaller),
 		microsoftTeams: microsoftTeamsEndpoints(endpointCaller),
 		monday: mondayEndpoints(endpointCaller),
 		netsuite: netsuiteEndpoints(endpointCaller),
@@ -111,6 +122,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		trello: trelloEndpoints(endpointCaller),
 		typeform: typeformEndpoints(endpointCaller),
 		typesafe: typesafeEndpoints(endpointCaller),
+		webflow: webflowEndpoints(endpointCaller),
 		youtube: youtubeEndpoints(endpointCaller),
 	};
 };
