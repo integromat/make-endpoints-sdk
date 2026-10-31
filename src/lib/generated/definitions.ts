@@ -32,6 +32,7 @@ import { definitions as httpV4Definitions } from './http/v4/_definitions.ts';
 import { definitions as hubspotcrmV2Definitions } from './hubspotcrm/v2/_definitions.ts';
 import { definitions as jiraV2Definitions } from './jira/v2/_definitions.ts';
 import { definitions as jotformV1Definitions } from './jotform/v1/_definitions.ts';
+import { definitions as lineV1Definitions } from './line/v1/_definitions.ts';
 import { definitions as linearV1Definitions } from './linear/v1/_definitions.ts';
 import { definitions as linkedinV2Definitions } from './linkedin/v2/_definitions.ts';
 import { definitions as mailchimpV2Definitions } from './mailchimp/v2/_definitions.ts';
@@ -49,6 +50,7 @@ import { definitions as notionV1Definitions } from './notion/v1/_definitions.ts'
 import { definitions as onedriveV2Definitions } from './onedrive/v2/_definitions.ts';
 import { definitions as pinterestV2Definitions } from './pinterest/v2/_definitions.ts';
 import { definitions as pipedriveV2Definitions } from './pipedrive/v2/_definitions.ts';
+import { definitions as sageIntacctV2Definitions } from './sage-intacct/v2/_definitions.ts';
 import { definitions as salesforceV4Definitions } from './salesforce/v4/_definitions.ts';
 import { definitions as shopifyV3Definitions } from './shopify/v3/_definitions.ts';
 import { definitions as slackV4Definitions } from './slack/v4/_definitions.ts';
@@ -94,6 +96,7 @@ export const definitions: EndpointDefinition[] = [
 	...hubspotcrmV2Definitions,
 	...jiraV2Definitions,
 	...jotformV1Definitions,
+	...lineV1Definitions,
 	...linearV1Definitions,
 	...linkedinV2Definitions,
 	...mailchimpV2Definitions,
@@ -111,6 +114,7 @@ export const definitions: EndpointDefinition[] = [
 	...onedriveV2Definitions,
 	...pinterestV2Definitions,
 	...pipedriveV2Definitions,
+	...sageIntacctV2Definitions,
 	...salesforceV4Definitions,
 	...shopifyV3Definitions,
 	...slackV4Definitions,

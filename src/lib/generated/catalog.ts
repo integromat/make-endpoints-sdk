@@ -32,6 +32,7 @@ import { endpoints as httpEndpoints } from './http/_catalog.ts';
 import { endpoints as hubspotcrmEndpoints } from './hubspotcrm/_catalog.ts';
 import { endpoints as jiraEndpoints } from './jira/_catalog.ts';
 import { endpoints as jotformEndpoints } from './jotform/_catalog.ts';
+import { endpoints as lineEndpoints } from './line/_catalog.ts';
 import { endpoints as linearEndpoints } from './linear/_catalog.ts';
 import { endpoints as linkedinEndpoints } from './linkedin/_catalog.ts';
 import { endpoints as mailchimpEndpoints } from './mailchimp/_catalog.ts';
@@ -49,6 +50,7 @@ import { endpoints as notionEndpoints } from './notion/_catalog.ts';
 import { endpoints as onedriveEndpoints } from './onedrive/_catalog.ts';
 import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
 import { endpoints as pipedriveEndpoints } from './pipedrive/_catalog.ts';
+import { endpoints as sageIntacctEndpoints } from './sage-intacct/_catalog.ts';
 import { endpoints as salesforceEndpoints } from './salesforce/_catalog.ts';
 import { endpoints as shopifyEndpoints } from './shopify/_catalog.ts';
 import { endpoints as slackEndpoints } from './slack/_catalog.ts';
@@ -95,6 +97,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		hubspotcrm: hubspotcrmEndpoints(endpointCaller),
 		jira: jiraEndpoints(endpointCaller),
 		jotform: jotformEndpoints(endpointCaller),
+		line: lineEndpoints(endpointCaller),
 		linear: linearEndpoints(endpointCaller),
 		linkedin: linkedinEndpoints(endpointCaller),
 		mailchimp: mailchimpEndpoints(endpointCaller),
@@ -112,6 +115,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		onedrive: onedriveEndpoints(endpointCaller),
 		pinterest: pinterestEndpoints(endpointCaller),
 		pipedrive: pipedriveEndpoints(endpointCaller),
+		sageIntacct: sageIntacctEndpoints(endpointCaller),
 		salesforce: salesforceEndpoints(endpointCaller),
 		shopify: shopifyEndpoints(endpointCaller),
 		slack: slackEndpoints(endpointCaller),
