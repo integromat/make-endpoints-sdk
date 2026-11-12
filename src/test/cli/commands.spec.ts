@@ -182,7 +182,7 @@ describe('endpoint commands', () => {
 				teamId: 7,
 			},
 		});
-		expect(JSON.parse(stdout)).toEqual({ id: 'item-1' });
+		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' } });
 	});
 
 	it('calls an older version through v<N>', async () => {
@@ -223,6 +223,15 @@ describe('endpoint commands', () => {
 		]);
 
 		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
+	});
+
+	it('prints the execution block without a key too', async () => {
+		const execution = { id: 'exec-1' };
+		fetchMock.mockResolvedValue({ output: { id: 'item-1' }, execution });
+
+		await run(['beta', 'list-things', '--team-id', '7']);
+
+		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution });
 	});
 
 	it('sends --idempotency-key in the body and prints the execution block', async () => {
@@ -317,13 +326,13 @@ describe('endpoint commands', () => {
 	it('honours the global --output option', async () => {
 		await run(['--output', 'compact', 'beta', 'list-things', '--team-id', '7']);
 
-		expect(stdout).toBe('{"id":"item-1"}\n');
+		expect(stdout).toBe('{"output":{"id":"item-1"}}\n');
 	});
 
 	it('honours global options after the endpoint command too', async () => {
 		await run(['beta', 'list-things', '--team-id', '7', '--output', 'compact']);
 
-		expect(stdout).toBe('{"id":"item-1"}\n');
+		expect(stdout).toBe('{"output":{"id":"item-1"}}\n');
 		expect(lastBody()).toMatchObject({ input: {} });
 	});
 
