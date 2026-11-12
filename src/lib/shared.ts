@@ -42,10 +42,16 @@ export type EndpointExecution = {
 	confidential?: true;
 };
 
+/**
+ * What every endpoint call resolves to: the endpoint's `output` and, when Make reports it, the
+ * `execution`. The same shape comes back from generated methods, `execute()`, endpoint tools and the CLI.
+ */
+export type EndpointResult<OUTPUT> = { output: OUTPUT; execution?: EndpointExecution };
+
 export type EndpointCaller = <OUTPUT>(
 	pointer: EndpointPointer,
 	options: EndpointOptions,
-) => Promise<{ output: OUTPUT; execution?: EndpointExecution }>;
+) => Promise<EndpointResult<OUTPUT>>;
 
 export type EndpointFunctionThis = {
 	endpointCaller: EndpointCaller;
