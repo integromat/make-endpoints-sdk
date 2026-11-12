@@ -91,13 +91,13 @@ doesn't bundle. Add `--confidential` when the data must not stay in Make's Endpo
 still listed there, but without its input, output or error. Add `--idempotency-key <key>` (1-255 characters of
 letters, digits, `_`, `.`, `:`, `-`) when a call may be repeated: use one unique key per intended call and the same
 key on every retry after a timeout or an unclear error, and Make never runs the endpoint twice but returns the
-first run's outcome. With a key the JSON is `{ "output": ..., "execution": { "id": ..., "replayed": true } }`
-(`replayed` only on a replay, `confidential` only for a confidential run). Without one the output is the endpoint's
-result, unwrapped. For example, the title of a Google Doc:
+first run's outcome. The JSON is always `{ "output": ..., "execution": { "id": ..., "replayed": true } }`: the
+endpoint's result is under `output`, and `execution` is present only when Make reports it (`replayed` only on a
+replay, `confidential` only for a confidential run). For example, the title of a Google Doc:
 
 ```sh
 make-endpoints-cli connections list --team-id 7 --app google-docs --endpoint get-document | jq '.[] | {id, name, scoped}'
-make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --document-id doc-1 | jq .title
+make-endpoints-cli google-docs get-document --team-id 7 --connection-id 42 --document-id doc-1 | jq .output.title
 ```
 
 ## Errors

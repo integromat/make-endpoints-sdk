@@ -136,14 +136,14 @@ describe('endpoint tool execute', () => {
 	it('posts the pointer, the merged input, the connection and the team', async () => {
 		const { fetch, make } = createMake();
 
-		const output = await getTool('alpha_get-item').execute(make, {
+		const result = await getTool('alpha_get-item').execute(make, {
 			teamId: 7,
 			connectionId: 9,
 			input: { itemId: 'from-input', teamId: 'field' },
 			itemId: 'from-field',
 		});
 
-		expect(output).toEqual({ id: 'item-1' });
+		expect(result).toEqual({ output: { id: 'item-1' } });
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
 			body: {
@@ -274,10 +274,9 @@ describe('endpoint tool execute', () => {
 		expect(result).toStrictEqual({ output: { id: 'item-1' } });
 	});
 
-	it('keeps returning the bare output without a key, whatever the server reports', async () => {
-		const { make } = createMake(
-			vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution: { id: 'exec-1' } }),
-		);
+	it('returns { output, execution } without a key too', async () => {
+		const execution = { id: 'exec-1' };
+		const { make } = createMake(vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution }));
 
 		const result = await getTool('alpha_get-item').execute(make, {
 			teamId: 7,
@@ -286,7 +285,20 @@ describe('endpoint tool execute', () => {
 			itemId: 'item-1',
 		});
 
-		expect(result).toStrictEqual({ id: 'item-1' });
+		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
+	});
+
+	it('returns { output } alone without a key for a server that reports no execution', async () => {
+		const { make } = createMake();
+
+		const result = await getTool('alpha_get-item').execute(make, {
+			teamId: 7,
+			connectionId: 9,
+			input: { teamId: 'field' },
+			itemId: 'item-1',
+		});
+
+		expect(result).toStrictEqual({ output: { id: 'item-1' } });
 	});
 
 	it('rejects a non-string idempotencyKey', async () => {
@@ -343,7 +355,7 @@ describe('endpoints_execute', () => {
 	it('calls any endpoint by name', async () => {
 		const { fetch, make } = createMake();
 
-		const output = await getTool('endpoints_execute').execute(make, {
+		const result = await getTool('endpoints_execute').execute(make, {
 			appName: 'app#custom',
 			appVersion: 3,
 			endpointName: 'doThing',
@@ -352,7 +364,7 @@ describe('endpoints_execute', () => {
 			input: { key: 'value' },
 		});
 
-		expect(output).toEqual({ id: 'item-1' });
+		expect(result).toEqual({ output: { id: 'item-1' } });
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
 			body: {

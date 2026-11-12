@@ -6,6 +6,7 @@ export type {
 	EndpointDefinition,
 	EndpointExecution,
 	EndpointJsonSchema,
+	EndpointResult,
 } from './lib/shared.ts';
 export { SdkTransport } from './lib/transport/sdk-transport.ts';
 export type {

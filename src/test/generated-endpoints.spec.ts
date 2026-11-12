@@ -40,9 +40,11 @@ describe('generated endpoints', () => {
 			fetch.mockReset().mockResolvedValue({ output: 'output' });
 
 			// Generated methods are pre-bound, so calling them detached must work.
-			await expect(endpoint({ input: { key: 'value' }, connectionId: 42 })).resolves.toBe(
-				'output',
-			);
+			const result = await endpoint({ input: { key: 'value' }, connectionId: 42 });
+
+			// Transition-tolerant: generated methods resolve to the bare output until the sync that
+			// moves them to `{ output }`. Tighten to `{ output: 'output' }` after that sync.
+			expect(['output', { output: 'output' }]).toContainEqual(result);
 
 			expect(fetch).toHaveBeenCalledTimes(1);
 			expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
