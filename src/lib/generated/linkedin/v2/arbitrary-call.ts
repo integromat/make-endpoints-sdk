@@ -3,7 +3,8 @@ import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
 
 export type ArbitraryCallInput = {
 	/**
-	 * Enter a path relative to `https://api.linkedin.com/`. For example: `/rest/organizationAcls`.
+	 * Enter a path relative to `https://api.linkedin.com/`. For example: `/rest/organizationAcls`. A full URL (starting with `https://`, `http://` or `//`) is rejected with an error.
+	 * The path is sent as written and is not encoded again. With the default `X-Restli-Protocol-Version: 2.0.0` header, percent-encode the reserved characters of a key in the path, for example `/rest/posts/urn%3Ali%3Ashare%3A123`.
 	 * LinkedIn's unversioned API was deprecated from March 2023 and released under a new base path: `https://api.linkedin.com/rest/`. The URL that starts with `/v2` will be converted to `/rest` except `/v2/me`. For more information please visit the [LinkedIn Marketing API Versioning Documentation](https://learn.microsoft.com/en-us/linkedin/marketing/versioning).
 	 */
 	url: string;

@@ -215,7 +215,7 @@ export const definitions: EndpointDefinition[] = [
 							data: {
 								type: 'string',
 								description:
-									'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://mapping/working-with-files.html).',
+									'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://files.html).',
 							},
 						},
 						required: ['filename', 'data'],
@@ -279,7 +279,7 @@ export const definitions: EndpointDefinition[] = [
 												data: {
 													type: 'string',
 													description:
-														'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://mapping/working-with-files.html).',
+														'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://files.html).',
 												},
 												width: { type: 'number' },
 												height: { type: 'number' },
@@ -1929,7 +1929,7 @@ export const definitions: EndpointDefinition[] = [
 							data: {
 								type: 'string',
 								description:
-									'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://mapping/working-with-files.html).',
+									'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://files.html).',
 							},
 						},
 						required: ['filename', 'data'],
@@ -1995,7 +1995,7 @@ export const definitions: EndpointDefinition[] = [
 												data: {
 													type: 'string',
 													description:
-														'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://mapping/working-with-files.html).',
+														'Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://files.html).',
 												},
 												width: { type: 'number' },
 												height: { type: 'number' },

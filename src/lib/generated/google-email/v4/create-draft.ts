@@ -17,7 +17,7 @@ export type CreateDraftInput = {
 		 */
 		filename: string;
 		/**
-		 * Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://mapping/working-with-files.html).
+		 * Binary or text data to be uploaded to a selected folder. [More information about working with files](kb://files.html).
 		 */
 		data: string;
 	}[];

@@ -30,7 +30,7 @@ export type ListRecordsInput = {
 		direction?: '' | 'asc' | 'desc';
 	}[];
 	/**
-	 * An Airtable formula used to filter records. Evaluated for each record; the record is included only if the result is not '0', 'false', an empty string, 'NaN', an empty array, or '#Error!'. See Airtable's Formula Field Reference: https://support.airtable.com/hc/en-us/articles/203255215-Formula-Field-Reference
+	 * An Airtable formula used to filter records. Evaluated for each record; the record is included only if the result is not '0', 'false', an empty string, 'NaN', an empty array, or '#Error!'. See Airtable's Formula Field Reference: https://support.airtable.com/docs/formula-field-reference
 	 */
 	filterByFormula?: string;
 	/**

@@ -9,11 +9,15 @@ import { endpoints as calendlyEndpoints } from './calendly/_catalog.ts';
 import { endpoints as canvaEndpoints } from './canva/_catalog.ts';
 import { endpoints as clickupEndpoints } from './clickup/_catalog.ts';
 import { endpoints as cloudinaryEndpoints } from './cloudinary/_catalog.ts';
+import { endpoints as codaEndpoints } from './coda/_catalog.ts';
 import { endpoints as confluenceEndpoints } from './confluence/_catalog.ts';
 import { endpoints as discordEndpoints } from './discord/_catalog.ts';
 import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
 import { endpoints as facebookMessengerEndpoints } from './facebook-messenger/_catalog.ts';
+import { endpoints as facebookPagesEndpoints } from './facebook-pages/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
+import { endpoints as googleAdsReportsEndpoints } from './google-ads-reports/_catalog.ts';
+import { endpoints as googleBigqueryEndpoints } from './google-bigquery/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
 import { endpoints as googleChatEndpoints } from './google-chat/_catalog.ts';
 import { endpoints as googleContactsEndpoints } from './google-contacts/_catalog.ts';
@@ -52,6 +56,7 @@ import { endpoints as pinterestEndpoints } from './pinterest/_catalog.ts';
 import { endpoints as pipedriveEndpoints } from './pipedrive/_catalog.ts';
 import { endpoints as sageIntacctEndpoints } from './sage-intacct/_catalog.ts';
 import { endpoints as salesforceEndpoints } from './salesforce/_catalog.ts';
+import { endpoints as sendinblueEndpoints } from './sendinblue/_catalog.ts';
 import { endpoints as shopifyEndpoints } from './shopify/_catalog.ts';
 import { endpoints as slackEndpoints } from './slack/_catalog.ts';
 import { endpoints as stripeEndpoints } from './stripe/_catalog.ts';
@@ -59,6 +64,7 @@ import { endpoints as tallyEndpoints } from './tally/_catalog.ts';
 import { endpoints as telegramEndpoints } from './telegram/_catalog.ts';
 import { endpoints as todoistEndpoints } from './todoist/_catalog.ts';
 import { endpoints as trelloEndpoints } from './trello/_catalog.ts';
+import { endpoints as twilioEndpoints } from './twilio/_catalog.ts';
 import { endpoints as typeformEndpoints } from './typeform/_catalog.ts';
 import { endpoints as typesafeEndpoints } from './typesafe/_catalog.ts';
 import { endpoints as webflowEndpoints } from './webflow/_catalog.ts';
@@ -74,11 +80,15 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		canva: canvaEndpoints(endpointCaller),
 		clickup: clickupEndpoints(endpointCaller),
 		cloudinary: cloudinaryEndpoints(endpointCaller),
+		coda: codaEndpoints(endpointCaller),
 		confluence: confluenceEndpoints(endpointCaller),
 		discord: discordEndpoints(endpointCaller),
 		dropbox: dropboxEndpoints(endpointCaller),
 		facebookMessenger: facebookMessengerEndpoints(endpointCaller),
+		facebookPages: facebookPagesEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
+		googleAdsReports: googleAdsReportsEndpoints(endpointCaller),
+		googleBigquery: googleBigqueryEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
 		googleChat: googleChatEndpoints(endpointCaller),
 		googleContacts: googleContactsEndpoints(endpointCaller),
@@ -117,6 +127,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		pipedrive: pipedriveEndpoints(endpointCaller),
 		sageIntacct: sageIntacctEndpoints(endpointCaller),
 		salesforce: salesforceEndpoints(endpointCaller),
+		sendinblue: sendinblueEndpoints(endpointCaller),
 		shopify: shopifyEndpoints(endpointCaller),
 		slack: slackEndpoints(endpointCaller),
 		stripe: stripeEndpoints(endpointCaller),
@@ -124,6 +135,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		telegram: telegramEndpoints(endpointCaller),
 		todoist: todoistEndpoints(endpointCaller),
 		trello: trelloEndpoints(endpointCaller),
+		twilio: twilioEndpoints(endpointCaller),
 		typeform: typeformEndpoints(endpointCaller),
 		typesafe: typesafeEndpoints(endpointCaller),
 		webflow: webflowEndpoints(endpointCaller),
