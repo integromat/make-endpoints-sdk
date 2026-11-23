@@ -38,7 +38,7 @@ let stderr: string;
 beforeEach(() => {
 	stdout = '';
 	stderr = '';
-	fetchMock.mockReset().mockResolvedValue({ output: { id: 'item-1' } });
+	fetchMock.mockReset().mockResolvedValue({ output: { id: 'item-1' }, execution: { id: 'exec-1' } });
 	makeConstructed.mockReset();
 	vi.stubEnv('MAKE_API_KEY', 'api-key');
 	vi.stubEnv('MAKE_ZONE', 'eu1.make.com');
@@ -182,7 +182,7 @@ describe('endpoint commands', () => {
 				teamId: 7,
 			},
 		});
-		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' } });
+		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution: { id: 'exec-1' } });
 	});
 
 	it('calls an older version through v<N>', async () => {
@@ -225,13 +225,13 @@ describe('endpoint commands', () => {
 		expect(lastBody()).toMatchObject({ confidential: true, input: { itemId: 'i1', teamId: 't' } });
 	});
 
-	it('prints the execution block without a key too', async () => {
-		const execution = { id: 'exec-1' };
-		fetchMock.mockResolvedValue({ output: { id: 'item-1' }, execution });
+	it('exits with 1 when the server reports no execution', async () => {
+		fetchMock.mockResolvedValue({ output: { id: 'item-1' } });
 
-		await run(['beta', 'list-things', '--team-id', '7']);
+		await expect(run(['beta', 'list-things', '--team-id', '7'])).rejects.toThrow(new ExitError(1));
 
-		expect(JSON.parse(stdout)).toEqual({ output: { id: 'item-1' }, execution });
+		expect(stderr).toContain('returned no execution');
+		expect(stdout).toBe('');
 	});
 
 	it('sends --idempotency-key in the body and prints the execution block', async () => {
@@ -326,13 +326,13 @@ describe('endpoint commands', () => {
 	it('honours the global --output option', async () => {
 		await run(['--output', 'compact', 'beta', 'list-things', '--team-id', '7']);
 
-		expect(stdout).toBe('{"output":{"id":"item-1"}}\n');
+		expect(stdout).toBe('{"output":{"id":"item-1"},"execution":{"id":"exec-1"}}\n');
 	});
 
 	it('honours global options after the endpoint command too', async () => {
 		await run(['beta', 'list-things', '--team-id', '7', '--output', 'compact']);
 
-		expect(stdout).toBe('{"output":{"id":"item-1"}}\n');
+		expect(stdout).toBe('{"output":{"id":"item-1"},"execution":{"id":"exec-1"}}\n');
 		expect(lastBody()).toMatchObject({ input: {} });
 	});
 

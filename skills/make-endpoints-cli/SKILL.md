@@ -93,7 +93,7 @@ still listed there, but without its input, output or error. Add `--idempotency-k
 letters, digits, `_`, `.`, `:`, `-`) when a call may be repeated: use one unique key per intended call and the same
 key on every retry after a timeout or an unclear error, and Make never runs the endpoint twice but returns the
 first run's outcome. The JSON is always `{ "output": ..., "execution": { "id": ..., "replayed": true } }`: the
-endpoint's result is under `output`, and `execution` is present only when Make reports it (`replayed` only on a
+endpoint's result is under `output`, and `execution` always carries the run's `id` (`replayed` only on a
 replay, `confidential` only for a confidential run). For example, the title of a Google Doc:
 
 ```sh
