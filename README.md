@@ -89,7 +89,7 @@ const transport = new SdkTransport(make);
 // One app version: `endpoints` holds that version's endpoints, and the entry point re-exports their types.
 const googleDocsV1 = new GoogleDocsV1Sdk({ transport, teamId: 77 });
 const input: GetDocumentInput = { documentId: 'doc-1', filter: 'image' };
-const doc: EndpointResult<GetDocumentOutput> = await googleDocsV1.endpoints.getDocument({ input, connectionId: 42 });
+const result: EndpointResult<GetDocumentOutput> = await googleDocsV1.endpoints.getDocument({ input, connectionId: 42 });
 
 // One app, all its versions: `endpoints` is keyed by version.
 const googleDocs = new GoogleDocsSdk({ transport, teamId: 77 });
@@ -246,7 +246,7 @@ make-endpoints-cli endpoints execute --app-name app#my-app --app-version 1 --end
 
 The JSON output is always `{ "output": ..., "execution": { "id": ... } }`, with `execution` only when Make reports it. `--idempotency-key <key>` makes a call safe to retry (see [Low-level escape hatch](#low-level-escape-hatch)); `execution.replayed` is then `true` when the output comes from an earlier run.
 
-`--output json|compact|table` sets the output format (default `json`). The table is colored only when stdout is a terminal and `NO_COLOR` is unset, so piped output stays plain. Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
+`--output json|compact|table` sets the output format (default `json`). An endpoint call prints as a table with one row of `output` and `execution` columns, so read its fields from `json` or `compact`. The table is colored only when stdout is a terminal and `NO_COLOR` is unset, so piped output stays plain. Failed API calls exit with code `2` and other errors with code `1`, as in `make-cli`.
 
 ## Tool definitions
 
@@ -263,7 +263,7 @@ const result = await tool?.execute(make, { teamId: 77, connectionId: 42, documen
 // result: { output, execution? }
 ```
 
-- Tools of an app's latest version are named `<app>_<endpoint>`, and tools of every older version `<app>-v<N>_<endpoint>`. Each tool keeps its endpoint's `definition`.
+- Tools of an app's latest version are named `<app>_<endpoint>`, and tools of every older version `<app>-v<N>_<endpoint>`. Each tool keeps its endpoint's `definition`, whose `outputSchema` describes the result's `output`, not the whole result.
 - `inputSchema` has `teamId`, `connectionId` (only when the endpoint takes a connection), every input field, and `input`, the whole input as an object. `execute` merges separate fields over `input` and rejects when a required field is missing.
 - Every endpoint tool and `endpoints_execute` also take `idempotencyKey`. Every tool returns `{ output, execution? }`, so a replay is visible.
 - After the endpoint tools come:

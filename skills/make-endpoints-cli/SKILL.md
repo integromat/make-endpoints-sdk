@@ -60,7 +60,8 @@ make-endpoints-cli describe <app> <endpoint> --output-schema   # only when the o
 ```
 
 `inputSchema.properties.input` lists the fields and which are required. `accounts` lists the connection types the
-endpoint accepts, each with the scopes it needs. `context` is guidance for you, so follow it.
+endpoint accepts, each with the scopes it needs. `context` is guidance for you, so follow it. `outputSchema`
+describes `.output` in the JSON a call prints, not the whole JSON.
 
 ## 4. Pick a connection: `connections list`
 
