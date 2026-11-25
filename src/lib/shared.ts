@@ -32,9 +32,9 @@ export type EndpointOptions = {
 };
 
 /**
- * What Make reports about an execution; servers that predate it send none. `id` is the execution's
- * id in the Endpoint execution log. `replayed`: the output comes from the earlier run that holds
- * the idempotency key, so the endpoint did not run again. `confidential`: Make stored no run data.
+ * What Make reports about an execution. `id` is the execution's id in the Endpoint execution log.
+ * `replayed`: the output comes from the earlier run that holds the idempotency key, so the endpoint
+ * did not run again. `confidential`: Make stored no run data.
  */
 export type EndpointExecution = {
 	id: string;
@@ -43,10 +43,10 @@ export type EndpointExecution = {
 };
 
 /**
- * What every endpoint call resolves to: the endpoint's `output` and, when Make reports it, the
- * `execution`. The same shape comes back from generated methods, `execute()`, endpoint tools and the CLI.
+ * What every endpoint call resolves to: the endpoint's `output` and the `execution` Make reports for
+ * it. The same shape comes back from generated methods, `execute()`, endpoint tools and the CLI.
  */
-export type EndpointResult<OUTPUT> = { output: OUTPUT; execution?: EndpointExecution };
+export type EndpointResult<OUTPUT> = { output: OUTPUT; execution: EndpointExecution };
 
 export type EndpointCaller = <OUTPUT>(
 	pointer: EndpointPointer,

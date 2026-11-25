@@ -165,13 +165,12 @@ const _callEndpoint = async (
 	}
 	// The SDK's own escape hatch for pointer-based calls, so tools share its call path.
 	const sdk = new EndpointsSdk({ transport: new SdkTransport(make), teamId });
-	const { output, execution } = await sdk.execute<JSONValue>(pointer, {
+	return sdk.execute<JSONValue>(pointer, {
 		input: input ?? {},
 		...(connectionId === undefined ? {} : { connectionId }),
 		...(confidential === undefined ? {} : { confidential }),
 		...(idempotencyKey === undefined ? {} : { idempotencyKey }),
 	});
-	return { output, ...(execution ? { execution } : {}) };
 };
 
 const _buildEndpointTool = (definition: EndpointDefinition, latest: boolean): EndpointTool => {

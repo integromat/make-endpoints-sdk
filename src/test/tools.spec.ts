@@ -38,7 +38,9 @@ const connectionRow = (id: number, accountName: string, scoped: boolean) => ({
 
 const CONNECTIONS = [connectionRow(1, 'alpha', true), connectionRow(2, 'alpha-oauth', false)];
 
-const createMake = (fetch = vi.fn().mockResolvedValue({ output: { id: 'item-1' } })) => {
+const createMake = (
+	fetch = vi.fn().mockResolvedValue({ output: { id: 'item-1' }, execution: { id: 'exec-1' } }),
+) => {
 	const connectionsList = vi.fn().mockResolvedValue(CONNECTIONS);
 	return {
 		fetch,
@@ -143,7 +145,7 @@ describe('endpoint tool execute', () => {
 			itemId: 'from-field',
 		});
 
-		expect(result).toEqual({ output: { id: 'item-1' } });
+		expect(result).toEqual({ output: { id: 'item-1' }, execution: { id: 'exec-1' } });
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
 			body: {
@@ -260,18 +262,17 @@ describe('endpoint tool execute', () => {
 		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
 	});
 
-	it('returns { output } alone for a key sent to a server that reports no execution', async () => {
-		const { make } = createMake();
+	it('rejects when the server reports no execution', async () => {
+		const { make } = createMake(vi.fn().mockResolvedValue({ output: { id: 'item-1' } }));
 
-		const result = await getTool('alpha_get-item').execute(make, {
-			teamId: 7,
-			connectionId: 9,
-			idempotencyKey: 'order-7',
-			input: { teamId: 'field' },
-			itemId: 'item-1',
-		});
-
-		expect(result).toStrictEqual({ output: { id: 'item-1' } });
+		await expect(
+			getTool('alpha_get-item').execute(make, {
+				teamId: 7,
+				connectionId: 9,
+				input: { teamId: 'field' },
+				itemId: 'item-1',
+			}),
+		).rejects.toThrow('returned no execution');
 	});
 
 	it('returns { output, execution } without a key too', async () => {
@@ -286,19 +287,6 @@ describe('endpoint tool execute', () => {
 		});
 
 		expect(result).toStrictEqual({ output: { id: 'item-1' }, execution });
-	});
-
-	it('returns { output } alone without a key for a server that reports no execution', async () => {
-		const { make } = createMake();
-
-		const result = await getTool('alpha_get-item').execute(make, {
-			teamId: 7,
-			connectionId: 9,
-			input: { teamId: 'field' },
-			itemId: 'item-1',
-		});
-
-		expect(result).toStrictEqual({ output: { id: 'item-1' } });
 	});
 
 	it('rejects a non-string idempotencyKey', async () => {
@@ -364,7 +352,7 @@ describe('endpoints_execute', () => {
 			input: { key: 'value' },
 		});
 
-		expect(result).toEqual({ output: { id: 'item-1' } });
+		expect(result).toEqual({ output: { id: 'item-1' }, execution: { id: 'exec-1' } });
 		expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {
 			method: 'POST',
 			body: {

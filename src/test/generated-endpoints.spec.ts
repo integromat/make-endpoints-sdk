@@ -37,14 +37,14 @@ describe('generated endpoints', () => {
 	it.each(endpoints)(
 		'$path posts to /endpoints/execute and resolves to the output',
 		async ({ appVersion, endpoint }) => {
-			fetch.mockReset().mockResolvedValue({ output: 'output' });
+			fetch.mockReset().mockResolvedValue({ output: 'output', execution: { id: 'exec-1' } });
 
 			// Generated methods are pre-bound, so calling them detached must work.
 			const result = await endpoint({ input: { key: 'value' }, connectionId: 42 });
 
 			// Transition-tolerant: generated methods resolve to the bare output until the sync that
-			// moves them to `{ output }`. Tighten to `{ output: 'output' }` after that sync.
-			expect(['output', { output: 'output' }]).toContainEqual(result);
+			// moves them to the envelope. Tighten to the envelope after that sync.
+			expect(['output', { output: 'output', execution: { id: 'exec-1' } }]).toContainEqual(result);
 
 			expect(fetch).toHaveBeenCalledTimes(1);
 			expect(fetch).toHaveBeenCalledWith('/endpoints/execute', {

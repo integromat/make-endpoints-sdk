@@ -39,7 +39,12 @@ export class BaseEndpointsSdk<ENDPOINTS> {
 			pointer,
 			options,
 		);
-		return { output, ...(execution === undefined ? {} : { execution }) };
+		if (execution === undefined) {
+			throw new Error(
+				`Make ran ${pointer.appName} v${pointer.appVersion} ${pointer.endpointName} but returned no execution, which every successful Endpoint call reports. The output is lost; check the server version before retrying, as the Endpoint has already run.`,
+			);
+		}
+		return { output, execution };
 	}
 
 	public execute<OUTPUT>(pointer: EndpointPointer, options: EndpointOptions) {

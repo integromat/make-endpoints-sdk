@@ -7,8 +7,9 @@ import { SdkTransport } from '../../lib/transport/sdk-transport.ts';
 const POINTER = { appName: 'google-docs', appVersion: 1, endpointName: 'getDocument' } as const;
 const INPUT = { documentId: 'doc-1', filter: 'image' };
 const OUTPUT = { documentId: 'doc-1', title: 'Notes' };
+const EXECUTION = { id: 'exec-1' };
 
-const createSdk = (fetch = vi.fn().mockResolvedValue({ output: OUTPUT })) => {
+const createSdk = (fetch = vi.fn().mockResolvedValue({ output: OUTPUT, execution: EXECUTION })) => {
 	return {
 		fetch,
 		sdk: new EndpointsSdk({
@@ -78,6 +79,7 @@ describe('SdkTransport driving execute()', () => {
 
 		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toEqual({
 			output: OUTPUT,
+			execution: EXECUTION,
 		});
 	});
 
@@ -90,12 +92,12 @@ describe('SdkTransport driving execute()', () => {
 		).resolves.toStrictEqual({ output: OUTPUT, execution });
 	});
 
-	it('leaves execution out when the server sends none', async () => {
-		const { sdk } = createSdk();
+	it('rejects when the server sends no execution, saying the endpoint already ran', async () => {
+		const { sdk } = createSdk(vi.fn().mockResolvedValue({ output: OUTPUT }));
 
-		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).resolves.toStrictEqual({
-			output: OUTPUT,
-		});
+		await expect(sdk.execute(POINTER, { input: INPUT, connectionId: 42 })).rejects.toThrow(
+			/google-docs v1 getDocument but returned no execution.*the Endpoint has already run/,
+		);
 	});
 
 	it('propagates a transport failure to the caller', async () => {
