@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.13.0...v0.14.0) (2026-11-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* return { output, execution } from every endpoint call ([#16](https://github.com/integromat/make-endpoints-sdk/issues/16)) (#17)
+
+### Features
+
+* require execution in every endpoint result ([#18](https://github.com/integromat/make-endpoints-sdk/issues/18)) ([77313f3](https://github.com/integromat/make-endpoints-sdk/commit/77313f3aeaa00242fd1c9caafa297c7b8cb7b6d6))
+* return { output, execution } from every endpoint call ([#16](https://github.com/integromat/make-endpoints-sdk/issues/16)) ([#17](https://github.com/integromat/make-endpoints-sdk/issues/17)) ([a8d674e](https://github.com/integromat/make-endpoints-sdk/commit/a8d674e6dad1e83f7eb681a9d1eda68c50705645))
+* update generated endpoints ([5fcfc5b](https://github.com/integromat/make-endpoints-sdk/commit/5fcfc5b6a1a2b8ef118602632b79e6a450fb6d03))
+
 ## [0.13.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.12.0...v0.13.0) (2026-11-21)
 
 
