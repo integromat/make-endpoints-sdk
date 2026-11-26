@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchMessagesInput = {
 	/**
@@ -145,7 +145,7 @@ export async function searchMessages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchMessagesOutput> {
+): Promise<EndpointResult<SearchMessagesOutput>> {
 	const response = await this.endpointCaller<SearchMessagesOutput>(
 		{
 			appName: 'slack',
@@ -154,5 +154,5 @@ export async function searchMessages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

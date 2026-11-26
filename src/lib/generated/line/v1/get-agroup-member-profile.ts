@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetAGroupMemberProfileInput = {
 	/**
@@ -39,7 +39,7 @@ export async function getAgroupMemberProfile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAGroupMemberProfileOutput> {
+): Promise<EndpointResult<GetAGroupMemberProfileOutput>> {
 	const response = await this.endpointCaller<GetAGroupMemberProfileOutput>(
 		{
 			appName: 'line',
@@ -48,5 +48,5 @@ export async function getAgroupMemberProfile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

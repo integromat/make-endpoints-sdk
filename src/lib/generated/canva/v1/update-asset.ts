@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateAssetInput = {
 	/**
@@ -143,7 +143,7 @@ export async function updateAsset(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateAssetOutput> {
+): Promise<EndpointResult<UpdateAssetOutput>> {
 	const response = await this.endpointCaller<UpdateAssetOutput>(
 		{
 			appName: 'canva',
@@ -152,5 +152,5 @@ export async function updateAsset(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

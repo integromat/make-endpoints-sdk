@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CancelEventInput = {
 	/**
@@ -48,7 +48,7 @@ export async function cancelEvent(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CancelEventOutput> {
+): Promise<EndpointResult<CancelEventOutput>> {
 	const response = await this.endpointCaller<CancelEventOutput>(
 		{
 			appName: 'calendly',
@@ -57,5 +57,5 @@ export async function cancelEvent(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

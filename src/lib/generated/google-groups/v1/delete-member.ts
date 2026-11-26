@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteMemberInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteMember(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteMemberOutput> {
+): Promise<EndpointResult<DeleteMemberOutput>> {
 	const response = await this.endpointCaller<DeleteMemberOutput>(
 		{
 			appName: 'google-groups',
@@ -35,5 +35,5 @@ export async function deleteMember(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

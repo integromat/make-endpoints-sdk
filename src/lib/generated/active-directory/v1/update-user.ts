@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateUserInput = {
 	/**
@@ -287,7 +287,7 @@ export async function updateUser(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateUserOutput> {
+): Promise<EndpointResult<UpdateUserOutput>> {
 	const response = await this.endpointCaller<UpdateUserOutput>(
 		{
 			appName: 'active-directory',
@@ -296,5 +296,5 @@ export async function updateUser(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

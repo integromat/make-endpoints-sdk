@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListListsInput = {
 	/**
@@ -905,7 +905,7 @@ export async function listLists(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListListsOutput> {
+): Promise<EndpointResult<ListListsOutput>> {
 	const response = await this.endpointCaller<ListListsOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -914,5 +914,5 @@ export async function listLists(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

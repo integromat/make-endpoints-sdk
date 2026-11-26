@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListOwnersInput = {
 	/**
@@ -119,7 +119,7 @@ export async function listOwners(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListOwnersOutput> {
+): Promise<EndpointResult<ListOwnersOutput>> {
 	const response = await this.endpointCaller<ListOwnersOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -128,5 +128,5 @@ export async function listOwners(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

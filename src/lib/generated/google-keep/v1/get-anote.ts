@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetANoteInput = {
 	/**
@@ -164,7 +164,7 @@ export async function getAnote(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetANoteOutput> {
+): Promise<EndpointResult<GetANoteOutput>> {
 	const response = await this.endpointCaller<GetANoteOutput>(
 		{
 			appName: 'google-keep',
@@ -173,5 +173,5 @@ export async function getAnote(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

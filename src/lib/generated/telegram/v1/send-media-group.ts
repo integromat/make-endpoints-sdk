@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendMediaGroupInput = {
 	/**
@@ -598,7 +598,7 @@ export async function sendMediaGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendMediaGroupOutput> {
+): Promise<EndpointResult<SendMediaGroupOutput>> {
 	const response = await this.endpointCaller<SendMediaGroupOutput>(
 		{
 			appName: 'telegram',
@@ -607,5 +607,5 @@ export async function sendMediaGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

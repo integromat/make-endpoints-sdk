@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CopyFolderInput = {
 	/**
@@ -1137,7 +1137,7 @@ export async function copyFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CopyFolderOutput> {
+): Promise<EndpointResult<CopyFolderOutput>> {
 	const response = await this.endpointCaller<CopyFolderOutput>(
 		{
 			appName: 'box',
@@ -1146,5 +1146,5 @@ export async function copyFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

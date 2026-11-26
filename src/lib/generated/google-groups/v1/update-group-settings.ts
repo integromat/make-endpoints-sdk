@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateGroupSettingsInput = {
 	/**
@@ -487,7 +487,7 @@ export async function updateGroupSettings(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateGroupSettingsOutput> {
+): Promise<EndpointResult<UpdateGroupSettingsOutput>> {
 	const response = await this.endpointCaller<UpdateGroupSettingsOutput>(
 		{
 			appName: 'google-groups',
@@ -496,5 +496,5 @@ export async function updateGroupSettings(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

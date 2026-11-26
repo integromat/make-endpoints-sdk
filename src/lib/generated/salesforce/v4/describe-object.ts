@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type DescribeObjectInput = {
 	/**
@@ -215,7 +215,7 @@ export async function describeObject(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DescribeObjectOutput> {
+): Promise<EndpointResult<DescribeObjectOutput>> {
 	const response = await this.endpointCaller<DescribeObjectOutput>(
 		{
 			appName: 'salesforce',
@@ -224,5 +224,5 @@ export async function describeObject(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

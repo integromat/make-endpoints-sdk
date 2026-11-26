@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ForwardMessageInput = {
 	/**
@@ -473,7 +473,7 @@ export async function forwardMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ForwardMessageOutput> {
+): Promise<EndpointResult<ForwardMessageOutput>> {
 	const response = await this.endpointCaller<ForwardMessageOutput>(
 		{
 			appName: 'telegram',
@@ -482,5 +482,5 @@ export async function forwardMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

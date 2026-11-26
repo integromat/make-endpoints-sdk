@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DownloadFileInput = {
 	/**
@@ -67,7 +67,7 @@ export async function downloadFile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DownloadFileOutput> {
+): Promise<EndpointResult<DownloadFileOutput>> {
 	const response = await this.endpointCaller<DownloadFileOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -76,5 +76,5 @@ export async function downloadFile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

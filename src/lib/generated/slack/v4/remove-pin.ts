@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemovePinInput = {
 	/**
@@ -31,7 +31,7 @@ export async function removePin(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemovePinOutput> {
+): Promise<EndpointResult<RemovePinOutput>> {
 	const response = await this.endpointCaller<RemovePinOutput>(
 		{
 			appName: 'slack',
@@ -40,5 +40,5 @@ export async function removePin(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

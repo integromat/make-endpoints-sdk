@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetGlobalMetadataTemplatesInput = {
 	/**
@@ -137,7 +137,7 @@ export async function getGlobalMetadataTemplates(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetGlobalMetadataTemplatesOutput> {
+): Promise<EndpointResult<GetGlobalMetadataTemplatesOutput>> {
 	const response = await this.endpointCaller<GetGlobalMetadataTemplatesOutput>(
 		{
 			appName: 'box',
@@ -146,5 +146,5 @@ export async function getGlobalMetadataTemplates(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

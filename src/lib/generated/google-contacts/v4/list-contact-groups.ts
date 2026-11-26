@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListContactGroupsInput = {
 	/**
@@ -112,7 +112,7 @@ export async function listContactGroups(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListContactGroupsOutput> {
+): Promise<EndpointResult<ListContactGroupsOutput>> {
 	const response = await this.endpointCaller<ListContactGroupsOutput>(
 		{
 			appName: 'google-contacts',
@@ -121,5 +121,5 @@ export async function listContactGroups(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

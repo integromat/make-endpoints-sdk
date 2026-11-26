@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteEmailInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteEmail(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteEmailOutput> {
+): Promise<EndpointResult<DeleteEmailOutput>> {
 	const response = await this.endpointCaller<DeleteEmailOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -31,5 +31,5 @@ export async function deleteEmail(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

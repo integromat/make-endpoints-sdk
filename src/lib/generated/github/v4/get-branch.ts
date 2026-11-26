@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetBranchInput = {
 	/**
@@ -115,7 +115,7 @@ export async function getBranch(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetBranchOutput> {
+): Promise<EndpointResult<GetBranchOutput>> {
 	const response = await this.endpointCaller<GetBranchOutput>(
 		{
 			appName: 'github',
@@ -124,5 +124,5 @@ export async function getBranch(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

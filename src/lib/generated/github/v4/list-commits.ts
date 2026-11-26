@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListCommitsInput = {
 	/**
@@ -183,7 +183,7 @@ export async function listCommits(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListCommitsOutput> {
+): Promise<EndpointResult<ListCommitsOutput>> {
 	const response = await this.endpointCaller<ListCommitsOutput>(
 		{
 			appName: 'github',
@@ -192,5 +192,5 @@ export async function listCommits(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

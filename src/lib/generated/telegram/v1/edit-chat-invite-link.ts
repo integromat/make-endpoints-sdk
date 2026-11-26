@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type EditChatInviteLinkInput = {
 	/**
@@ -120,7 +120,7 @@ export async function editChatInviteLink(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EditChatInviteLinkOutput> {
+): Promise<EndpointResult<EditChatInviteLinkOutput>> {
 	const response = await this.endpointCaller<EditChatInviteLinkOutput>(
 		{
 			appName: 'telegram',
@@ -129,5 +129,5 @@ export async function editChatInviteLink(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

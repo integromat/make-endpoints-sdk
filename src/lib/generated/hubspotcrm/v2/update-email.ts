@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateEmailInput = {
 	/**
@@ -86,7 +86,7 @@ export async function updateEmail(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateEmailOutput> {
+): Promise<EndpointResult<UpdateEmailOutput>> {
 	const response = await this.endpointCaller<UpdateEmailOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -95,5 +95,5 @@ export async function updateEmail(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

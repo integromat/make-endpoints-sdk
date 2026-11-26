@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListBasesInput = {
 	/**
@@ -44,7 +44,7 @@ export async function listBases(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListBasesOutput> {
+): Promise<EndpointResult<ListBasesOutput>> {
 	const response = await this.endpointCaller<ListBasesOutput>(
 		{
 			appName: 'airtable',
@@ -53,5 +53,5 @@ export async function listBases(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

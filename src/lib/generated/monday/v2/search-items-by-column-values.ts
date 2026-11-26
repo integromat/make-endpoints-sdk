@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchItemsByColumnValuesInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function searchItemsByColumnValues(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchItemsByColumnValuesOutput> {
+): Promise<EndpointResult<SearchItemsByColumnValuesOutput>> {
 	const response = await this.endpointCaller<SearchItemsByColumnValuesOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function searchItemsByColumnValues(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

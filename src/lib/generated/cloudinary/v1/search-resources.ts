@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchResourcesInput = {
 	/**
@@ -191,7 +191,7 @@ export async function searchResources(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchResourcesOutput> {
+): Promise<EndpointResult<SearchResourcesOutput>> {
 	const response = await this.endpointCaller<SearchResourcesOutput>(
 		{
 			appName: 'cloudinary',
@@ -200,5 +200,5 @@ export async function searchResources(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

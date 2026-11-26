@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPageInput = {
 	/**
@@ -86,7 +86,7 @@ export async function getPage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPageOutput> {
+): Promise<EndpointResult<GetPageOutput>> {
 	const response = await this.endpointCaller<GetPageOutput>(
 		{
 			appName: 'confluence',
@@ -95,5 +95,5 @@ export async function getPage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

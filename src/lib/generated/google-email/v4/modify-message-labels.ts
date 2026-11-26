@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ModifyMessageLabelsInput = {
 	/**
@@ -206,7 +206,7 @@ export async function modifyMessageLabels(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ModifyMessageLabelsOutput> {
+): Promise<EndpointResult<ModifyMessageLabelsOutput>> {
 	const response = await this.endpointCaller<ModifyMessageLabelsOutput>(
 		{
 			appName: 'google-email',
@@ -215,5 +215,5 @@ export async function modifyMessageLabels(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetUserInput = {
 	/**
@@ -173,7 +173,7 @@ export async function getUser(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUserOutput> {
+): Promise<EndpointResult<GetUserOutput>> {
 	const response = await this.endpointCaller<GetUserOutput>(
 		{
 			appName: 'slack',
@@ -182,5 +182,5 @@ export async function getUser(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

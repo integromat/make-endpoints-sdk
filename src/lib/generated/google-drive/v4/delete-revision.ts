@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteRevisionInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteRevision(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteRevisionOutput> {
+): Promise<EndpointResult<DeleteRevisionOutput>> {
 	const response = await this.endpointCaller<DeleteRevisionOutput>(
 		{
 			appName: 'google-drive',
@@ -35,5 +35,5 @@ export async function deleteRevision(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

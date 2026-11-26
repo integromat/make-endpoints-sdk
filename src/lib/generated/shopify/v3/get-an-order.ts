@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetAnOrderInput = {
 	/**
@@ -652,7 +652,7 @@ export async function getAnOrder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAnOrderOutput> {
+): Promise<EndpointResult<GetAnOrderOutput>> {
 	const response = await this.endpointCaller<GetAnOrderOutput>(
 		{
 			appName: 'shopify',
@@ -661,5 +661,5 @@ export async function getAnOrder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UnsubscribeContactInput = {
 	/**
@@ -87,7 +87,7 @@ export async function unsubscribeContact(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UnsubscribeContactOutput> {
+): Promise<EndpointResult<UnsubscribeContactOutput>> {
 	const response = await this.endpointCaller<UnsubscribeContactOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -96,5 +96,5 @@ export async function unsubscribeContact(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

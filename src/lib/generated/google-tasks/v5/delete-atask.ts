@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteATaskInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteAtask(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteATaskOutput> {
+): Promise<EndpointResult<DeleteATaskOutput>> {
 	const response = await this.endpointCaller<DeleteATaskOutput>(
 		{
 			appName: 'google-tasks',
@@ -35,5 +35,5 @@ export async function deleteAtask(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

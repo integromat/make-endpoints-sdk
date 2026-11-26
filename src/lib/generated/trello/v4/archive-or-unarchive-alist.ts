@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ArchiveOrUnarchiveAListInput = {
 	/**
@@ -103,7 +103,7 @@ export async function archiveOrUnarchiveAlist(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArchiveOrUnarchiveAListOutput> {
+): Promise<EndpointResult<ArchiveOrUnarchiveAListOutput>> {
 	const response = await this.endpointCaller<ArchiveOrUnarchiveAListOutput>(
 		{
 			appName: 'trello',
@@ -112,5 +112,5 @@ export async function archiveOrUnarchiveAlist(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

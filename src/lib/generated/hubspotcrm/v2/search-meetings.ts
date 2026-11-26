@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchMeetingsInput = {
 	/**
@@ -189,7 +189,7 @@ export async function searchMeetings(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchMeetingsOutput> {
+): Promise<EndpointResult<SearchMeetingsOutput>> {
 	const response = await this.endpointCaller<SearchMeetingsOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -198,5 +198,5 @@ export async function searchMeetings(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

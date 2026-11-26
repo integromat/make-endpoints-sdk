@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetGroupInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function getGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetGroupOutput> {
+): Promise<EndpointResult<GetGroupOutput>> {
 	const response = await this.endpointCaller<GetGroupOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function getGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

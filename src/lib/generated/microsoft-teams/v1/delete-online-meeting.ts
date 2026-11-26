@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteOnlineMeetingInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteOnlineMeeting(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteOnlineMeetingOutput> {
+): Promise<EndpointResult<DeleteOnlineMeetingOutput>> {
 	const response = await this.endpointCaller<DeleteOnlineMeetingOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -31,5 +31,5 @@ export async function deleteOnlineMeeting(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

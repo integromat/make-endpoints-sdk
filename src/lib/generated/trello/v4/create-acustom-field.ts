@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateACustomFieldInput = {
 	/**
@@ -148,7 +148,7 @@ export async function createAcustomField(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateACustomFieldOutput> {
+): Promise<EndpointResult<CreateACustomFieldOutput>> {
 	const response = await this.endpointCaller<CreateACustomFieldOutput>(
 		{
 			appName: 'trello',
@@ -157,5 +157,5 @@ export async function createAcustomField(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

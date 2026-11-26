@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListEntityDefinitionsInput = {
 	/**
@@ -226,7 +226,7 @@ export async function listEntityDefinitions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListEntityDefinitionsOutput> {
+): Promise<EndpointResult<ListEntityDefinitionsOutput>> {
 	const response = await this.endpointCaller<ListEntityDefinitionsOutput>(
 		{
 			appName: 'microsoft-dynamics-365-crm',
@@ -235,5 +235,5 @@ export async function listEntityDefinitions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

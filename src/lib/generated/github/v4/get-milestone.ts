@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetMilestoneInput = {
 	/**
@@ -102,7 +102,7 @@ export async function getMilestone(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetMilestoneOutput> {
+): Promise<EndpointResult<GetMilestoneOutput>> {
 	const response = await this.endpointCaller<GetMilestoneOutput>(
 		{
 			appName: 'github',
@@ -111,5 +111,5 @@ export async function getMilestone(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

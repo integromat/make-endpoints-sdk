@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type BatchClearValuesInput = {
 	/**
@@ -39,7 +39,7 @@ export async function batchClearValues(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BatchClearValuesOutput> {
+): Promise<EndpointResult<BatchClearValuesOutput>> {
 	const response = await this.endpointCaller<BatchClearValuesOutput>(
 		{
 			appName: 'google-sheets',
@@ -48,5 +48,5 @@ export async function batchClearValues(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

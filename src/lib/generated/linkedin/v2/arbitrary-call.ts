@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ArbitraryCallInput = {
 	/**
@@ -79,7 +79,7 @@ export async function arbitraryCall(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArbitraryCallOutput> {
+): Promise<EndpointResult<ArbitraryCallOutput>> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(
 		{
 			appName: 'linkedin',
@@ -88,5 +88,5 @@ export async function arbitraryCall(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

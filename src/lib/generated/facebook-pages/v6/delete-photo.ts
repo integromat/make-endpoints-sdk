@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeletePhotoInput = {
 	/**
@@ -31,7 +31,7 @@ export async function deletePhoto(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeletePhotoOutput> {
+): Promise<EndpointResult<DeletePhotoOutput>> {
 	const response = await this.endpointCaller<DeletePhotoOutput>(
 		{
 			appName: 'facebook-pages',
@@ -40,5 +40,5 @@ export async function deletePhoto(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

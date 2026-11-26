@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteGroupInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteGroupOutput> {
+): Promise<EndpointResult<DeleteGroupOutput>> {
 	const response = await this.endpointCaller<DeleteGroupOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -31,5 +31,5 @@ export async function deleteGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

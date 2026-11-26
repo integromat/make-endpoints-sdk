@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteInviteeNoShowInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteInviteeNoShow(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteInviteeNoShowOutput> {
+): Promise<EndpointResult<DeleteInviteeNoShowOutput>> {
 	const response = await this.endpointCaller<DeleteInviteeNoShowOutput>(
 		{
 			appName: 'calendly',
@@ -31,5 +31,5 @@ export async function deleteInviteeNoShow(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

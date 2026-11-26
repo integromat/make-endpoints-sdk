@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteDriveInput = {
 	/**
@@ -30,7 +30,7 @@ export async function deleteDrive(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteDriveOutput> {
+): Promise<EndpointResult<DeleteDriveOutput>> {
 	const response = await this.endpointCaller<DeleteDriveOutput>(
 		{
 			appName: 'google-drive',
@@ -39,5 +39,5 @@ export async function deleteDrive(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

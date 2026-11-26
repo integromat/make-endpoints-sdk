@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetRowInput = {
 	/**
@@ -129,7 +129,7 @@ export async function getRow(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetRowOutput> {
+): Promise<EndpointResult<GetRowOutput>> {
 	const response = await this.endpointCaller<GetRowOutput>(
 		{
 			appName: 'coda',
@@ -138,5 +138,5 @@ export async function getRow(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

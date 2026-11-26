@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetGistInput = {
 	/**
@@ -140,7 +140,7 @@ export async function getGist(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetGistOutput> {
+): Promise<EndpointResult<GetGistOutput>> {
 	const response = await this.endpointCaller<GetGistOutput>(
 		{
 			appName: 'github',
@@ -149,5 +149,5 @@ export async function getGist(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

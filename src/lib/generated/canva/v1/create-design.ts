@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateDesignInput = {
 	/**
@@ -102,7 +102,7 @@ export async function createDesign(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateDesignOutput> {
+): Promise<EndpointResult<CreateDesignOutput>> {
 	const response = await this.endpointCaller<CreateDesignOutput>(
 		{
 			appName: 'canva',
@@ -111,5 +111,5 @@ export async function createDesign(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

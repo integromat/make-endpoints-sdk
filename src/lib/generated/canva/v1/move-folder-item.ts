@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type MoveFolderItemInput = {
 	/**
@@ -26,7 +26,7 @@ export async function moveFolderItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<MoveFolderItemOutput> {
+): Promise<EndpointResult<MoveFolderItemOutput>> {
 	const response = await this.endpointCaller<MoveFolderItemOutput>(
 		{
 			appName: 'canva',
@@ -35,5 +35,5 @@ export async function moveFolderItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListSpacePagesInput = {
 	/**
@@ -106,7 +106,7 @@ export async function listSpacePages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListSpacePagesOutput> {
+): Promise<EndpointResult<ListSpacePagesOutput>> {
 	const response = await this.endpointCaller<ListSpacePagesOutput>(
 		{
 			appName: 'confluence',
@@ -115,5 +115,5 @@ export async function listSpacePages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

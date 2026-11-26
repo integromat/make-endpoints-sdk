@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UnpinChatMessageInput = {
 	/**
@@ -31,7 +31,7 @@ export async function unpinChatMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UnpinChatMessageOutput> {
+): Promise<EndpointResult<UnpinChatMessageOutput>> {
 	const response = await this.endpointCaller<UnpinChatMessageOutput>(
 		{
 			appName: 'telegram',
@@ -40,5 +40,5 @@ export async function unpinChatMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

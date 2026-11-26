@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchRecordsSoslInput = {
 	/**
@@ -29,7 +29,7 @@ export async function searchRecordsSosl(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchRecordsSoslOutput> {
+): Promise<EndpointResult<SearchRecordsSoslOutput>> {
 	const response = await this.endpointCaller<SearchRecordsSoslOutput>(
 		{
 			appName: 'salesforce',
@@ -38,5 +38,5 @@ export async function searchRecordsSosl(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

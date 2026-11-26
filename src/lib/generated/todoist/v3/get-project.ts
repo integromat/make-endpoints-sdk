@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetProjectInput = {
 	/**
@@ -177,7 +177,7 @@ export async function getProject(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetProjectOutput> {
+): Promise<EndpointResult<GetProjectOutput>> {
 	const response = await this.endpointCaller<GetProjectOutput>(
 		{
 			appName: 'todoist',
@@ -186,5 +186,5 @@ export async function getProject(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

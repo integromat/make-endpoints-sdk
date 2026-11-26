@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchPagesInput = {
 	/**
@@ -760,7 +760,7 @@ export async function searchPages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchPagesOutput> {
+): Promise<EndpointResult<SearchPagesOutput>> {
 	const response = await this.endpointCaller<SearchPagesOutput>(
 		{
 			appName: 'notion',
@@ -769,5 +769,5 @@ export async function searchPages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

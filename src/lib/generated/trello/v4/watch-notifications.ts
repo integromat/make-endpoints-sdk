@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type WatchNotificationsInput = {
 	/**
@@ -1417,7 +1417,7 @@ export async function watchNotifications(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<WatchNotificationsOutput> {
+): Promise<EndpointResult<WatchNotificationsOutput>> {
 	const response = await this.endpointCaller<WatchNotificationsOutput>(
 		{
 			appName: 'trello',
@@ -1426,5 +1426,5 @@ export async function watchNotifications(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

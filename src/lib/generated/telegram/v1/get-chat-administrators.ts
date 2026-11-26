@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetChatAdministratorsInput = {
 	/**
@@ -155,7 +155,7 @@ export async function getChatAdministrators(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetChatAdministratorsOutput> {
+): Promise<EndpointResult<GetChatAdministratorsOutput>> {
 	const response = await this.endpointCaller<GetChatAdministratorsOutput>(
 		{
 			appName: 'telegram',
@@ -164,5 +164,5 @@ export async function getChatAdministrators(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

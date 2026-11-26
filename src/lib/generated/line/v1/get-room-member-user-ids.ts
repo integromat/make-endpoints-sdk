@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetRoomMemberUserIdsInput = {
 	/**
@@ -37,7 +37,7 @@ export async function getRoomMemberUserIds(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetRoomMemberUserIdsOutput> {
+): Promise<EndpointResult<GetRoomMemberUserIdsOutput>> {
 	const response = await this.endpointCaller<GetRoomMemberUserIdsOutput>(
 		{
 			appName: 'line',
@@ -46,5 +46,5 @@ export async function getRoomMemberUserIds(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

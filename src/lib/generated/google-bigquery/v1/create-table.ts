@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateTableInput = {
 	/**
@@ -3155,7 +3155,7 @@ export async function createTable(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateTableOutput> {
+): Promise<EndpointResult<CreateTableOutput>> {
 	const response = await this.endpointCaller<CreateTableOutput>(
 		{
 			appName: 'google-bigquery',
@@ -3164,5 +3164,5 @@ export async function createTable(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

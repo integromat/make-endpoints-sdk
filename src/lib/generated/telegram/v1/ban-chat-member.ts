@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type BanChatMemberInput = {
 	/**
@@ -35,7 +35,7 @@ export async function banChatMember(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BanChatMemberOutput> {
+): Promise<EndpointResult<BanChatMemberOutput>> {
 	const response = await this.endpointCaller<BanChatMemberOutput>(
 		{
 			appName: 'telegram',
@@ -44,5 +44,5 @@ export async function banChatMember(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

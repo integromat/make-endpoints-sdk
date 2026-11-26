@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UnlikePostInput = {
 	/**
@@ -31,7 +31,7 @@ export async function unlikePost(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UnlikePostOutput> {
+): Promise<EndpointResult<UnlikePostOutput>> {
 	const response = await this.endpointCaller<UnlikePostOutput>(
 		{
 			appName: 'facebook-pages',
@@ -40,5 +40,5 @@ export async function unlikePost(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

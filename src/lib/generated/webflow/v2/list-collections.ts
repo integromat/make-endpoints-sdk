@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListCollectionsInput = {
 	/**
@@ -54,7 +54,7 @@ export async function listCollections(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListCollectionsOutput> {
+): Promise<EndpointResult<ListCollectionsOutput>> {
 	const response = await this.endpointCaller<ListCollectionsOutput>(
 		{
 			appName: 'webflow',
@@ -63,5 +63,5 @@ export async function listCollections(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAttachmentInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteAttachment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAttachmentOutput> {
+): Promise<EndpointResult<DeleteAttachmentOutput>> {
 	const response = await this.endpointCaller<DeleteAttachmentOutput>(
 		{
 			appName: 'jira',
@@ -31,5 +31,5 @@ export async function deleteAttachment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

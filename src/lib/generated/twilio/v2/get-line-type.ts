@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetLineTypeInput = {
 	/**
@@ -343,7 +343,7 @@ export async function getLineType(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetLineTypeOutput> {
+): Promise<EndpointResult<GetLineTypeOutput>> {
 	const response = await this.endpointCaller<GetLineTypeOutput>(
 		{
 			appName: 'twilio',
@@ -352,5 +352,5 @@ export async function getLineType(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

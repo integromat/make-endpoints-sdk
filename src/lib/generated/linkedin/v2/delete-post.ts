@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeletePostInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deletePost(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeletePostOutput> {
+): Promise<EndpointResult<DeletePostOutput>> {
 	const response = await this.endpointCaller<DeletePostOutput>(
 		{
 			appName: 'linkedin',
@@ -31,5 +31,5 @@ export async function deletePost(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

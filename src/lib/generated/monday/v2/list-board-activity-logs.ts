@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListBoardActivityLogsInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function listBoardActivityLogs(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListBoardActivityLogsOutput> {
+): Promise<EndpointResult<ListBoardActivityLogsOutput>> {
 	const response = await this.endpointCaller<ListBoardActivityLogsOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function listBoardActivityLogs(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

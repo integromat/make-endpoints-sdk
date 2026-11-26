@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetBySharedLinkInput = {
 	/**
@@ -674,7 +674,7 @@ export async function getBySharedLink(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetBySharedLinkOutput> {
+): Promise<EndpointResult<GetBySharedLinkOutput>> {
 	const response = await this.endpointCaller<GetBySharedLinkOutput>(
 		{
 			appName: 'box',
@@ -683,5 +683,5 @@ export async function getBySharedLink(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

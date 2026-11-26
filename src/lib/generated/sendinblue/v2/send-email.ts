@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendEmailInput = {
 	id: number;
@@ -23,7 +23,7 @@ export async function sendEmail(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendEmailOutput> {
+): Promise<EndpointResult<SendEmailOutput>> {
 	const response = await this.endpointCaller<SendEmailOutput>(
 		{
 			appName: 'sendinblue',
@@ -32,5 +32,5 @@ export async function sendEmail(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

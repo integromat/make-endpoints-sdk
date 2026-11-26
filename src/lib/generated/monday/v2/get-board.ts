@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetBoardInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function getBoard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetBoardOutput> {
+): Promise<EndpointResult<GetBoardOutput>> {
 	const response = await this.endpointCaller<GetBoardOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function getBoard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

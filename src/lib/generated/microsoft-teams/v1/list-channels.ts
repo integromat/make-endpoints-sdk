@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListChannelsInput = {
 	/**
@@ -123,7 +123,7 @@ export async function listChannels(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListChannelsOutput> {
+): Promise<EndpointResult<ListChannelsOutput>> {
 	const response = await this.endpointCaller<ListChannelsOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -132,5 +132,5 @@ export async function listChannels(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

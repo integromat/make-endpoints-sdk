@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RestrictChatMemberInput = {
 	/**
@@ -108,7 +108,7 @@ export async function restrictChatMember(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RestrictChatMemberOutput> {
+): Promise<EndpointResult<RestrictChatMemberOutput>> {
 	const response = await this.endpointCaller<RestrictChatMemberOutput>(
 		{
 			appName: 'telegram',
@@ -117,5 +117,5 @@ export async function restrictChatMember(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

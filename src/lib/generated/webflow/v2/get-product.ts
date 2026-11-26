@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetProductInput = {
 	/**
@@ -309,7 +309,7 @@ export async function getProduct(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetProductOutput> {
+): Promise<EndpointResult<GetProductOutput>> {
 	const response = await this.endpointCaller<GetProductOutput>(
 		{
 			appName: 'webflow',
@@ -318,5 +318,5 @@ export async function getProduct(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

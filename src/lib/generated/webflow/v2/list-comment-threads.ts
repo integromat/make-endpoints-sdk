@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListCommentThreadsInput = {
 	/**
@@ -175,7 +175,7 @@ export async function listCommentThreads(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListCommentThreadsOutput> {
+): Promise<EndpointResult<ListCommentThreadsOutput>> {
 	const response = await this.endpointCaller<ListCommentThreadsOutput>(
 		{
 			appName: 'webflow',
@@ -184,5 +184,5 @@ export async function listCommentThreads(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

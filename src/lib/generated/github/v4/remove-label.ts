@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveLabelInput = {
 	/**
@@ -75,7 +75,7 @@ export async function removeLabel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveLabelOutput> {
+): Promise<EndpointResult<RemoveLabelOutput>> {
 	const response = await this.endpointCaller<RemoveLabelOutput>(
 		{
 			appName: 'github',
@@ -84,5 +84,5 @@ export async function removeLabel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

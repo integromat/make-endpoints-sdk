@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateColumnInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function createColumn(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateColumnOutput> {
+): Promise<EndpointResult<CreateColumnOutput>> {
 	const response = await this.endpointCaller<CreateColumnOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function createColumn(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

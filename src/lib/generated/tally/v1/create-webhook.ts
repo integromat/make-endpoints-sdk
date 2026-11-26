@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateWebhookInput = {
 	/**
@@ -111,7 +111,7 @@ export async function createWebhook(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateWebhookOutput> {
+): Promise<EndpointResult<CreateWebhookOutput>> {
 	const response = await this.endpointCaller<CreateWebhookOutput>(
 		{
 			appName: 'tally',
@@ -120,5 +120,5 @@ export async function createWebhook(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type AppendValuesInput = {
 	/**
@@ -105,7 +105,7 @@ export async function appendValues(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AppendValuesOutput> {
+): Promise<EndpointResult<AppendValuesOutput>> {
 	const response = await this.endpointCaller<AppendValuesOutput>(
 		{
 			appName: 'google-sheets',
@@ -114,5 +114,5 @@ export async function appendValues(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

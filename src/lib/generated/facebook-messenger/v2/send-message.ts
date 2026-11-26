@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendMessageInput = {
 	/**
@@ -124,7 +124,7 @@ export async function sendMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendMessageOutput> {
+): Promise<EndpointResult<SendMessageOutput>> {
 	const response = await this.endpointCaller<SendMessageOutput>(
 		{
 			appName: 'facebook-messenger',
@@ -133,5 +133,5 @@ export async function sendMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

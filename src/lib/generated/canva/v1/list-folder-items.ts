@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListFolderItemsInput = {
 	/**
@@ -168,7 +168,7 @@ export async function listFolderItems(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListFolderItemsOutput> {
+): Promise<EndpointResult<ListFolderItemsOutput>> {
 	const response = await this.endpointCaller<ListFolderItemsOutput>(
 		{
 			appName: 'canva',
@@ -177,5 +177,5 @@ export async function listFolderItems(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

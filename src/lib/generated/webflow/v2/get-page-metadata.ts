@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPageMetadataInput = {
 	/**
@@ -125,7 +125,7 @@ export async function getPageMetadata(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPageMetadataOutput> {
+): Promise<EndpointResult<GetPageMetadataOutput>> {
 	const response = await this.endpointCaller<GetPageMetadataOutput>(
 		{
 			appName: 'webflow',
@@ -134,5 +134,5 @@ export async function getPageMetadata(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

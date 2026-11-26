@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteFileInput = {
 	/**
@@ -27,7 +27,7 @@ export async function deleteFile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteFileOutput> {
+): Promise<EndpointResult<DeleteFileOutput>> {
 	const response = await this.endpointCaller<DeleteFileOutput>(
 		{
 			appName: 'slack',
@@ -36,5 +36,5 @@ export async function deleteFile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

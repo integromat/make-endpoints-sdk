@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteWebhookInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteWebhook(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteWebhookOutput> {
+): Promise<EndpointResult<DeleteWebhookOutput>> {
 	const response = await this.endpointCaller<DeleteWebhookOutput>(
 		{
 			appName: 'typeform',
@@ -35,5 +35,5 @@ export async function deleteWebhook(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

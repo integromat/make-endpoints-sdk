@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateSignRequestInput = {
 	/**
@@ -1400,7 +1400,7 @@ export async function createSignRequest(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateSignRequestOutput> {
+): Promise<EndpointResult<CreateSignRequestOutput>> {
 	const response = await this.endpointCaller<CreateSignRequestOutput>(
 		{
 			appName: 'box',
@@ -1409,5 +1409,5 @@ export async function createSignRequest(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type MakeRequestInput = {
 	/**
@@ -40,7 +40,7 @@ export async function makeRequest(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<MakeRequestOutput> {
+): Promise<EndpointResult<MakeRequestOutput>> {
 	const response = await this.endpointCaller<MakeRequestOutput>(
 		{
 			appName: 'http',
@@ -49,5 +49,5 @@ export async function makeRequest(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListLabelsInput = Record<string, never>;
 
@@ -72,7 +72,7 @@ export async function listLabels(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListLabelsOutput> {
+): Promise<EndpointResult<ListLabelsOutput>> {
 	const response = await this.endpointCaller<ListLabelsOutput>(
 		{
 			appName: 'google-email',
@@ -81,5 +81,5 @@ export async function listLabels(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

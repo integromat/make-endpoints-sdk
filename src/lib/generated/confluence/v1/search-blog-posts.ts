@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchBlogPostsInput = {
 	/**
@@ -103,7 +103,7 @@ export async function searchBlogPosts(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchBlogPostsOutput> {
+): Promise<EndpointResult<SearchBlogPostsOutput>> {
 	const response = await this.endpointCaller<SearchBlogPostsOutput>(
 		{
 			appName: 'confluence',
@@ -112,5 +112,5 @@ export async function searchBlogPosts(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

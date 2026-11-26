@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListChatterSubjectsInput = {
 	/**
@@ -63,7 +63,7 @@ export async function listChatterSubjects(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListChatterSubjectsOutput> {
+): Promise<EndpointResult<ListChatterSubjectsOutput>> {
 	const response = await this.endpointCaller<ListChatterSubjectsOutput>(
 		{
 			appName: 'salesforce',
@@ -72,5 +72,5 @@ export async function listChatterSubjects(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

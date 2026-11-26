@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateSchedulingLinkInput = {
 	/**
@@ -40,7 +40,7 @@ export async function createSchedulingLink(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateSchedulingLinkOutput> {
+): Promise<EndpointResult<CreateSchedulingLinkOutput>> {
 	const response = await this.endpointCaller<CreateSchedulingLinkOutput>(
 		{
 			appName: 'calendly',
@@ -49,5 +49,5 @@ export async function createSchedulingLink(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

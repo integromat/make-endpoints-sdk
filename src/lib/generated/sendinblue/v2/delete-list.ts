@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteListInput = {
 	id: number;
@@ -23,7 +23,7 @@ export async function deleteList(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteListOutput> {
+): Promise<EndpointResult<DeleteListOutput>> {
 	const response = await this.endpointCaller<DeleteListOutput>(
 		{
 			appName: 'sendinblue',
@@ -32,5 +32,5 @@ export async function deleteList(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

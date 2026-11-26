@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DuplicateGroupInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function duplicateGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DuplicateGroupOutput> {
+): Promise<EndpointResult<DuplicateGroupOutput>> {
 	const response = await this.endpointCaller<DuplicateGroupOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function duplicateGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

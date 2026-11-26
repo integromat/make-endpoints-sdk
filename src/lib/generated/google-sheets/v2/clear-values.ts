@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ClearValuesInput = {
 	/**
@@ -35,7 +35,7 @@ export async function clearValues(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ClearValuesOutput> {
+): Promise<EndpointResult<ClearValuesOutput>> {
 	const response = await this.endpointCaller<ClearValuesOutput>(
 		{
 			appName: 'google-sheets',
@@ -44,5 +44,5 @@ export async function clearValues(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

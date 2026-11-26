@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateFormInput = {
 	/**
@@ -2581,7 +2581,7 @@ export async function updateForm(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFormOutput> {
+): Promise<EndpointResult<UpdateFormOutput>> {
 	const response = await this.endpointCaller<UpdateFormOutput>(
 		{
 			appName: 'typeform',
@@ -2590,5 +2590,5 @@ export async function updateForm(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

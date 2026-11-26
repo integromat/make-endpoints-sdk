@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetFormSubmissionInput = {
 	/**
@@ -94,7 +94,7 @@ export async function getFormSubmission(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFormSubmissionOutput> {
+): Promise<EndpointResult<GetFormSubmissionOutput>> {
 	const response = await this.endpointCaller<GetFormSubmissionOutput>(
 		{
 			appName: 'webflow',
@@ -103,5 +103,5 @@ export async function getFormSubmission(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

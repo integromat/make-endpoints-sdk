@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpsertRecordInput = {
 	/**
@@ -61,7 +61,7 @@ export async function upsertRecord(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpsertRecordOutput> {
+): Promise<EndpointResult<UpsertRecordOutput>> {
 	const response = await this.endpointCaller<UpsertRecordOutput>(
 		{
 			appName: 'netsuite',
@@ -70,5 +70,5 @@ export async function upsertRecord(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

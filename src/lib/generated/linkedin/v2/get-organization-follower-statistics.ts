@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetOrganizationFollowerStatisticsInput = {
 	/**
@@ -286,7 +286,7 @@ export async function getOrganizationFollowerStatistics(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetOrganizationFollowerStatisticsOutput> {
+): Promise<EndpointResult<GetOrganizationFollowerStatisticsOutput>> {
 	const response = await this.endpointCaller<GetOrganizationFollowerStatisticsOutput>(
 		{
 			appName: 'linkedin',
@@ -295,5 +295,5 @@ export async function getOrganizationFollowerStatistics(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

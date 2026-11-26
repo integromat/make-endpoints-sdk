@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetCommentInput = {
 	/**
@@ -161,7 +161,7 @@ export async function getComment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetCommentOutput> {
+): Promise<EndpointResult<GetCommentOutput>> {
 	const response = await this.endpointCaller<GetCommentOutput>(
 		{
 			appName: 'jira',
@@ -170,5 +170,5 @@ export async function getComment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type PostChatterFeedMessageInput = {
 	/**
@@ -111,7 +111,7 @@ export async function postChatterFeedMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PostChatterFeedMessageOutput> {
+): Promise<EndpointResult<PostChatterFeedMessageOutput>> {
 	const response = await this.endpointCaller<PostChatterFeedMessageOutput>(
 		{
 			appName: 'salesforce',
@@ -120,5 +120,5 @@ export async function postChatterFeedMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

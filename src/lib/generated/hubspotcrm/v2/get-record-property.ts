@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetRecordPropertyInput = {
 	/**
@@ -201,7 +201,7 @@ export async function getRecordProperty(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetRecordPropertyOutput> {
+): Promise<EndpointResult<GetRecordPropertyOutput>> {
 	const response = await this.endpointCaller<GetRecordPropertyOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -210,5 +210,5 @@ export async function getRecordProperty(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateOrGetTagInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function createOrGetTag(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateOrGetTagOutput> {
+): Promise<EndpointResult<CreateOrGetTagOutput>> {
 	const response = await this.endpointCaller<CreateOrGetTagOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function createOrGetTag(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

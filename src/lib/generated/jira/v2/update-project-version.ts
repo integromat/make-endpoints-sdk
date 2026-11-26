@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateProjectVersionInput = {
 	/**
@@ -131,7 +131,7 @@ export async function updateProjectVersion(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateProjectVersionOutput> {
+): Promise<EndpointResult<UpdateProjectVersionOutput>> {
 	const response = await this.endpointCaller<UpdateProjectVersionOutput>(
 		{
 			appName: 'jira',
@@ -140,5 +140,5 @@ export async function updateProjectVersion(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

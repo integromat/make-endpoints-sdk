@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AddWatcherInput = {
 	/**
@@ -26,7 +26,7 @@ export async function addWatcher(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AddWatcherOutput> {
+): Promise<EndpointResult<AddWatcherOutput>> {
 	const response = await this.endpointCaller<AddWatcherOutput>(
 		{
 			appName: 'jira',
@@ -35,5 +35,5 @@ export async function addWatcher(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

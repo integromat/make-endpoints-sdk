@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAclRuleInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteAclRule(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAclRuleOutput> {
+): Promise<EndpointResult<DeleteAclRuleOutput>> {
 	const response = await this.endpointCaller<DeleteAclRuleOutput>(
 		{
 			appName: 'google-calendar',
@@ -35,5 +35,5 @@ export async function deleteAclRule(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

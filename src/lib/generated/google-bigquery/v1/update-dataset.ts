@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateDatasetInput = {
 	/**
@@ -560,7 +560,7 @@ export async function updateDataset(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateDatasetOutput> {
+): Promise<EndpointResult<UpdateDatasetOutput>> {
 	const response = await this.endpointCaller<UpdateDatasetOutput>(
 		{
 			appName: 'google-bigquery',
@@ -569,5 +569,5 @@ export async function updateDataset(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

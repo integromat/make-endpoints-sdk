@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListRecordTypesInput = Record<string, never>;
 
@@ -24,7 +24,7 @@ export async function listRecordTypes(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListRecordTypesOutput> {
+): Promise<EndpointResult<ListRecordTypesOutput>> {
 	const response = await this.endpointCaller<ListRecordTypesOutput>(
 		{
 			appName: 'netsuite',
@@ -33,5 +33,5 @@ export async function listRecordTypes(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AssignIssueInput = {
 	/**
@@ -26,7 +26,7 @@ export async function assignIssue(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AssignIssueOutput> {
+): Promise<EndpointResult<AssignIssueOutput>> {
 	const response = await this.endpointCaller<AssignIssueOutput>(
 		{
 			appName: 'jira',
@@ -35,5 +35,5 @@ export async function assignIssue(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

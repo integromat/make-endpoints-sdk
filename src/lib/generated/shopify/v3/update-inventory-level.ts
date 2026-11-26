@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateInventoryLevelInput = {
 	/**
@@ -176,7 +176,7 @@ export async function updateInventoryLevel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateInventoryLevelOutput> {
+): Promise<EndpointResult<UpdateInventoryLevelOutput>> {
 	const response = await this.endpointCaller<UpdateInventoryLevelOutput>(
 		{
 			appName: 'shopify',
@@ -185,5 +185,5 @@ export async function updateInventoryLevel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteIssueInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteIssue(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteIssueOutput> {
+): Promise<EndpointResult<DeleteIssueOutput>> {
 	const response = await this.endpointCaller<DeleteIssueOutput>(
 		{
 			appName: 'jira',
@@ -35,5 +35,5 @@ export async function deleteIssue(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

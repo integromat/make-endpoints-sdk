@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetAnItemInput = {
 	/**
@@ -733,7 +733,7 @@ export async function getAnItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAnItemOutput> {
+): Promise<EndpointResult<GetAnItemOutput>> {
 	const response = await this.endpointCaller<GetAnItemOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -742,5 +742,5 @@ export async function getAnItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

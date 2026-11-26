@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateAContactInFolderInput = {
 	/**
@@ -553,7 +553,7 @@ export async function createAcontactInFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateAContactInFolderOutput> {
+): Promise<EndpointResult<CreateAContactInFolderOutput>> {
 	const response = await this.endpointCaller<CreateAContactInFolderOutput>(
 		{
 			appName: 'microsoft-people',
@@ -562,5 +562,5 @@ export async function createAcontactInFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

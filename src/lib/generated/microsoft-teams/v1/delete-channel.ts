@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteChannelInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteChannel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteChannelOutput> {
+): Promise<EndpointResult<DeleteChannelOutput>> {
 	const response = await this.endpointCaller<DeleteChannelOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -35,5 +35,5 @@ export async function deleteChannel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

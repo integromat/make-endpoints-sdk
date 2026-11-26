@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AssignMemberToABoardInput = {
 	/**
@@ -168,7 +168,7 @@ export async function assignMemberToAboard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AssignMemberToABoardOutput> {
+): Promise<EndpointResult<AssignMemberToABoardOutput>> {
 	const response = await this.endpointCaller<AssignMemberToABoardOutput>(
 		{
 			appName: 'trello',
@@ -177,5 +177,5 @@ export async function assignMemberToAboard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

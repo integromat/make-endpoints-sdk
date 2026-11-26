@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GenerateInvoicePdfInput = {
 	/**
@@ -43,7 +43,7 @@ export async function generateInvoicePdf(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GenerateInvoicePdfOutput> {
+): Promise<EndpointResult<GenerateInvoicePdfOutput>> {
 	const response = await this.endpointCaller<GenerateInvoicePdfOutput>(
 		{
 			appName: 'sage-intacct',
@@ -52,5 +52,5 @@ export async function generateInvoicePdf(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AddAliasForGroupInput = {
 	/**
@@ -47,7 +47,7 @@ export async function addAliasForGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AddAliasForGroupOutput> {
+): Promise<EndpointResult<AddAliasForGroupOutput>> {
 	const response = await this.endpointCaller<AddAliasForGroupOutput>(
 		{
 			appName: 'google-groups',
@@ -56,5 +56,5 @@ export async function addAliasForGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

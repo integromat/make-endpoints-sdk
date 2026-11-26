@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AddALabelToACardInput = {
 	/**
@@ -26,7 +26,7 @@ export async function addAlabelToAcard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AddALabelToACardOutput> {
+): Promise<EndpointResult<AddALabelToACardOutput>> {
 	const response = await this.endpointCaller<AddALabelToACardOutput>(
 		{
 			appName: 'trello',
@@ -35,5 +35,5 @@ export async function addAlabelToAcard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

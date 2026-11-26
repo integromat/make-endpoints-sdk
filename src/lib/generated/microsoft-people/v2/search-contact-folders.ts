@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchContactFoldersInput = {
 	/**
@@ -74,7 +74,7 @@ export async function searchContactFolders(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchContactFoldersOutput> {
+): Promise<EndpointResult<SearchContactFoldersOutput>> {
 	const response = await this.endpointCaller<SearchContactFoldersOutput>(
 		{
 			appName: 'microsoft-people',
@@ -83,5 +83,5 @@ export async function searchContactFolders(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

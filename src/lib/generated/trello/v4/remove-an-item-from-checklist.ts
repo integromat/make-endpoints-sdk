@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveAnItemFromChecklistInput = {
 	/**
@@ -26,7 +26,7 @@ export async function removeAnItemFromChecklist(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveAnItemFromChecklistOutput> {
+): Promise<EndpointResult<RemoveAnItemFromChecklistOutput>> {
 	const response = await this.endpointCaller<RemoveAnItemFromChecklistOutput>(
 		{
 			appName: 'trello',
@@ -35,5 +35,5 @@ export async function removeAnItemFromChecklist(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateAFulfillmentInput = {
 	/**
@@ -206,7 +206,7 @@ export async function createAfulfillment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateAFulfillmentOutput> {
+): Promise<EndpointResult<CreateAFulfillmentOutput>> {
 	const response = await this.endpointCaller<CreateAFulfillmentOutput>(
 		{
 			appName: 'shopify',
@@ -215,5 +215,5 @@ export async function createAfulfillment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

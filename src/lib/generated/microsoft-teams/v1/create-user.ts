@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateUserInput = {
 	/**
@@ -175,7 +175,7 @@ export async function createUser(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateUserOutput> {
+): Promise<EndpointResult<CreateUserOutput>> {
 	const response = await this.endpointCaller<CreateUserOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -184,5 +184,5 @@ export async function createUser(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

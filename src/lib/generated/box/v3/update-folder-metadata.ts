@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateFolderMetadataInput = {
 	/**
@@ -84,7 +84,7 @@ export async function updateFolderMetadata(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFolderMetadataOutput> {
+): Promise<EndpointResult<UpdateFolderMetadataOutput>> {
 	const response = await this.endpointCaller<UpdateFolderMetadataOutput>(
 		{
 			appName: 'box',
@@ -93,5 +93,5 @@ export async function updateFolderMetadata(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

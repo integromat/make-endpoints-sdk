@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ArchiveItemInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function archiveItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArchiveItemOutput> {
+): Promise<EndpointResult<ArchiveItemOutput>> {
 	const response = await this.endpointCaller<ArchiveItemOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function archiveItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

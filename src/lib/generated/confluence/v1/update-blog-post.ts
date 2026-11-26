@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateBlogPostInput = {
 	/**
@@ -75,7 +75,7 @@ export async function updateBlogPost(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateBlogPostOutput> {
+): Promise<EndpointResult<UpdateBlogPostOutput>> {
 	const response = await this.endpointCaller<UpdateBlogPostOutput>(
 		{
 			appName: 'confluence',
@@ -84,5 +84,5 @@ export async function updateBlogPost(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

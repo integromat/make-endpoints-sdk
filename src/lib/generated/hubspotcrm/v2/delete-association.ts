@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAssociationInput = {
 	/**
@@ -34,7 +34,7 @@ export async function deleteAssociation(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAssociationOutput> {
+): Promise<EndpointResult<DeleteAssociationOutput>> {
 	const response = await this.endpointCaller<DeleteAssociationOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -43,5 +43,5 @@ export async function deleteAssociation(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

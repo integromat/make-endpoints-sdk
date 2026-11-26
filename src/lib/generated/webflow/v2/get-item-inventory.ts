@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetItemInventoryInput = {
 	/**
@@ -39,7 +39,7 @@ export async function getItemInventory(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetItemInventoryOutput> {
+): Promise<EndpointResult<GetItemInventoryOutput>> {
 	const response = await this.endpointCaller<GetItemInventoryOutput>(
 		{
 			appName: 'webflow',
@@ -48,5 +48,5 @@ export async function getItemInventory(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ChangeMultipleColumnValuesInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function changeMultipleColumnValues(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ChangeMultipleColumnValuesOutput> {
+): Promise<EndpointResult<ChangeMultipleColumnValuesOutput>> {
 	const response = await this.endpointCaller<ChangeMultipleColumnValuesOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function changeMultipleColumnValues(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

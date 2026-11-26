@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchSitesInput = {
 	/**
@@ -366,7 +366,7 @@ export async function searchSites(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchSitesOutput> {
+): Promise<EndpointResult<SearchSitesOutput>> {
 	const response = await this.endpointCaller<SearchSitesOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -375,5 +375,5 @@ export async function searchSites(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

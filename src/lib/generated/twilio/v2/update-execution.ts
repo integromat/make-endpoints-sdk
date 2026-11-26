@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateExecutionInput = {
 	/**
@@ -83,7 +83,7 @@ export async function updateExecution(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateExecutionOutput> {
+): Promise<EndpointResult<UpdateExecutionOutput>> {
 	const response = await this.endpointCaller<UpdateExecutionOutput>(
 		{
 			appName: 'twilio',
@@ -92,5 +92,5 @@ export async function updateExecution(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

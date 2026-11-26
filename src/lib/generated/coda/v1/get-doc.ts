@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetDocInput = {
 	/**
@@ -216,7 +216,7 @@ export async function getDoc(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetDocOutput> {
+): Promise<EndpointResult<GetDocOutput>> {
 	const response = await this.endpointCaller<GetDocOutput>(
 		{
 			appName: 'coda',
@@ -225,5 +225,5 @@ export async function getDoc(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

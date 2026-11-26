@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAContactInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteAcontact(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAContactOutput> {
+): Promise<EndpointResult<DeleteAContactOutput>> {
 	const response = await this.endpointCaller<DeleteAContactOutput>(
 		{
 			appName: 'microsoft-people',
@@ -31,5 +31,5 @@ export async function deleteAcontact(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

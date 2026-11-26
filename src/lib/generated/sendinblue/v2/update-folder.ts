@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateFolderInput = {
 	id: number;
@@ -23,7 +23,7 @@ export async function updateFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFolderOutput> {
+): Promise<EndpointResult<UpdateFolderOutput>> {
 	const response = await this.endpointCaller<UpdateFolderOutput>(
 		{
 			appName: 'sendinblue',
@@ -32,5 +32,5 @@ export async function updateFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

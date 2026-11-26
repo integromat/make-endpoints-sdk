@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetRecordInput = {
 	/**
@@ -63,7 +63,7 @@ export async function getRecord(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetRecordOutput> {
+): Promise<EndpointResult<GetRecordOutput>> {
 	const response = await this.endpointCaller<GetRecordOutput>(
 		{
 			appName: 'airtable',
@@ -72,5 +72,5 @@ export async function getRecord(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

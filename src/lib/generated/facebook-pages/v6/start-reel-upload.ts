@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type StartReelUploadInput = {
 	/**
@@ -31,7 +31,7 @@ export async function startReelUpload(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<StartReelUploadOutput> {
+): Promise<EndpointResult<StartReelUploadOutput>> {
 	const response = await this.endpointCaller<StartReelUploadOutput>(
 		{
 			appName: 'facebook-pages',
@@ -40,5 +40,5 @@ export async function startReelUpload(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

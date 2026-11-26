@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchMetafieldsInput = {
 	/**
@@ -117,7 +117,7 @@ export async function searchMetafields(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchMetafieldsOutput> {
+): Promise<EndpointResult<SearchMetafieldsOutput>> {
 	const response = await this.endpointCaller<SearchMetafieldsOutput>(
 		{
 			appName: 'shopify',
@@ -126,5 +126,5 @@ export async function searchMetafields(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

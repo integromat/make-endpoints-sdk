@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveAssigneesInput = {
 	/**
@@ -71,7 +71,7 @@ export async function removeAssignees(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveAssigneesOutput> {
+): Promise<EndpointResult<RemoveAssigneesOutput>> {
 	const response = await this.endpointCaller<RemoveAssigneesOutput>(
 		{
 			appName: 'github',
@@ -80,5 +80,5 @@ export async function removeAssignees(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

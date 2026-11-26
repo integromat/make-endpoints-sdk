@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SetChannelTopicInput = {
 	/**
@@ -70,7 +70,7 @@ export async function setChannelTopic(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SetChannelTopicOutput> {
+): Promise<EndpointResult<SetChannelTopicOutput>> {
 	const response = await this.endpointCaller<SetChannelTopicOutput>(
 		{
 			appName: 'slack',
@@ -79,5 +79,5 @@ export async function setChannelTopic(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

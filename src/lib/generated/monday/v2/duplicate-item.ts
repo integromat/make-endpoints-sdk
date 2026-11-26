@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DuplicateItemInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function duplicateItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DuplicateItemOutput> {
+): Promise<EndpointResult<DuplicateItemOutput>> {
 	const response = await this.endpointCaller<DuplicateItemOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function duplicateItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetATaskInput = {
 	/**
@@ -137,7 +137,7 @@ export async function getAtask(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetATaskOutput> {
+): Promise<EndpointResult<GetATaskOutput>> {
 	const response = await this.endpointCaller<GetATaskOutput>(
 		{
 			appName: 'google-tasks',
@@ -146,5 +146,5 @@ export async function getAtask(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

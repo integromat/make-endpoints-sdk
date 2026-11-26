@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UploadPhotoInput = {
 	/**
@@ -111,7 +111,7 @@ export async function uploadPhoto(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UploadPhotoOutput> {
+): Promise<EndpointResult<UploadPhotoOutput>> {
 	const response = await this.endpointCaller<UploadPhotoOutput>(
 		{
 			appName: 'facebook-pages',
@@ -120,5 +120,5 @@ export async function uploadPhoto(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

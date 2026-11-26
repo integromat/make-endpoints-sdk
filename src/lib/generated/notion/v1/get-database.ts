@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetDatabaseInput = {
 	/**
@@ -230,7 +230,7 @@ export async function getDatabase(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetDatabaseOutput> {
+): Promise<EndpointResult<GetDatabaseOutput>> {
 	const response = await this.endpointCaller<GetDatabaseOutput>(
 		{
 			appName: 'notion',
@@ -239,5 +239,5 @@ export async function getDatabase(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

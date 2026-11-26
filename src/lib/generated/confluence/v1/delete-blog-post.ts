@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteBlogPostInput = {
 	/**
@@ -39,7 +39,7 @@ export async function deleteBlogPost(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteBlogPostOutput> {
+): Promise<EndpointResult<DeleteBlogPostOutput>> {
 	const response = await this.endpointCaller<DeleteBlogPostOutput>(
 		{
 			appName: 'confluence',
@@ -48,5 +48,5 @@ export async function deleteBlogPost(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

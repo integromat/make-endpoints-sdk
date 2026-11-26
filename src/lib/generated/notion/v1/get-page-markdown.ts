@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetPageMarkdownInput = {
 	/**
@@ -1504,7 +1504,7 @@ export async function getPageMarkdown(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPageMarkdownOutput> {
+): Promise<EndpointResult<GetPageMarkdownOutput>> {
 	const response = await this.endpointCaller<GetPageMarkdownOutput>(
 		{
 			appName: 'notion',
@@ -1513,5 +1513,5 @@ export async function getPageMarkdown(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

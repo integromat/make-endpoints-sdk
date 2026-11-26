@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RunSuiteQLQueryInput = {
 	/**
@@ -88,7 +88,7 @@ export async function runSuiteQlquery(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RunSuiteQLQueryOutput> {
+): Promise<EndpointResult<RunSuiteQLQueryOutput>> {
 	const response = await this.endpointCaller<RunSuiteQLQueryOutput>(
 		{
 			appName: 'netsuite',
@@ -97,5 +97,5 @@ export async function runSuiteQlquery(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

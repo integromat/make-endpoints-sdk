@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetCurrentUserInput = {
 	/**
@@ -670,7 +670,7 @@ export async function getCurrentUser(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetCurrentUserOutput> {
+): Promise<EndpointResult<GetCurrentUserOutput>> {
 	const response = await this.endpointCaller<GetCurrentUserOutput>(
 		{
 			appName: 'active-directory',
@@ -679,5 +679,5 @@ export async function getCurrentUser(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

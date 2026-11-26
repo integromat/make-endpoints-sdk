@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetLabelInput = {
 	/**
@@ -43,7 +43,7 @@ export async function getLabel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetLabelOutput> {
+): Promise<EndpointResult<GetLabelOutput>> {
 	const response = await this.endpointCaller<GetLabelOutput>(
 		{
 			appName: 'todoist',
@@ -52,5 +52,5 @@ export async function getLabel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type EditAChecklistItemInput = {
 	/**
@@ -96,7 +96,7 @@ export async function editAchecklistItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EditAChecklistItemOutput> {
+): Promise<EndpointResult<EditAChecklistItemOutput>> {
 	const response = await this.endpointCaller<EditAChecklistItemOutput>(
 		{
 			appName: 'trello',
@@ -105,5 +105,5 @@ export async function editAchecklistItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

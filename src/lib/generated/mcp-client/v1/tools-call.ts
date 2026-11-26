@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ToolsCallInput = {
 	/**
@@ -43,7 +43,7 @@ export async function toolsCall(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ToolsCallOutput> {
+): Promise<EndpointResult<ToolsCallOutput>> {
 	const response = await this.endpointCaller<ToolsCallOutput>(
 		{
 			appName: 'mcp-client',
@@ -52,5 +52,5 @@ export async function toolsCall(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

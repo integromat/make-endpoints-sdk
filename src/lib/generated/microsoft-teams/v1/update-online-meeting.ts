@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateOnlineMeetingInput = {
 	/**
@@ -453,7 +453,7 @@ export async function updateOnlineMeeting(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateOnlineMeetingOutput> {
+): Promise<EndpointResult<UpdateOnlineMeetingOutput>> {
 	const response = await this.endpointCaller<UpdateOnlineMeetingOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -462,5 +462,5 @@ export async function updateOnlineMeeting(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

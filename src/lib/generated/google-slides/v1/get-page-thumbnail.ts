@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPageThumbnailInput = {
 	/**
@@ -52,7 +52,7 @@ export async function getPageThumbnail(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPageThumbnailOutput> {
+): Promise<EndpointResult<GetPageThumbnailOutput>> {
 	const response = await this.endpointCaller<GetPageThumbnailOutput>(
 		{
 			appName: 'google-slides',
@@ -61,5 +61,5 @@ export async function getPageThumbnail(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

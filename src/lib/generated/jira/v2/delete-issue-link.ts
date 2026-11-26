@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteIssueLinkInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteIssueLink(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteIssueLinkOutput> {
+): Promise<EndpointResult<DeleteIssueLinkOutput>> {
 	const response = await this.endpointCaller<DeleteIssueLinkOutput>(
 		{
 			appName: 'jira',
@@ -31,5 +31,5 @@ export async function deleteIssueLink(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateChatInput = {
 	/**
@@ -135,7 +135,7 @@ export async function createChat(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateChatOutput> {
+): Promise<EndpointResult<CreateChatOutput>> {
 	const response = await this.endpointCaller<CreateChatOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -144,5 +144,5 @@ export async function createChat(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

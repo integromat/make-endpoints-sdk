@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListHistoryInput = {
 	/**
@@ -131,7 +131,7 @@ export async function listHistory(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListHistoryOutput> {
+): Promise<EndpointResult<ListHistoryOutput>> {
 	const response = await this.endpointCaller<ListHistoryOutput>(
 		{
 			appName: 'google-email',
@@ -140,5 +140,5 @@ export async function listHistory(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

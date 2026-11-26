@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetUploadURLExternalInput = {
 	/**
@@ -47,7 +47,7 @@ export async function getUploadUrlexternal(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUploadURLExternalOutput> {
+): Promise<EndpointResult<GetUploadURLExternalOutput>> {
 	const response = await this.endpointCaller<GetUploadURLExternalOutput>(
 		{
 			appName: 'slack',
@@ -56,5 +56,5 @@ export async function getUploadUrlexternal(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

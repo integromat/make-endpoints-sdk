@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAPermissionInput = {
 	/**
@@ -28,7 +28,7 @@ export async function deleteApermission(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAPermissionOutput> {
+): Promise<EndpointResult<DeleteAPermissionOutput>> {
 	const response = await this.endpointCaller<DeleteAPermissionOutput>(
 		{
 			appName: 'google-keep',
@@ -37,5 +37,5 @@ export async function deleteApermission(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

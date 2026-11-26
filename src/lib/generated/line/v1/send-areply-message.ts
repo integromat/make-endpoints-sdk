@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendAReplyMessageInput = {
 	/**
@@ -43426,7 +43426,7 @@ export async function sendAreplyMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendAReplyMessageOutput> {
+): Promise<EndpointResult<SendAReplyMessageOutput>> {
 	const response = await this.endpointCaller<SendAReplyMessageOutput>(
 		{
 			appName: 'line',
@@ -43435,5 +43435,5 @@ export async function sendAreplyMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

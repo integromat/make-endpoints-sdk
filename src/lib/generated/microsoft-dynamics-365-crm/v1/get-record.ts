@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetRecordInput = {
 	/**
@@ -34,7 +34,7 @@ export async function getRecord(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetRecordOutput> {
+): Promise<EndpointResult<GetRecordOutput>> {
 	const response = await this.endpointCaller<GetRecordOutput>(
 		{
 			appName: 'microsoft-dynamics-365-crm',
@@ -43,5 +43,5 @@ export async function getRecord(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

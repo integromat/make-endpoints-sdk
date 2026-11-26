@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendCampaignReportInput = {
 	id: number;
@@ -23,7 +23,7 @@ export async function sendCampaignReport(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendCampaignReportOutput> {
+): Promise<EndpointResult<SendCampaignReportOutput>> {
 	const response = await this.endpointCaller<SendCampaignReportOutput>(
 		{
 			appName: 'sendinblue',
@@ -32,5 +32,5 @@ export async function sendCampaignReport(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

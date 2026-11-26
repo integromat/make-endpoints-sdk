@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CopySheetToInput = {
 	/**
@@ -76,7 +76,7 @@ export async function copySheetTo(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CopySheetToOutput> {
+): Promise<EndpointResult<CopySheetToOutput>> {
 	const response = await this.endpointCaller<CopySheetToOutput>(
 		{
 			appName: 'google-sheets',
@@ -85,5 +85,5 @@ export async function copySheetTo(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

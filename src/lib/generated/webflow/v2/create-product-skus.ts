@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateProductSkusInput = {
 	/**
@@ -343,7 +343,7 @@ export async function createProductSkus(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateProductSkusOutput> {
+): Promise<EndpointResult<CreateProductSkusOutput>> {
 	const response = await this.endpointCaller<CreateProductSkusOutput>(
 		{
 			appName: 'webflow',
@@ -352,5 +352,5 @@ export async function createProductSkus(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

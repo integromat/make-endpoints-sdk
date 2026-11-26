@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreatePresentationInput = Record<string, never>;
 
@@ -4931,7 +4931,7 @@ export async function createPresentation(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreatePresentationOutput> {
+): Promise<EndpointResult<CreatePresentationOutput>> {
 	const response = await this.endpointCaller<CreatePresentationOutput>(
 		{
 			appName: 'google-slides',
@@ -4940,5 +4940,5 @@ export async function createPresentation(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

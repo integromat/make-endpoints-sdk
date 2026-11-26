@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type AddGroupMembersInput = {
 	/**
@@ -28,7 +28,7 @@ export async function addGroupMembers(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<AddGroupMembersOutput> {
+): Promise<EndpointResult<AddGroupMembersOutput>> {
 	const response = await this.endpointCaller<AddGroupMembersOutput>(
 		{
 			appName: 'active-directory',
@@ -37,5 +37,5 @@ export async function addGroupMembers(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

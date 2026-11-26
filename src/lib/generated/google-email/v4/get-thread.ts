@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetThreadInput = {
 	/**
@@ -197,7 +197,7 @@ export async function getThread(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetThreadOutput> {
+): Promise<EndpointResult<GetThreadOutput>> {
 	const response = await this.endpointCaller<GetThreadOutput>(
 		{
 			appName: 'google-email',
@@ -206,5 +206,5 @@ export async function getThread(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

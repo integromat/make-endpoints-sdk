@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateEventInviteeInput = {
 	/**
@@ -355,7 +355,7 @@ export async function createEventInvitee(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateEventInviteeOutput> {
+): Promise<EndpointResult<CreateEventInviteeOutput>> {
 	const response = await this.endpointCaller<CreateEventInviteeOutput>(
 		{
 			appName: 'calendly',
@@ -364,5 +364,5 @@ export async function createEventInvitee(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

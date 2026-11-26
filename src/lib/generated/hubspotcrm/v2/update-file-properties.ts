@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateFilePropertiesInput = {
 	/**
@@ -144,7 +144,7 @@ export async function updateFileProperties(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFilePropertiesOutput> {
+): Promise<EndpointResult<UpdateFilePropertiesOutput>> {
 	const response = await this.endpointCaller<UpdateFilePropertiesOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -153,5 +153,5 @@ export async function updateFileProperties(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

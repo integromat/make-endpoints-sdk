@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateTeamFromGroupInput = {
 	/**
@@ -274,7 +274,7 @@ export async function createTeamFromGroup(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateTeamFromGroupOutput> {
+): Promise<EndpointResult<CreateTeamFromGroupOutput>> {
 	const response = await this.endpointCaller<CreateTeamFromGroupOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -283,5 +283,5 @@ export async function createTeamFromGroup(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

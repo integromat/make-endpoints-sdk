@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateFolderInput = {
 	/**
@@ -65,7 +65,7 @@ export async function createFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateFolderOutput> {
+): Promise<EndpointResult<CreateFolderOutput>> {
 	const response = await this.endpointCaller<CreateFolderOutput>(
 		{
 			appName: 'canva',
@@ -74,5 +74,5 @@ export async function createFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

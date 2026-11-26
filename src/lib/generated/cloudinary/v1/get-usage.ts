@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetUsageInput = {
 	/**
@@ -165,7 +165,7 @@ export async function getUsage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUsageOutput> {
+): Promise<EndpointResult<GetUsageOutput>> {
 	const response = await this.endpointCaller<GetUsageOutput>(
 		{
 			appName: 'cloudinary',
@@ -174,5 +174,5 @@ export async function getUsage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

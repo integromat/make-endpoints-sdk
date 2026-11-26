@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetAssigneeInput = {
 	/**
@@ -71,7 +71,7 @@ export async function getAssignee(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAssigneeOutput> {
+): Promise<EndpointResult<GetAssigneeOutput>> {
 	const response = await this.endpointCaller<GetAssigneeOutput>(
 		{
 			appName: 'github',
@@ -80,5 +80,5 @@ export async function getAssignee(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

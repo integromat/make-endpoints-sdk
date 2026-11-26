@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetOrderInput = {
 	/**
@@ -108,7 +108,7 @@ export async function getOrder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetOrderOutput> {
+): Promise<EndpointResult<GetOrderOutput>> {
 	const response = await this.endpointCaller<GetOrderOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -117,5 +117,5 @@ export async function getOrder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

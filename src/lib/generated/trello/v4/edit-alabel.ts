@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type EditALabelInput = {
 	/**
@@ -62,7 +62,7 @@ export async function editAlabel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EditALabelOutput> {
+): Promise<EndpointResult<EditALabelOutput>> {
 	const response = await this.endpointCaller<EditALabelOutput>(
 		{
 			appName: 'trello',
@@ -71,5 +71,5 @@ export async function editAlabel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

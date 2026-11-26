@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type QueryInvoicesInput = {
 	/**
@@ -105,7 +105,7 @@ export async function queryInvoices(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<QueryInvoicesOutput> {
+): Promise<EndpointResult<QueryInvoicesOutput>> {
 	const response = await this.endpointCaller<QueryInvoicesOutput>(
 		{
 			appName: 'sage-intacct',
@@ -114,5 +114,5 @@ export async function queryInvoices(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

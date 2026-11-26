@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListTimelineEventTemplatesInput = Record<string, never>;
 
@@ -99,7 +99,7 @@ export async function listTimelineEventTemplates(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListTimelineEventTemplatesOutput> {
+): Promise<EndpointResult<ListTimelineEventTemplatesOutput>> {
 	const response = await this.endpointCaller<ListTimelineEventTemplatesOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -108,5 +108,5 @@ export async function listTimelineEventTemplates(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

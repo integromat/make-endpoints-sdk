@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetUpdatesInput = {
 	/**
@@ -1132,7 +1132,7 @@ export async function getUpdates(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUpdatesOutput> {
+): Promise<EndpointResult<GetUpdatesOutput>> {
 	const response = await this.endpointCaller<GetUpdatesOutput>(
 		{
 			appName: 'telegram',
@@ -1141,5 +1141,5 @@ export async function getUpdates(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

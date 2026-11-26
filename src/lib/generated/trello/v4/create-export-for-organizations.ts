@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateExportForOrganizationsInput = {
 	/**
@@ -68,7 +68,7 @@ export async function createExportForOrganizations(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateExportForOrganizationsOutput> {
+): Promise<EndpointResult<CreateExportForOrganizationsOutput>> {
 	const response = await this.endpointCaller<CreateExportForOrganizationsOutput>(
 		{
 			appName: 'trello',
@@ -77,5 +77,5 @@ export async function createExportForOrganizations(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

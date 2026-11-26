@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UploadAttachmentInput = {
 	/**
@@ -31,7 +31,7 @@ export async function uploadAttachment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UploadAttachmentOutput> {
+): Promise<EndpointResult<UploadAttachmentOutput>> {
 	const response = await this.endpointCaller<UploadAttachmentOutput>(
 		{
 			appName: 'facebook-messenger',
@@ -40,5 +40,5 @@ export async function uploadAttachment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchCommitCommentsInput = {
 	/**
@@ -189,7 +189,7 @@ export async function searchCommitComments(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchCommitCommentsOutput> {
+): Promise<EndpointResult<SearchCommitCommentsOutput>> {
 	const response = await this.endpointCaller<SearchCommitCommentsOutput>(
 		{
 			appName: 'github',
@@ -198,5 +198,5 @@ export async function searchCommitComments(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

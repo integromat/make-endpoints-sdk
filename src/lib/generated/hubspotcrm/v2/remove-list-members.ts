@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveListMembersInput = {
 	/**
@@ -47,7 +47,7 @@ export async function removeListMembers(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveListMembersOutput> {
+): Promise<EndpointResult<RemoveListMembersOutput>> {
 	const response = await this.endpointCaller<RemoveListMembersOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -56,5 +56,5 @@ export async function removeListMembers(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

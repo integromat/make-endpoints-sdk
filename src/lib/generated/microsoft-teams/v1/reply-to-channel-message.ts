@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ReplyToChannelMessageInput = {
 	/**
@@ -469,7 +469,7 @@ export async function replyToChannelMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ReplyToChannelMessageOutput> {
+): Promise<EndpointResult<ReplyToChannelMessageOutput>> {
 	const response = await this.endpointCaller<ReplyToChannelMessageOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -478,5 +478,5 @@ export async function replyToChannelMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

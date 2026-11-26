@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateSpreadsheetInput = {
 	/**
@@ -274,7 +274,7 @@ export async function createSpreadsheet(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateSpreadsheetOutput> {
+): Promise<EndpointResult<CreateSpreadsheetOutput>> {
 	const response = await this.endpointCaller<CreateSpreadsheetOutput>(
 		{
 			appName: 'google-sheets',
@@ -283,5 +283,5 @@ export async function createSpreadsheet(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

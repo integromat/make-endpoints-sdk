@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetResponseInput = {
 	/**
@@ -55,7 +55,7 @@ export async function getResponse(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetResponseOutput> {
+): Promise<EndpointResult<GetResponseOutput>> {
 	const response = await this.endpointCaller<GetResponseOutput>(
 		{
 			appName: 'google-forms',
@@ -64,5 +64,5 @@ export async function getResponse(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

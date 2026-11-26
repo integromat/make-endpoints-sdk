@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveReactionInput = {
 	/**
@@ -43,7 +43,7 @@ export async function removeReaction(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveReactionOutput> {
+): Promise<EndpointResult<RemoveReactionOutput>> {
 	const response = await this.endpointCaller<RemoveReactionOutput>(
 		{
 			appName: 'slack',
@@ -52,5 +52,5 @@ export async function removeReaction(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

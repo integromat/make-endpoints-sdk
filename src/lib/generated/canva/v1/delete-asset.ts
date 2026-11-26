@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteAssetInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteAsset(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteAssetOutput> {
+): Promise<EndpointResult<DeleteAssetOutput>> {
 	const response = await this.endpointCaller<DeleteAssetOutput>(
 		{
 			appName: 'canva',
@@ -31,5 +31,5 @@ export async function deleteAsset(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

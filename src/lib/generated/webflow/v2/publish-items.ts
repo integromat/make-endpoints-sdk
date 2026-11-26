@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type PublishItemsInput = {
 	/**
@@ -58,7 +58,7 @@ export async function publishItems(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PublishItemsOutput> {
+): Promise<EndpointResult<PublishItemsOutput>> {
 	const response = await this.endpointCaller<PublishItemsOutput>(
 		{
 			appName: 'webflow',
@@ -67,5 +67,5 @@ export async function publishItems(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

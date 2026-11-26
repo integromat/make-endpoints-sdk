@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type QuickAddEventInput = {
 	/**
@@ -578,7 +578,7 @@ export async function quickAddEvent(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<QuickAddEventOutput> {
+): Promise<EndpointResult<QuickAddEventOutput>> {
 	const response = await this.endpointCaller<QuickAddEventOutput>(
 		{
 			appName: 'google-calendar',
@@ -587,5 +587,5 @@ export async function quickAddEvent(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

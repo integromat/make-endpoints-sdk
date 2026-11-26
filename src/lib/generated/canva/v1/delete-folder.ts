@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteFolderInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteFolderOutput> {
+): Promise<EndpointResult<DeleteFolderOutput>> {
 	const response = await this.endpointCaller<DeleteFolderOutput>(
 		{
 			appName: 'canva',
@@ -31,5 +31,5 @@ export async function deleteFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

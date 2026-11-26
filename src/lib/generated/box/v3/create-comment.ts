@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateCommentInput = {
 	/**
@@ -108,7 +108,7 @@ export async function createComment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateCommentOutput> {
+): Promise<EndpointResult<CreateCommentOutput>> {
 	const response = await this.endpointCaller<CreateCommentOutput>(
 		{
 			appName: 'box',
@@ -117,5 +117,5 @@ export async function createComment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

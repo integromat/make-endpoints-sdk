@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UploadResourceInput = {
 	/**
@@ -213,7 +213,7 @@ export async function uploadResource(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UploadResourceOutput> {
+): Promise<EndpointResult<UploadResourceOutput>> {
 	const response = await this.endpointCaller<UploadResourceOutput>(
 		{
 			appName: 'cloudinary',
@@ -222,5 +222,5 @@ export async function uploadResource(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

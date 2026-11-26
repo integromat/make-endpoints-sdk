@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListPagePostsInput = {
 	/**
@@ -384,7 +384,7 @@ export async function listPagePosts(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListPagePostsOutput> {
+): Promise<EndpointResult<ListPagePostsOutput>> {
 	const response = await this.endpointCaller<ListPagePostsOutput>(
 		{
 			appName: 'facebook-pages',
@@ -393,5 +393,5 @@ export async function listPagePosts(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

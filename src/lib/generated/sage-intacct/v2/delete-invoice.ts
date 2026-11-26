@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteInvoiceInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteInvoice(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteInvoiceOutput> {
+): Promise<EndpointResult<DeleteInvoiceOutput>> {
 	const response = await this.endpointCaller<DeleteInvoiceOutput>(
 		{
 			appName: 'sage-intacct',
@@ -35,5 +35,5 @@ export async function deleteInvoice(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

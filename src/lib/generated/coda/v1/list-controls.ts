@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListControlsInput = {
 	/**
@@ -95,7 +95,7 @@ export async function listControls(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListControlsOutput> {
+): Promise<EndpointResult<ListControlsOutput>> {
 	const response = await this.endpointCaller<ListControlsOutput>(
 		{
 			appName: 'coda',
@@ -104,5 +104,5 @@ export async function listControls(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

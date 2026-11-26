@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateNotificationInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function createNotification(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateNotificationOutput> {
+): Promise<EndpointResult<CreateNotificationOutput>> {
 	const response = await this.endpointCaller<CreateNotificationOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function createNotification(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

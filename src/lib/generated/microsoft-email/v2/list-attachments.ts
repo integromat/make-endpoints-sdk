@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListAttachmentsInput = {
 	/**
@@ -74,7 +74,7 @@ export async function listAttachments(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListAttachmentsOutput> {
+): Promise<EndpointResult<ListAttachmentsOutput>> {
 	const response = await this.endpointCaller<ListAttachmentsOutput>(
 		{
 			appName: 'microsoft-email',
@@ -83,5 +83,5 @@ export async function listAttachments(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

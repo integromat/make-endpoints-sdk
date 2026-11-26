@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateABoardInput = {
 	/**
@@ -567,7 +567,7 @@ export async function createAboard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateABoardOutput> {
+): Promise<EndpointResult<CreateABoardOutput>> {
 	const response = await this.endpointCaller<CreateABoardOutput>(
 		{
 			appName: 'trello',
@@ -576,5 +576,5 @@ export async function createAboard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

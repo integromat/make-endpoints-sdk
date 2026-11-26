@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchDirectoryPeopleInput = {
 	/**
@@ -2347,7 +2347,7 @@ export async function searchDirectoryPeople(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchDirectoryPeopleOutput> {
+): Promise<EndpointResult<SearchDirectoryPeopleOutput>> {
 	const response = await this.endpointCaller<SearchDirectoryPeopleOutput>(
 		{
 			appName: 'google-contacts',
@@ -2356,5 +2356,5 @@ export async function searchDirectoryPeople(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

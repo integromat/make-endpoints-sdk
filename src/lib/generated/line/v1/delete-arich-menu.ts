@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteARichMenuInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteArichMenu(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteARichMenuOutput> {
+): Promise<EndpointResult<DeleteARichMenuOutput>> {
 	const response = await this.endpointCaller<DeleteARichMenuOutput>(
 		{
 			appName: 'line',
@@ -31,5 +31,5 @@ export async function deleteArichMenu(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

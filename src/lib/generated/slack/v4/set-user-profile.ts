@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SetUserProfileInput = {
 	/**
@@ -104,7 +104,7 @@ export async function setUserProfile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SetUserProfileOutput> {
+): Promise<EndpointResult<SetUserProfileOutput>> {
 	const response = await this.endpointCaller<SetUserProfileOutput>(
 		{
 			appName: 'slack',
@@ -113,5 +113,5 @@ export async function setUserProfile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

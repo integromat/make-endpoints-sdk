@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendAudioInput = {
 	/**
@@ -252,7 +252,7 @@ export async function sendAudio(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendAudioOutput> {
+): Promise<EndpointResult<SendAudioOutput>> {
 	const response = await this.endpointCaller<SendAudioOutput>(
 		{
 			appName: 'telegram',
@@ -261,5 +261,5 @@ export async function sendAudio(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

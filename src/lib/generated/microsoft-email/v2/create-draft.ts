@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateDraftInput = {
 	/**
@@ -438,7 +438,7 @@ export async function createDraft(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateDraftOutput> {
+): Promise<EndpointResult<CreateDraftOutput>> {
 	const response = await this.endpointCaller<CreateDraftOutput>(
 		{
 			appName: 'microsoft-email',
@@ -447,5 +447,5 @@ export async function createDraft(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

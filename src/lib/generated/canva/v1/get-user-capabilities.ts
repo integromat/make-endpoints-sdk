@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetUserCapabilitiesInput = Record<string, never>;
 
@@ -24,7 +24,7 @@ export async function getUserCapabilities(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUserCapabilitiesOutput> {
+): Promise<EndpointResult<GetUserCapabilitiesOutput>> {
 	const response = await this.endpointCaller<GetUserCapabilitiesOutput>(
 		{
 			appName: 'canva',
@@ -33,5 +33,5 @@ export async function getUserCapabilities(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type EditACommentInACardInput = {
 	/**
@@ -334,7 +334,7 @@ export async function editAcommentInAcard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EditACommentInACardOutput> {
+): Promise<EndpointResult<EditACommentInACardOutput>> {
 	const response = await this.endpointCaller<EditACommentInACardOutput>(
 		{
 			appName: 'trello',
@@ -343,5 +343,5 @@ export async function editAcommentInAcard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

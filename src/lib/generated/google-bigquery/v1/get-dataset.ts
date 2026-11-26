@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetDatasetInput = {
 	/**
@@ -328,7 +328,7 @@ export async function getDataset(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetDatasetOutput> {
+): Promise<EndpointResult<GetDatasetOutput>> {
 	const response = await this.endpointCaller<GetDatasetOutput>(
 		{
 			appName: 'google-bigquery',
@@ -337,5 +337,5 @@ export async function getDataset(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

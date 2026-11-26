@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveGroupMemberInput = {
 	/**
@@ -26,7 +26,7 @@ export async function removeGroupMember(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveGroupMemberOutput> {
+): Promise<EndpointResult<RemoveGroupMemberOutput>> {
 	const response = await this.endpointCaller<RemoveGroupMemberOutput>(
 		{
 			appName: 'active-directory',
@@ -35,5 +35,5 @@ export async function removeGroupMember(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

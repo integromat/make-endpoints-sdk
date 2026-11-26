@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DownloadAttachmentInput = {
 	/**
@@ -75,7 +75,7 @@ export async function downloadAttachment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DownloadAttachmentOutput> {
+): Promise<EndpointResult<DownloadAttachmentOutput>> {
 	const response = await this.endpointCaller<DownloadAttachmentOutput>(
 		{
 			appName: 'microsoft-email',
@@ -84,5 +84,5 @@ export async function downloadAttachment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

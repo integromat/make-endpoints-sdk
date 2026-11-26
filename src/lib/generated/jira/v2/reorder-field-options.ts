@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ReorderFieldOptionsInput = {
 	/**
@@ -40,7 +40,7 @@ export async function reorderFieldOptions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ReorderFieldOptionsOutput> {
+): Promise<EndpointResult<ReorderFieldOptionsOutput>> {
 	const response = await this.endpointCaller<ReorderFieldOptionsOutput>(
 		{
 			appName: 'jira',
@@ -49,5 +49,5 @@ export async function reorderFieldOptions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

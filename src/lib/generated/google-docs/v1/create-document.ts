@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateDocumentInput = Record<string, never>;
 
@@ -2769,7 +2769,7 @@ export async function createDocument(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateDocumentOutput> {
+): Promise<EndpointResult<CreateDocumentOutput>> {
 	const response = await this.endpointCaller<CreateDocumentOutput>(
 		{
 			appName: 'google-docs',
@@ -2778,5 +2778,5 @@ export async function createDocument(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

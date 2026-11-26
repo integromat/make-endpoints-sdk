@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveAMemberFromACardInput = {
 	/**
@@ -26,7 +26,7 @@ export async function removeAmemberFromAcard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveAMemberFromACardOutput> {
+): Promise<EndpointResult<RemoveAMemberFromACardOutput>> {
 	const response = await this.endpointCaller<RemoveAMemberFromACardOutput>(
 		{
 			appName: 'trello',
@@ -35,5 +35,5 @@ export async function removeAmemberFromAcard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

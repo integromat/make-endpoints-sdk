@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListRecordingTranscriptionsInput = {
 	/**
@@ -126,7 +126,7 @@ export async function listRecordingTranscriptions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListRecordingTranscriptionsOutput> {
+): Promise<EndpointResult<ListRecordingTranscriptionsOutput>> {
 	const response = await this.endpointCaller<ListRecordingTranscriptionsOutput>(
 		{
 			appName: 'twilio',
@@ -135,5 +135,5 @@ export async function listRecordingTranscriptions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

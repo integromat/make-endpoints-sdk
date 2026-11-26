@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetFormulaInput = {
 	/**
@@ -72,7 +72,7 @@ export async function getFormula(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFormulaOutput> {
+): Promise<EndpointResult<GetFormulaOutput>> {
 	const response = await this.endpointCaller<GetFormulaOutput>(
 		{
 			appName: 'coda',
@@ -81,5 +81,5 @@ export async function getFormula(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

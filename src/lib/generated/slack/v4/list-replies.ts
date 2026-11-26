@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListRepliesInput = {
 	/**
@@ -115,7 +115,7 @@ export async function listReplies(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListRepliesOutput> {
+): Promise<EndpointResult<ListRepliesOutput>> {
 	const response = await this.endpointCaller<ListRepliesOutput>(
 		{
 			appName: 'slack',
@@ -124,5 +124,5 @@ export async function listReplies(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ClearCalendarInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function clearCalendar(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ClearCalendarOutput> {
+): Promise<EndpointResult<ClearCalendarOutput>> {
 	const response = await this.endpointCaller<ClearCalendarOutput>(
 		{
 			appName: 'google-calendar',
@@ -26,5 +26,5 @@ export async function clearCalendar(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteDatasetInput = {
 	/**
@@ -30,7 +30,7 @@ export async function deleteDataset(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteDatasetOutput> {
+): Promise<EndpointResult<DeleteDatasetOutput>> {
 	const response = await this.endpointCaller<DeleteDatasetOutput>(
 		{
 			appName: 'google-bigquery',
@@ -39,5 +39,5 @@ export async function deleteDataset(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

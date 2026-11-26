@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetEventInput = {
 	/**
@@ -582,7 +582,7 @@ export async function getEvent(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetEventOutput> {
+): Promise<EndpointResult<GetEventOutput>> {
 	const response = await this.endpointCaller<GetEventOutput>(
 		{
 			appName: 'google-calendar',
@@ -591,5 +591,5 @@ export async function getEvent(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

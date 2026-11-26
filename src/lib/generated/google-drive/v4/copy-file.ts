@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CopyFileInput = {
 	/**
@@ -1065,7 +1065,7 @@ export async function copyFile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CopyFileOutput> {
+): Promise<EndpointResult<CopyFileOutput>> {
 	const response = await this.endpointCaller<CopyFileOutput>(
 		{
 			appName: 'google-drive',
@@ -1074,5 +1074,5 @@ export async function copyFile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

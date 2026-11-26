@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetFolderInput = {
 	/**
@@ -1144,7 +1144,7 @@ export async function getFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFolderOutput> {
+): Promise<EndpointResult<GetFolderOutput>> {
 	const response = await this.endpointCaller<GetFolderOutput>(
 		{
 			appName: 'box',
@@ -1153,5 +1153,5 @@ export async function getFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

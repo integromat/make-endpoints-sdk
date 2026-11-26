@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteProjectInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteProject(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteProjectOutput> {
+): Promise<EndpointResult<DeleteProjectOutput>> {
 	const response = await this.endpointCaller<DeleteProjectOutput>(
 		{
 			appName: 'todoist',
@@ -31,5 +31,5 @@ export async function deleteProject(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

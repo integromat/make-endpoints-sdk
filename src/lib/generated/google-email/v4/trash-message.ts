@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type TrashMessageInput = {
 	/**
@@ -172,7 +172,7 @@ export async function trashMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<TrashMessageOutput> {
+): Promise<EndpointResult<TrashMessageOutput>> {
 	const response = await this.endpointCaller<TrashMessageOutput>(
 		{
 			appName: 'google-email',
@@ -181,5 +181,5 @@ export async function trashMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

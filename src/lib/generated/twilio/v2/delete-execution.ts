@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteExecutionInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteExecution(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteExecutionOutput> {
+): Promise<EndpointResult<DeleteExecutionOutput>> {
 	const response = await this.endpointCaller<DeleteExecutionOutput>(
 		{
 			appName: 'twilio',
@@ -35,5 +35,5 @@ export async function deleteExecution(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

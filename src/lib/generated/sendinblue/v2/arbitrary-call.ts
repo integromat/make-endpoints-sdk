@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ArbitraryCallInput = {
 	id: number;
@@ -23,7 +23,7 @@ export async function arbitraryCall(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArbitraryCallOutput> {
+): Promise<EndpointResult<ArbitraryCallOutput>> {
 	const response = await this.endpointCaller<ArbitraryCallOutput>(
 		{
 			appName: 'sendinblue',
@@ -32,5 +32,5 @@ export async function arbitraryCall(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

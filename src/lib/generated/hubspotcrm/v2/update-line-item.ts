@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateLineItemInput = {
 	/**
@@ -86,7 +86,7 @@ export async function updateLineItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateLineItemOutput> {
+): Promise<EndpointResult<UpdateLineItemOutput>> {
 	const response = await this.endpointCaller<UpdateLineItemOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -95,5 +95,5 @@ export async function updateLineItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

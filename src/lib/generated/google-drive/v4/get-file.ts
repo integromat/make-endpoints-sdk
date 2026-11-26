@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetFileInput = {
 	/**
@@ -924,7 +924,7 @@ export async function getFile(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFileOutput> {
+): Promise<EndpointResult<GetFileOutput>> {
 	const response = await this.endpointCaller<GetFileOutput>(
 		{
 			appName: 'google-drive',
@@ -933,5 +933,5 @@ export async function getFile(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

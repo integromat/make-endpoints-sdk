@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPostReactionsInput = {
 	/**
@@ -114,7 +114,7 @@ export async function getPostReactions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPostReactionsOutput> {
+): Promise<EndpointResult<GetPostReactionsOutput>> {
 	const response = await this.endpointCaller<GetPostReactionsOutput>(
 		{
 			appName: 'facebook-pages',
@@ -123,5 +123,5 @@ export async function getPostReactions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

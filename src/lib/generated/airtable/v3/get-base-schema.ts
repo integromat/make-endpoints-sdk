@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetBaseSchemaInput = {
 	/**
@@ -78,7 +78,7 @@ export async function getBaseSchema(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetBaseSchemaOutput> {
+): Promise<EndpointResult<GetBaseSchemaOutput>> {
 	const response = await this.endpointCaller<GetBaseSchemaOutput>(
 		{
 			appName: 'airtable',
@@ -87,5 +87,5 @@ export async function getBaseSchema(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListAclRulesInput = {
 	/**
@@ -89,7 +89,7 @@ export async function listAclRules(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListAclRulesOutput> {
+): Promise<EndpointResult<ListAclRulesOutput>> {
 	const response = await this.endpointCaller<ListAclRulesOutput>(
 		{
 			appName: 'google-calendar',
@@ -98,5 +98,5 @@ export async function listAclRules(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

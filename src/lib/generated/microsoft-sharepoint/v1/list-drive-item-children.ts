@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListDriveItemChildrenInput = {
 	/**
@@ -1171,7 +1171,7 @@ export async function listDriveItemChildren(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListDriveItemChildrenOutput> {
+): Promise<EndpointResult<ListDriveItemChildrenOutput>> {
 	const response = await this.endpointCaller<ListDriveItemChildrenOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -1180,5 +1180,5 @@ export async function listDriveItemChildren(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

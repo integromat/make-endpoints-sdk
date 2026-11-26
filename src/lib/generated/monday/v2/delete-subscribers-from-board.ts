@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteSubscribersFromBoardInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function deleteSubscribersFromBoard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteSubscribersFromBoardOutput> {
+): Promise<EndpointResult<DeleteSubscribersFromBoardOutput>> {
 	const response = await this.endpointCaller<DeleteSubscribersFromBoardOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function deleteSubscribersFromBoard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

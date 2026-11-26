@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CancelSignRequestInput = {
 	/**
@@ -452,7 +452,7 @@ export async function cancelSignRequest(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CancelSignRequestOutput> {
+): Promise<EndpointResult<CancelSignRequestOutput>> {
 	const response = await this.endpointCaller<CancelSignRequestOutput>(
 		{
 			appName: 'box',
@@ -461,5 +461,5 @@ export async function cancelSignRequest(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

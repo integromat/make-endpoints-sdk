@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateRecordInput = {
 	/**
@@ -53,7 +53,7 @@ export async function createRecord(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateRecordOutput> {
+): Promise<EndpointResult<CreateRecordOutput>> {
 	const response = await this.endpointCaller<CreateRecordOutput>(
 		{
 			appName: 'netsuite',
@@ -62,5 +62,5 @@ export async function createRecord(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

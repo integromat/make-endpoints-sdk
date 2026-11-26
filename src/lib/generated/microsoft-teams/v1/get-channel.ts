@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetChannelInput = {
 	/**
@@ -104,7 +104,7 @@ export async function getChannel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetChannelOutput> {
+): Promise<EndpointResult<GetChannelOutput>> {
 	const response = await this.endpointCaller<GetChannelOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -113,5 +113,5 @@ export async function getChannel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

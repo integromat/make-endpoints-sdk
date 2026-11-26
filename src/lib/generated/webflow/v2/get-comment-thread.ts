@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetCommentThreadInput = {
 	/**
@@ -131,7 +131,7 @@ export async function getCommentThread(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetCommentThreadOutput> {
+): Promise<EndpointResult<GetCommentThreadOutput>> {
 	const response = await this.endpointCaller<GetCommentThreadOutput>(
 		{
 			appName: 'webflow',
@@ -140,5 +140,5 @@ export async function getCommentThread(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

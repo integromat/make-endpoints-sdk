@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type BatchUpdateDocumentInput = {
 	/**
@@ -112,7 +112,7 @@ export async function batchUpdateDocument(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BatchUpdateDocumentOutput> {
+): Promise<EndpointResult<BatchUpdateDocumentOutput>> {
 	const response = await this.endpointCaller<BatchUpdateDocumentOutput>(
 		{
 			appName: 'google-docs',
@@ -121,5 +121,5 @@ export async function batchUpdateDocument(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

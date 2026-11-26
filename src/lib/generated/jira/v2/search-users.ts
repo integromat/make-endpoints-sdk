@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchUsersInput = {
 	/**
@@ -38,7 +38,7 @@ export async function searchUsers(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchUsersOutput> {
+): Promise<EndpointResult<SearchUsersOutput>> {
 	const response = await this.endpointCaller<SearchUsersOutput>(
 		{
 			appName: 'jira',
@@ -47,5 +47,5 @@ export async function searchUsers(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

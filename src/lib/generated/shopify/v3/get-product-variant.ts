@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetProductVariantInput = {
 	/**
@@ -299,7 +299,7 @@ export async function getProductVariant(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetProductVariantOutput> {
+): Promise<EndpointResult<GetProductVariantOutput>> {
 	const response = await this.endpointCaller<GetProductVariantOutput>(
 		{
 			appName: 'shopify',
@@ -308,5 +308,5 @@ export async function getProductVariant(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

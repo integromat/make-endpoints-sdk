@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreatePermissionInput = {
 	/**
@@ -146,7 +146,7 @@ export async function createPermission(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreatePermissionOutput> {
+): Promise<EndpointResult<CreatePermissionOutput>> {
 	const response = await this.endpointCaller<CreatePermissionOutput>(
 		{
 			appName: 'google-drive',
@@ -155,5 +155,5 @@ export async function createPermission(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

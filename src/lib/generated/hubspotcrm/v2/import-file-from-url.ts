@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ImportFileFromUrlInput = {
 	/**
@@ -76,7 +76,7 @@ export async function importFileFromUrl(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ImportFileFromUrlOutput> {
+): Promise<EndpointResult<ImportFileFromUrlOutput>> {
 	const response = await this.endpointCaller<ImportFileFromUrlOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -85,5 +85,5 @@ export async function importFileFromUrl(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

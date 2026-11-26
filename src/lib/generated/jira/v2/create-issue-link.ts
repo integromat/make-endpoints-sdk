@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateIssueLinkInput = {
 	/**
@@ -83,7 +83,7 @@ export async function createIssueLink(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateIssueLinkOutput> {
+): Promise<EndpointResult<CreateIssueLinkOutput>> {
 	const response = await this.endpointCaller<CreateIssueLinkOutput>(
 		{
 			appName: 'jira',
@@ -92,5 +92,5 @@ export async function createIssueLink(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

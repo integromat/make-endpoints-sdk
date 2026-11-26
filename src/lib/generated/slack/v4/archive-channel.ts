@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ArchiveChannelInput = {
 	/**
@@ -27,7 +27,7 @@ export async function archiveChannel(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArchiveChannelOutput> {
+): Promise<EndpointResult<ArchiveChannelOutput>> {
 	const response = await this.endpointCaller<ArchiveChannelOutput>(
 		{
 			appName: 'slack',
@@ -36,5 +36,5 @@ export async function archiveChannel(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ExportDesignInput = {
 	/**
@@ -119,7 +119,7 @@ export async function exportDesign(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ExportDesignOutput> {
+): Promise<EndpointResult<ExportDesignOutput>> {
 	const response = await this.endpointCaller<ExportDesignOutput>(
 		{
 			appName: 'canva',
@@ -128,5 +128,5 @@ export async function exportDesign(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

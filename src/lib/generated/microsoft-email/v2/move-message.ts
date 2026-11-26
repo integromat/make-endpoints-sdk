@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type MoveMessageInput = {
 	/**
@@ -318,7 +318,7 @@ export async function moveMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<MoveMessageOutput> {
+): Promise<EndpointResult<MoveMessageOutput>> {
 	const response = await this.endpointCaller<MoveMessageOutput>(
 		{
 			appName: 'microsoft-email',
@@ -327,5 +327,5 @@ export async function moveMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateDraftInput = {
 	/**
@@ -446,7 +446,7 @@ export async function updateDraft(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateDraftOutput> {
+): Promise<EndpointResult<UpdateDraftOutput>> {
 	const response = await this.endpointCaller<UpdateDraftOutput>(
 		{
 			appName: 'microsoft-email',
@@ -455,5 +455,5 @@ export async function updateDraft(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ImportTasksFromTemplateInput = {
 	/**
@@ -707,7 +707,7 @@ export async function importTasksFromTemplate(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ImportTasksFromTemplateOutput> {
+): Promise<EndpointResult<ImportTasksFromTemplateOutput>> {
 	const response = await this.endpointCaller<ImportTasksFromTemplateOutput>(
 		{
 			appName: 'todoist',
@@ -716,5 +716,5 @@ export async function importTasksFromTemplate(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

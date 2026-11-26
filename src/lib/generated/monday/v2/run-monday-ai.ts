@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RunMondayAiInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function runMondayAi(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RunMondayAiOutput> {
+): Promise<EndpointResult<RunMondayAiOutput>> {
 	const response = await this.endpointCaller<RunMondayAiOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function runMondayAi(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

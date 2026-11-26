@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UploadVideoInput = {
 	/**
@@ -137,7 +137,7 @@ export async function uploadVideo(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UploadVideoOutput> {
+): Promise<EndpointResult<UploadVideoOutput>> {
 	const response = await this.endpointCaller<UploadVideoOutput>(
 		{
 			appName: 'facebook-pages',
@@ -146,5 +146,5 @@ export async function uploadVideo(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

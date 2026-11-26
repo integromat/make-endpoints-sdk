@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type EditMessageMediaInput = {
 	/**
@@ -309,7 +309,7 @@ export async function editMessageMedia(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EditMessageMediaOutput> {
+): Promise<EndpointResult<EditMessageMediaOutput>> {
 	const response = await this.endpointCaller<EditMessageMediaOutput>(
 		{
 			appName: 'telegram',
@@ -318,5 +318,5 @@ export async function editMessageMedia(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

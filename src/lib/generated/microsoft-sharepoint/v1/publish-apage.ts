@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type PublishAPageInput = {
 	/**
@@ -26,7 +26,7 @@ export async function publishApage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PublishAPageOutput> {
+): Promise<EndpointResult<PublishAPageOutput>> {
 	const response = await this.endpointCaller<PublishAPageOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -35,5 +35,5 @@ export async function publishApage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

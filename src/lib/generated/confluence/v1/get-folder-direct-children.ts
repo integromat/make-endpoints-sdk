@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetFolderDirectChildrenInput = {
 	/**
@@ -84,7 +84,7 @@ export async function getFolderDirectChildren(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFolderDirectChildrenOutput> {
+): Promise<EndpointResult<GetFolderDirectChildrenOutput>> {
 	const response = await this.endpointCaller<GetFolderDirectChildrenOutput>(
 		{
 			appName: 'confluence',
@@ -93,5 +93,5 @@ export async function getFolderDirectChildren(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

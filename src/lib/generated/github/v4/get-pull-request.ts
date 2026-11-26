@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPullRequestInput = {
 	/**
@@ -211,7 +211,7 @@ export async function getPullRequest(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPullRequestOutput> {
+): Promise<EndpointResult<GetPullRequestOutput>> {
 	const response = await this.endpointCaller<GetPullRequestOutput>(
 		{
 			appName: 'github',
@@ -220,5 +220,5 @@ export async function getPullRequest(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

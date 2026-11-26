@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SearchOrganizationMembersInput = {
 	/**
@@ -97,7 +97,7 @@ export async function searchOrganizationMembers(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchOrganizationMembersOutput> {
+): Promise<EndpointResult<SearchOrganizationMembersOutput>> {
 	const response = await this.endpointCaller<SearchOrganizationMembersOutput>(
 		{
 			appName: 'github',
@@ -106,5 +106,5 @@ export async function searchOrganizationMembers(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

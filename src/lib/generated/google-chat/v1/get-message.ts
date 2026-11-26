@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetMessageInput = {
 	/**
@@ -760,7 +760,7 @@ export async function getMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetMessageOutput> {
+): Promise<EndpointResult<GetMessageOutput>> {
 	const response = await this.endpointCaller<GetMessageOutput>(
 		{
 			appName: 'google-chat',
@@ -769,5 +769,5 @@ export async function getMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

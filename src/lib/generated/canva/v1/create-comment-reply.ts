@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateCommentReplyInput = {
 	/**
@@ -86,7 +86,7 @@ export async function createCommentReply(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateCommentReplyOutput> {
+): Promise<EndpointResult<CreateCommentReplyOutput>> {
 	const response = await this.endpointCaller<CreateCommentReplyOutput>(
 		{
 			appName: 'canva',
@@ -95,5 +95,5 @@ export async function createCommentReply(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

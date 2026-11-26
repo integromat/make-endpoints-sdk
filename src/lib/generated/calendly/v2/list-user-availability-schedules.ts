@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListUserAvailabilitySchedulesInput = {
 	/**
@@ -84,7 +84,7 @@ export async function listUserAvailabilitySchedules(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListUserAvailabilitySchedulesOutput> {
+): Promise<EndpointResult<ListUserAvailabilitySchedulesOutput>> {
 	const response = await this.endpointCaller<ListUserAvailabilitySchedulesOutput>(
 		{
 			appName: 'calendly',
@@ -93,5 +93,5 @@ export async function listUserAvailabilitySchedules(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

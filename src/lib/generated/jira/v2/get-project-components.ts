@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetProjectComponentsInput = {
 	/**
@@ -106,7 +106,7 @@ export async function getProjectComponents(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetProjectComponentsOutput> {
+): Promise<EndpointResult<GetProjectComponentsOutput>> {
 	const response = await this.endpointCaller<GetProjectComponentsOutput>(
 		{
 			appName: 'jira',
@@ -115,5 +115,5 @@ export async function getProjectComponents(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

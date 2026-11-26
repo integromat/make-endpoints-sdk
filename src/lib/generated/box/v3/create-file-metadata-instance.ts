@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateFileMetadataInstanceInput = {
 	/**
@@ -67,7 +67,7 @@ export async function createFileMetadataInstance(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateFileMetadataInstanceOutput> {
+): Promise<EndpointResult<CreateFileMetadataInstanceOutput>> {
 	const response = await this.endpointCaller<CreateFileMetadataInstanceOutput>(
 		{
 			appName: 'box',
@@ -76,5 +76,5 @@ export async function createFileMetadataInstance(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

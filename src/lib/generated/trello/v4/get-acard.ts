@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetACardInput = {
 	/**
@@ -1973,7 +1973,7 @@ export async function getAcard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetACardOutput> {
+): Promise<EndpointResult<GetACardOutput>> {
 	const response = await this.endpointCaller<GetACardOutput>(
 		{
 			appName: 'trello',
@@ -1982,5 +1982,5 @@ export async function getAcard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

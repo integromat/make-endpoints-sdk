@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type WatchMailboxInput = {
 	/**
@@ -39,7 +39,7 @@ export async function watchMailbox(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<WatchMailboxOutput> {
+): Promise<EndpointResult<WatchMailboxOutput>> {
 	const response = await this.endpointCaller<WatchMailboxOutput>(
 		{
 			appName: 'google-email',
@@ -48,5 +48,5 @@ export async function watchMailbox(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

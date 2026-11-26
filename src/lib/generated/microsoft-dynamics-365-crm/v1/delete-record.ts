@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteRecordInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteRecord(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteRecordOutput> {
+): Promise<EndpointResult<DeleteRecordOutput>> {
 	const response = await this.endpointCaller<DeleteRecordOutput>(
 		{
 			appName: 'microsoft-dynamics-365-crm',
@@ -35,5 +35,5 @@ export async function deleteRecord(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

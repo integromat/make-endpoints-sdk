@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateDriveInput = {
 	/**
@@ -278,7 +278,7 @@ export async function createDrive(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateDriveOutput> {
+): Promise<EndpointResult<CreateDriveOutput>> {
 	const response = await this.endpointCaller<CreateDriveOutput>(
 		{
 			appName: 'google-drive',
@@ -287,5 +287,5 @@ export async function createDrive(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

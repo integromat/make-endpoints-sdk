@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListMessagesInput = {
 	/**
@@ -353,7 +353,7 @@ export async function listMessages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListMessagesOutput> {
+): Promise<EndpointResult<ListMessagesOutput>> {
 	const response = await this.endpointCaller<ListMessagesOutput>(
 		{
 			appName: 'microsoft-email',
@@ -362,5 +362,5 @@ export async function listMessages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetChannelHistoryInput = {
 	/**
@@ -119,7 +119,7 @@ export async function getChannelHistory(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetChannelHistoryOutput> {
+): Promise<EndpointResult<GetChannelHistoryOutput>> {
 	const response = await this.endpointCaller<GetChannelHistoryOutput>(
 		{
 			appName: 'slack',
@@ -128,5 +128,5 @@ export async function getChannelHistory(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

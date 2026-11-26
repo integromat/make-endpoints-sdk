@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetANumberOfFollowersInput = {
 	/**
@@ -39,7 +39,7 @@ export async function getAnumberOfFollowers(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetANumberOfFollowersOutput> {
+): Promise<EndpointResult<GetANumberOfFollowersOutput>> {
 	const response = await this.endpointCaller<GetANumberOfFollowersOutput>(
 		{
 			appName: 'line',
@@ -48,5 +48,5 @@ export async function getAnumberOfFollowers(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

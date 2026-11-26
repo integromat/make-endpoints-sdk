@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListJobsInput = {
 	/**
@@ -4774,7 +4774,7 @@ export async function listJobs(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListJobsOutput> {
+): Promise<EndpointResult<ListJobsOutput>> {
 	const response = await this.endpointCaller<ListJobsOutput>(
 		{
 			appName: 'google-bigquery',
@@ -4783,5 +4783,5 @@ export async function listJobs(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

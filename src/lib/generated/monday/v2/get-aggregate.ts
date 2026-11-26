@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetAggregateInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function getAggregate(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAggregateOutput> {
+): Promise<EndpointResult<GetAggregateOutput>> {
 	const response = await this.endpointCaller<GetAggregateOutput>(
 		{
 			appName: 'monday',
@@ -26,5 +26,5 @@ export async function getAggregate(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

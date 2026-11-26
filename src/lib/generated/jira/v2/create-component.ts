@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateComponentInput = {
 	/**
@@ -146,7 +146,7 @@ export async function createComponent(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateComponentOutput> {
+): Promise<EndpointResult<CreateComponentOutput>> {
 	const response = await this.endpointCaller<CreateComponentOutput>(
 		{
 			appName: 'jira',
@@ -155,5 +155,5 @@ export async function createComponent(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

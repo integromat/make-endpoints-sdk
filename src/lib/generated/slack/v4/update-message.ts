@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UpdateMessageInput = {
 	/**
@@ -118,7 +118,7 @@ export async function updateMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateMessageOutput> {
+): Promise<EndpointResult<UpdateMessageOutput>> {
 	const response = await this.endpointCaller<UpdateMessageOutput>(
 		{
 			appName: 'slack',
@@ -127,5 +127,5 @@ export async function updateMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

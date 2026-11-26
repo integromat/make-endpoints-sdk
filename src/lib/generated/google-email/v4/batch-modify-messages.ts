@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type BatchModifyMessagesInput = {
 	/**
@@ -56,7 +56,7 @@ export async function batchModifyMessages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BatchModifyMessagesOutput> {
+): Promise<EndpointResult<BatchModifyMessagesOutput>> {
 	const response = await this.endpointCaller<BatchModifyMessagesOutput>(
 		{
 			appName: 'google-email',
@@ -65,5 +65,5 @@ export async function batchModifyMessages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type SearchStreamInput = {
 	/**
@@ -79,7 +79,7 @@ export async function searchStream(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SearchStreamOutput> {
+): Promise<EndpointResult<SearchStreamOutput>> {
 	const response = await this.endpointCaller<SearchStreamOutput>(
 		{
 			appName: 'google-ads-reports',
@@ -88,5 +88,5 @@ export async function searchStream(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

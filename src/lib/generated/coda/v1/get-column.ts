@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetColumnInput = {
 	/**
@@ -291,7 +291,7 @@ export async function getColumn(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetColumnOutput> {
+): Promise<EndpointResult<GetColumnOutput>> {
 	const response = await this.endpointCaller<GetColumnOutput>(
 		{
 			appName: 'coda',
@@ -300,5 +300,5 @@ export async function getColumn(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

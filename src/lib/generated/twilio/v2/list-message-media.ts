@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListMessageMediaInput = {
 	/**
@@ -114,7 +114,7 @@ export async function listMessageMedia(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListMessageMediaOutput> {
+): Promise<EndpointResult<ListMessageMediaOutput>> {
 	const response = await this.endpointCaller<ListMessageMediaOutput>(
 		{
 			appName: 'twilio',
@@ -123,5 +123,5 @@ export async function listMessageMedia(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

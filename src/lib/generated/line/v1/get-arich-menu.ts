@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetARichMenuInput = {
 	/**
@@ -100,7 +100,7 @@ export async function getArichMenu(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetARichMenuOutput> {
+): Promise<EndpointResult<GetARichMenuOutput>> {
 	const response = await this.endpointCaller<GetARichMenuOutput>(
 		{
 			appName: 'line',
@@ -109,5 +109,5 @@ export async function getArichMenu(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

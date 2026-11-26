@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type PostMessageInput = {
 	/**
@@ -152,7 +152,7 @@ export async function postMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PostMessageOutput> {
+): Promise<EndpointResult<PostMessageOutput>> {
 	const response = await this.endpointCaller<PostMessageOutput>(
 		{
 			appName: 'slack',
@@ -161,5 +161,5 @@ export async function postMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetVideoStatusInput = {
 	/**
@@ -112,7 +112,7 @@ export async function getVideoStatus(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetVideoStatusOutput> {
+): Promise<EndpointResult<GetVideoStatusOutput>> {
 	const response = await this.endpointCaller<GetVideoStatusOutput>(
 		{
 			appName: 'facebook-pages',
@@ -121,5 +121,5 @@ export async function getVideoStatus(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

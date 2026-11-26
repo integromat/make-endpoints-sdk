@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetUserUsageInput = Record<string, never>;
 
@@ -159,7 +159,7 @@ export async function getUserUsage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetUserUsageOutput> {
+): Promise<EndpointResult<GetUserUsageOutput>> {
 	const response = await this.endpointCaller<GetUserUsageOutput>(
 		{
 			appName: 'jotform',
@@ -168,5 +168,5 @@ export async function getUserUsage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

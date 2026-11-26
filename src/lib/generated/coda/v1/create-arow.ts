@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateARowInput = {
 	/**
@@ -69,7 +69,7 @@ export async function createArow(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateARowOutput> {
+): Promise<EndpointResult<CreateARowOutput>> {
 	const response = await this.endpointCaller<CreateARowOutput>(
 		{
 			appName: 'coda',
@@ -78,5 +78,5 @@ export async function createArow(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteProjectVersionInput = {
 	/**
@@ -30,7 +30,7 @@ export async function deleteProjectVersion(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteProjectVersionOutput> {
+): Promise<EndpointResult<DeleteProjectVersionOutput>> {
 	const response = await this.endpointCaller<DeleteProjectVersionOutput>(
 		{
 			appName: 'jira',
@@ -39,5 +39,5 @@ export async function deleteProjectVersion(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

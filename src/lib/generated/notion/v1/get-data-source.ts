@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetDataSourceInput = {
 	/**
@@ -560,7 +560,7 @@ export async function getDataSource(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetDataSourceOutput> {
+): Promise<EndpointResult<GetDataSourceOutput>> {
 	const response = await this.endpointCaller<GetDataSourceOutput>(
 		{
 			appName: 'notion',
@@ -569,5 +569,5 @@ export async function getDataSource(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

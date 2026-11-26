@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateAPermissionInput = {
 	/**
@@ -92,7 +92,7 @@ export async function createApermission(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateAPermissionOutput> {
+): Promise<EndpointResult<CreateAPermissionOutput>> {
 	const response = await this.endpointCaller<CreateAPermissionOutput>(
 		{
 			appName: 'google-keep',
@@ -101,5 +101,5 @@ export async function createApermission(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

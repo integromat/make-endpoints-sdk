@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateUrlAssetUploadJobInput = {
 	/**
@@ -141,7 +141,7 @@ export async function createUrlAssetUploadJob(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateUrlAssetUploadJobOutput> {
+): Promise<EndpointResult<CreateUrlAssetUploadJobOutput>> {
 	const response = await this.endpointCaller<CreateUrlAssetUploadJobOutput>(
 		{
 			appName: 'canva',
@@ -150,5 +150,5 @@ export async function createUrlAssetUploadJob(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

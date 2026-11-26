@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListRichMenusInput = Record<string, never>;
 
@@ -102,7 +102,7 @@ export async function listRichMenus(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListRichMenusOutput> {
+): Promise<EndpointResult<ListRichMenusOutput>> {
 	const response = await this.endpointCaller<ListRichMenusOutput>(
 		{
 			appName: 'line',
@@ -111,5 +111,5 @@ export async function listRichMenus(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

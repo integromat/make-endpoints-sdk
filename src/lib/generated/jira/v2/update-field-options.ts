@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateFieldOptionsInput = {
 	/**
@@ -69,7 +69,7 @@ export async function updateFieldOptions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFieldOptionsOutput> {
+): Promise<EndpointResult<UpdateFieldOptionsOutput>> {
 	const response = await this.endpointCaller<UpdateFieldOptionsOutput>(
 		{
 			appName: 'jira',
@@ -78,5 +78,5 @@ export async function updateFieldOptions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

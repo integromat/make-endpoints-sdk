@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListImagesInput = Record<string, never>;
 
@@ -17,7 +17,7 @@ export async function listImages(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListImagesOutput> {
+): Promise<EndpointResult<ListImagesOutput>> {
 	const response = await this.endpointCaller<ListImagesOutput>(
 		{
 			appName: 'typeform',
@@ -26,5 +26,5 @@ export async function listImages(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type ListModelsInput = Record<string, never>;
 
@@ -35,7 +35,7 @@ export async function listModels(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListModelsOutput> {
+): Promise<EndpointResult<ListModelsOutput>> {
 	const response = await this.endpointCaller<ListModelsOutput>(
 		{
 			appName: 'typesafe',
@@ -44,5 +44,5 @@ export async function listModels(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

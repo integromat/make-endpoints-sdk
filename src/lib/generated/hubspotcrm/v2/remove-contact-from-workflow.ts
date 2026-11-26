@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type RemoveContactFromWorkflowInput = {
 	/**
@@ -26,7 +26,7 @@ export async function removeContactFromWorkflow(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<RemoveContactFromWorkflowOutput> {
+): Promise<EndpointResult<RemoveContactFromWorkflowOutput>> {
 	const response = await this.endpointCaller<RemoveContactFromWorkflowOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -35,5 +35,5 @@ export async function removeContactFromWorkflow(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

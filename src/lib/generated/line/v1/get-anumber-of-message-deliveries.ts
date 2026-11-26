@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetANumberOfMessageDeliveriesInput = {
 	/**
@@ -91,7 +91,7 @@ export async function getAnumberOfMessageDeliveries(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetANumberOfMessageDeliveriesOutput> {
+): Promise<EndpointResult<GetANumberOfMessageDeliveriesOutput>> {
 	const response = await this.endpointCaller<GetANumberOfMessageDeliveriesOutput>(
 		{
 			appName: 'line',
@@ -100,5 +100,5 @@ export async function getAnumberOfMessageDeliveries(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

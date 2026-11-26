@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdateFormQuestionsInput = {
 	/**
@@ -118,7 +118,7 @@ export async function updateFormQuestions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdateFormQuestionsOutput> {
+): Promise<EndpointResult<UpdateFormQuestionsOutput>> {
 	const response = await this.endpointCaller<UpdateFormQuestionsOutput>(
 		{
 			appName: 'jotform',
@@ -127,5 +127,5 @@ export async function updateFormQuestions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

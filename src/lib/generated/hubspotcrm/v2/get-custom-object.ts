@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetCustomObjectInput = {
 	/**
@@ -112,7 +112,7 @@ export async function getCustomObject(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetCustomObjectOutput> {
+): Promise<EndpointResult<GetCustomObjectOutput>> {
 	const response = await this.endpointCaller<GetCustomObjectOutput>(
 		{
 			appName: 'hubspotcrm',
@@ -121,5 +121,5 @@ export async function getCustomObject(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

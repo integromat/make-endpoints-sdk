@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteFormInput = {
 	/**
@@ -22,7 +22,7 @@ export async function deleteForm(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteFormOutput> {
+): Promise<EndpointResult<DeleteFormOutput>> {
 	const response = await this.endpointCaller<DeleteFormOutput>(
 		{
 			appName: 'typeform',
@@ -31,5 +31,5 @@ export async function deleteForm(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

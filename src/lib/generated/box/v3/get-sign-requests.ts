@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetSignRequestsInput = {
 	/**
@@ -475,7 +475,7 @@ export async function getSignRequests(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetSignRequestsOutput> {
+): Promise<EndpointResult<GetSignRequestsOutput>> {
 	const response = await this.endpointCaller<GetSignRequestsOutput>(
 		{
 			appName: 'box',
@@ -484,5 +484,5 @@ export async function getSignRequests(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

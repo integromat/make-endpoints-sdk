@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type UpdatePostInput = {
 	/**
@@ -88,7 +88,7 @@ export async function updatePost(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UpdatePostOutput> {
+): Promise<EndpointResult<UpdatePostOutput>> {
 	const response = await this.endpointCaller<UpdatePostOutput>(
 		{
 			appName: 'facebook-pages',
@@ -97,5 +97,5 @@ export async function updatePost(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

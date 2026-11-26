@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendVideoNoteInput = {
 	/**
@@ -213,7 +213,7 @@ export async function sendVideoNote(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendVideoNoteOutput> {
+): Promise<EndpointResult<SendVideoNoteOutput>> {
 	const response = await this.endpointCaller<SendVideoNoteOutput>(
 		{
 			appName: 'telegram',
@@ -222,5 +222,5 @@ export async function sendVideoNote(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

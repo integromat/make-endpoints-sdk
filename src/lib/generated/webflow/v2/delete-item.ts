@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteItemInput = {
 	/**
@@ -26,7 +26,7 @@ export async function deleteItem(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteItemOutput> {
+): Promise<EndpointResult<DeleteItemOutput>> {
 	const response = await this.endpointCaller<DeleteItemOutput>(
 		{
 			appName: 'webflow',
@@ -35,5 +35,5 @@ export async function deleteItem(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

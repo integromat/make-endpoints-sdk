@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type SendStickerInput = {
 	/**
@@ -250,7 +250,7 @@ export async function sendSticker(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<SendStickerOutput> {
+): Promise<EndpointResult<SendStickerOutput>> {
 	const response = await this.endpointCaller<SendStickerOutput>(
 		{
 			appName: 'telegram',
@@ -259,5 +259,5 @@ export async function sendSticker(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

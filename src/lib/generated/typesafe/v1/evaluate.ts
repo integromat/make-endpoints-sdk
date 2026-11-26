@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type EvaluateInput = {
 	/**
@@ -61,7 +61,7 @@ export async function evaluate(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<EvaluateOutput> {
+): Promise<EndpointResult<EvaluateOutput>> {
 	const response = await this.endpointCaller<EvaluateOutput>(
 		{
 			appName: 'typesafe',
@@ -70,5 +70,5 @@ export async function evaluate(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

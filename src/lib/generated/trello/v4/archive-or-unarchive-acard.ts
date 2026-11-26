@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ArchiveOrUnarchiveACardInput = {
 	/**
@@ -745,7 +745,7 @@ export async function archiveOrUnarchiveAcard(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ArchiveOrUnarchiveACardOutput> {
+): Promise<EndpointResult<ArchiveOrUnarchiveACardOutput>> {
 	const response = await this.endpointCaller<ArchiveOrUnarchiveACardOutput>(
 		{
 			appName: 'trello',
@@ -754,5 +754,5 @@ export async function archiveOrUnarchiveAcard(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

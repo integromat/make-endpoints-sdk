@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type CreateAssetFolderInput = {
 	/**
@@ -61,7 +61,7 @@ export async function createAssetFolder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateAssetFolderOutput> {
+): Promise<EndpointResult<CreateAssetFolderOutput>> {
 	const response = await this.endpointCaller<CreateAssetFolderOutput>(
 		{
 			appName: 'webflow',
@@ -70,5 +70,5 @@ export async function createAssetFolder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

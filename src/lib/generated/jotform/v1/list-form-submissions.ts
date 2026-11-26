@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type ListFormSubmissionsInput = {
 	/**
@@ -122,7 +122,7 @@ export async function listFormSubmissions(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<ListFormSubmissionsOutput> {
+): Promise<EndpointResult<ListFormSubmissionsOutput>> {
 	const response = await this.endpointCaller<ListFormSubmissionsOutput>(
 		{
 			appName: 'jotform',
@@ -131,5 +131,5 @@ export async function listFormSubmissions(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

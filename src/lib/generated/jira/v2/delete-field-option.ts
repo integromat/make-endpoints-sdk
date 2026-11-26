@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type DeleteFieldOptionInput = {
 	/**
@@ -30,7 +30,7 @@ export async function deleteFieldOption(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<DeleteFieldOptionOutput> {
+): Promise<EndpointResult<DeleteFieldOptionOutput>> {
 	const response = await this.endpointCaller<DeleteFieldOptionOutput>(
 		{
 			appName: 'jira',
@@ -39,5 +39,5 @@ export async function deleteFieldOption(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

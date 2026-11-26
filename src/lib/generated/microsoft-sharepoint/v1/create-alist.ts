@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type CreateAListInput = {
 	/**
@@ -1051,7 +1051,7 @@ export async function createAlist(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<CreateAListOutput> {
+): Promise<EndpointResult<CreateAListOutput>> {
 	const response = await this.endpointCaller<CreateAListOutput>(
 		{
 			appName: 'microsoft-sharepoint',
@@ -1060,5 +1060,5 @@ export async function createAlist(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

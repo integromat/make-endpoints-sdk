@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type PinChatMessageInput = {
 	/**
@@ -35,7 +35,7 @@ export async function pinChatMessage(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PinChatMessageOutput> {
+): Promise<EndpointResult<PinChatMessageOutput>> {
 	const response = await this.endpointCaller<PinChatMessageOutput>(
 		{
 			appName: 'telegram',
@@ -44,5 +44,5 @@ export async function pinChatMessage(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

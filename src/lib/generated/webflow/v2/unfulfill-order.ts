@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type UnfulfillOrderInput = {
 	/**
@@ -647,7 +647,7 @@ export async function unfulfillOrder(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<UnfulfillOrderOutput> {
+): Promise<EndpointResult<UnfulfillOrderOutput>> {
 	const response = await this.endpointCaller<UnfulfillOrderOutput>(
 		{
 			appName: 'webflow',
@@ -656,5 +656,5 @@ export async function unfulfillOrder(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

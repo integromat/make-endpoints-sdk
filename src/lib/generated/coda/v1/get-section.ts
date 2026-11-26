@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetSectionInput = {
 	/**
@@ -238,7 +238,7 @@ export async function getSection(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetSectionOutput> {
+): Promise<EndpointResult<GetSectionOutput>> {
 	const response = await this.endpointCaller<GetSectionOutput>(
 		{
 			appName: 'coda',
@@ -247,5 +247,5 @@ export async function getSection(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

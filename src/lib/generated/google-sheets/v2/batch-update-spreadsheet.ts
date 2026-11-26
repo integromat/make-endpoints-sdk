@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type BatchUpdateSpreadsheetInput = {
 	/**
@@ -207,7 +207,7 @@ export async function batchUpdateSpreadsheet(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BatchUpdateSpreadsheetOutput> {
+): Promise<EndpointResult<BatchUpdateSpreadsheetOutput>> {
 	const response = await this.endpointCaller<BatchUpdateSpreadsheetOutput>(
 		{
 			appName: 'google-sheets',
@@ -216,5 +216,5 @@ export async function batchUpdateSpreadsheet(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

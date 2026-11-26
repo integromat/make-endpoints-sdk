@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetAttachmentInput = {
 	/**
@@ -35,7 +35,7 @@ export async function getAttachment(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetAttachmentOutput> {
+): Promise<EndpointResult<GetAttachmentOutput>> {
 	const response = await this.endpointCaller<GetAttachmentOutput>(
 		{
 			appName: 'google-email',
@@ -44,5 +44,5 @@ export async function getAttachment(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

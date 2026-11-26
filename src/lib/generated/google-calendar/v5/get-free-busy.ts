@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis, JSONValue } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../shared.ts';
 
 export type GetFreeBusyInput = {
 	/**
@@ -68,7 +68,7 @@ export async function getFreeBusy(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetFreeBusyOutput> {
+): Promise<EndpointResult<GetFreeBusyOutput>> {
 	const response = await this.endpointCaller<GetFreeBusyOutput>(
 		{
 			appName: 'google-calendar',
@@ -77,5 +77,5 @@ export async function getFreeBusy(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

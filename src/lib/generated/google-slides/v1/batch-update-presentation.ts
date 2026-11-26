@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type BatchUpdatePresentationInput = {
 	/**
@@ -608,7 +608,7 @@ export async function batchUpdatePresentation(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<BatchUpdatePresentationOutput> {
+): Promise<EndpointResult<BatchUpdatePresentationOutput>> {
 	const response = await this.endpointCaller<BatchUpdatePresentationOutput>(
 		{
 			appName: 'google-slides',
@@ -617,5 +617,5 @@ export async function batchUpdatePresentation(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type PromoteChatMemberInput = {
 	/**
@@ -103,7 +103,7 @@ export async function promoteChatMember(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<PromoteChatMemberOutput> {
+): Promise<EndpointResult<PromoteChatMemberOutput>> {
 	const response = await this.endpointCaller<PromoteChatMemberOutput>(
 		{
 			appName: 'telegram',
@@ -112,5 +112,5 @@ export async function promoteChatMember(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }

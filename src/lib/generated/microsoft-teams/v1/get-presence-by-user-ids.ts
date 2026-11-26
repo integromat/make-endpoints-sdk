@@ -1,5 +1,5 @@
 // Generated file. Do not edit by hand.
-import type { EndpointFunctionThis } from '../../../shared.ts';
+import type { EndpointFunctionThis, EndpointResult } from '../../../shared.ts';
 
 export type GetPresenceByUserIdsInput = {
 	/**
@@ -119,7 +119,7 @@ export async function getPresenceByUserIds(
 		confidential?: boolean;
 		idempotencyKey?: string;
 	},
-): Promise<GetPresenceByUserIdsOutput> {
+): Promise<EndpointResult<GetPresenceByUserIdsOutput>> {
 	const response = await this.endpointCaller<GetPresenceByUserIdsOutput>(
 		{
 			appName: 'microsoft-teams',
@@ -128,5 +128,5 @@ export async function getPresenceByUserIds(
 		},
 		payload,
 	);
-	return response.output;
+	return response;
 }
