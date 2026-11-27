@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.14.0...v0.15.0) (2026-11-27)
+
+
+### Features
+
+* update generated endpoints ([6394423](https://github.com/integromat/make-endpoints-sdk/commit/63944237111a979a9742e360f8e2037a492dbea1))
+
 ## [0.14.0](https://github.com/integromat/make-endpoints-sdk/compare/v0.13.0...v0.14.0) (2026-11-26)
 
 
