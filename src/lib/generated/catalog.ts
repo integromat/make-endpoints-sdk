@@ -16,6 +16,7 @@ import { endpoints as dropboxEndpoints } from './dropbox/_catalog.ts';
 import { endpoints as facebookMessengerEndpoints } from './facebook-messenger/_catalog.ts';
 import { endpoints as facebookPagesEndpoints } from './facebook-pages/_catalog.ts';
 import { endpoints as githubEndpoints } from './github/_catalog.ts';
+import { endpoints as googleAdsCustomerMatchEndpoints } from './google-ads-customer-match/_catalog.ts';
 import { endpoints as googleAdsReportsEndpoints } from './google-ads-reports/_catalog.ts';
 import { endpoints as googleBigqueryEndpoints } from './google-bigquery/_catalog.ts';
 import { endpoints as googleCalendarEndpoints } from './google-calendar/_catalog.ts';
@@ -39,6 +40,7 @@ import { endpoints as jotformEndpoints } from './jotform/_catalog.ts';
 import { endpoints as lineEndpoints } from './line/_catalog.ts';
 import { endpoints as linearEndpoints } from './linear/_catalog.ts';
 import { endpoints as linkedinEndpoints } from './linkedin/_catalog.ts';
+import { endpoints as linkedinAdsReportsEndpoints } from './linkedin-ads-reports/_catalog.ts';
 import { endpoints as mailchimpEndpoints } from './mailchimp/_catalog.ts';
 import { endpoints as mcpClientEndpoints } from './mcp-client/_catalog.ts';
 import { endpoints as microsoftCalendarEndpoints } from './microsoft-calendar/_catalog.ts';
@@ -87,6 +89,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		facebookMessenger: facebookMessengerEndpoints(endpointCaller),
 		facebookPages: facebookPagesEndpoints(endpointCaller),
 		github: githubEndpoints(endpointCaller),
+		googleAdsCustomerMatch: googleAdsCustomerMatchEndpoints(endpointCaller),
 		googleAdsReports: googleAdsReportsEndpoints(endpointCaller),
 		googleBigquery: googleBigqueryEndpoints(endpointCaller),
 		googleCalendar: googleCalendarEndpoints(endpointCaller),
@@ -110,6 +113,7 @@ export const endpoints = (endpointCaller: EndpointCaller) => {
 		line: lineEndpoints(endpointCaller),
 		linear: linearEndpoints(endpointCaller),
 		linkedin: linkedinEndpoints(endpointCaller),
+		linkedinAdsReports: linkedinAdsReportsEndpoints(endpointCaller),
 		mailchimp: mailchimpEndpoints(endpointCaller),
 		mcpClient: mcpClientEndpoints(endpointCaller),
 		microsoftCalendar: microsoftCalendarEndpoints(endpointCaller),

@@ -16,6 +16,7 @@ import { definitions as dropboxV5Definitions } from './dropbox/v5/_definitions.t
 import { definitions as facebookMessengerV2Definitions } from './facebook-messenger/v2/_definitions.ts';
 import { definitions as facebookPagesV6Definitions } from './facebook-pages/v6/_definitions.ts';
 import { definitions as githubV4Definitions } from './github/v4/_definitions.ts';
+import { definitions as googleAdsCustomerMatchV1Definitions } from './google-ads-customer-match/v1/_definitions.ts';
 import { definitions as googleAdsReportsV1Definitions } from './google-ads-reports/v1/_definitions.ts';
 import { definitions as googleBigqueryV1Definitions } from './google-bigquery/v1/_definitions.ts';
 import { definitions as googleCalendarV5Definitions } from './google-calendar/v5/_definitions.ts';
@@ -39,6 +40,7 @@ import { definitions as jotformV1Definitions } from './jotform/v1/_definitions.t
 import { definitions as lineV1Definitions } from './line/v1/_definitions.ts';
 import { definitions as linearV1Definitions } from './linear/v1/_definitions.ts';
 import { definitions as linkedinV2Definitions } from './linkedin/v2/_definitions.ts';
+import { definitions as linkedinAdsReportsV1Definitions } from './linkedin-ads-reports/v1/_definitions.ts';
 import { definitions as mailchimpV2Definitions } from './mailchimp/v2/_definitions.ts';
 import { definitions as mcpClientV1Definitions } from './mcp-client/v1/_definitions.ts';
 import { definitions as microsoftCalendarV2Definitions } from './microsoft-calendar/v2/_definitions.ts';
@@ -86,6 +88,7 @@ export const definitions: EndpointDefinition[] = [
 	...facebookMessengerV2Definitions,
 	...facebookPagesV6Definitions,
 	...githubV4Definitions,
+	...googleAdsCustomerMatchV1Definitions,
 	...googleAdsReportsV1Definitions,
 	...googleBigqueryV1Definitions,
 	...googleCalendarV5Definitions,
@@ -109,6 +112,7 @@ export const definitions: EndpointDefinition[] = [
 	...lineV1Definitions,
 	...linearV1Definitions,
 	...linkedinV2Definitions,
+	...linkedinAdsReportsV1Definitions,
 	...mailchimpV2Definitions,
 	...mcpClientV1Definitions,
 	...microsoftCalendarV2Definitions,

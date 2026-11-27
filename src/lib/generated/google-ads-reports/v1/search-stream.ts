@@ -3,7 +3,7 @@ import type { EndpointFunctionThis, EndpointResult, JSONValue } from '../../../s
 
 export type SearchStreamInput = {
 	/**
-	 * The ID of the Google Ads account (customer) to query, as 10 digits without hyphens. For example, `1234567890`. Metrics cannot be queried for manager (MCC) or canceled accounts; query one of their client accounts instead.
+	 * The ID of the Google Ads account (customer) to query, as 10 digits without hyphens. For example, `1234567890`. Metrics cannot be queried for manager (MCC) or canceled accounts; query one of their client accounts instead. The connection's Customer ID is sent as the login customer automatically.
 	 */
 	customerId: string;
 	/**
